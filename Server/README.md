@@ -1,0 +1,21 @@
+## libraries
+
+1. express
+2. mongoose
+3. cors
+4. jsonwebtoken
+5. bcrypt
+6. cloudinary
+7. dotenv
+
+## Routes
+
+1. user
+2. post
+3. comment
+
+## Schema & models
+
+1. user
+2. post
+3. comments
