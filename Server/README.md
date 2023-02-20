@@ -19,3 +19,5 @@
 1. user
 2. post
 3. comments
+
+#### Error status code checkout -> https://developer.mozilla.org/en-US/docs/Web/HTTP/Status
