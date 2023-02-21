@@ -34,7 +34,7 @@ const Links = [
     icon: <ChatIcon />,
   },
   {
-    name: "Notification",
+    name: "Notifications",
     icon: <BellIcon />,
   },
 ];
