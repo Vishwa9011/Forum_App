@@ -1,9 +1,16 @@
 const express = require("express");
 const UserRouter = express.Router();
-import * as user_controller from '../Controllers/user.controller';
+const user_controller = require("../Controllers/user.controller")
+const { UserModel } = require('../Models/user.model');
 
-UserRouter.get("/", user_controller.UserRouteHome)
+UserRouter.get("/", user_controller.UserRouteHome);
 
-UserRouter.get("/register", user_controller.UserRegisteration)
+UserRouter.post("/register", user_controller.UserRegisteration);
+
+UserRouter.post("/login", user_controller.UserLogin);
+
+UserRouter.post("/sentverificationemail", user_controller.sentVerificationEmail);
+
+UserRouter.post("/verifyemail", user_controller.verifyEmail)
 
 module.exports = { UserRouter };

@@ -7,6 +7,7 @@
 5. bcrypt
 6. cloudinary
 7. dotenv
+8. Nodemailer // to send verification mails
 
 ## Routes
 
