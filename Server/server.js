@@ -1,0 +1,24 @@
+const express = require("express");
+require("dotenv").config();
+const { connection } = require("./Configs/db");
+const { UserRouter } = require("./Routes/user.router");
+
+const app = express();
+
+app.use(express.json());
+
+app.use("/user", UserRouter)
+
+app.get("/", (req, res) => {
+     res.send("Home Page")
+})
+
+const port = process.env.PORT || 8080
+app.listen(port, async () => {
+     try {
+          await connection;
+          console.log("server is running.");
+     } catch (error) {
+          console.log('error: ', error);
+     }
+})
