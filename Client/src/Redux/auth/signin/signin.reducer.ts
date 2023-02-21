@@ -3,7 +3,7 @@ import { SIGN_IN_ERROR, SIGN_IN_LOADING, SIGN_IN_SUCCESS, RESET_AUTH } from "./s
 type AuthState = {
     loading: boolean;
     error: boolean;
-    data: {};
+    data:{};
 };
 
 type AuthAction = {
@@ -11,11 +11,13 @@ type AuthAction = {
     payload?: any;
 };
 
+let token = localStorage.getItem("token");
+
 export const authInitalState:AuthState = {
   loading: false,
   data: {
     token: "",
-    isAuthenticated: false,
+    isAuthenticated: token ? true : false,
   },
   error: false,
 };
@@ -30,12 +32,13 @@ export const authReducer = (state:AuthState = authInitalState, { type, payload }
       }
     }
     case SIGN_IN_SUCCESS: {
+      localStorage.setItem("token",payload.token);
       return {
         ...state,
         loading: false,
         data: {
           ...state.data,
-          token: payload,
+          token: payload.token,
           isAuthenticated: true
         }
       }
@@ -49,6 +52,7 @@ export const authReducer = (state:AuthState = authInitalState, { type, payload }
     }
 
     case RESET_AUTH: {
+      localStorage.removeItem("token");
       return {
         ...state,
         loading: false,
@@ -57,12 +61,9 @@ export const authReducer = (state:AuthState = authInitalState, { type, payload }
           ...state.data,
           isAuthenticated: false,
           token: "",
-
         }
       }
     }
-
     default: return state;
   }
-
 };

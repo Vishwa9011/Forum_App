@@ -12,9 +12,11 @@ import {
   IconButton,
   useColorModeValue,
   useDisclosure,
+  StackDivider,
 } from "@chakra-ui/react";
 import { EditIcon } from "@chakra-ui/icons";
 import UserEditModal from "./UserEditModal";
+import { Link } from "react-router-dom";
 
 type Props = {};
 
@@ -113,14 +115,62 @@ export default function Profile({}: Props) {
         </Box>
         <Box
           w="25%"
+          maxH="100vh"
           display={{ base: "none", md: "flex" }}
-          border="1px solid red"
           bg={useColorModeValue("white", "gray.800")}
           boxShadow={"2xl"}
           rounded={"md"}
           overflow={"hidden"}
+          justifyContent="center"
         >
-          Some Information
+          <Stack justify={"center"} divider={<StackDivider />} spacing="4">
+            <Box>
+              <Heading size="xs" textTransform="uppercase">
+                Account
+              </Heading>
+              <Flex flexDir={"column"}>
+                <Text as={Link} to="/" pt="2" fontSize="sm">
+                  Setting & Privacy
+                </Text>
+                <Text as={Link} to="/" pt="2" fontSize="sm">
+                  Help
+                </Text>
+                <Text as={Link} to="/" pt="2" fontSize="sm">
+                  Language
+                </Text>
+              </Flex>
+            </Box>
+            <Box>
+              <Heading size="xs" textTransform="uppercase">
+                Manage
+              </Heading>
+              <Flex flexDir={"column"}>
+                {" "}
+                <Text as={Link} to="/" pt="2" fontSize="sm">
+                  Post & Activity
+                </Text>
+                <Text as={Link} to="/" pt="2" fontSize="sm">
+                  Job Posting Account
+                </Text>
+                <Text as={Link} to="/" pt="2" fontSize="sm">
+                  Masai School
+                </Text>
+              </Flex>
+            </Box>
+            <Button
+              w="100%"
+              size="xs"
+              border="1px solid blue"
+              borderRadius={"10px"}
+              bg="#fff"
+              _hover={{
+                transform: "translateY(-2px)",
+                boxShadow: "lg",
+              }}
+            >
+              Sign Out
+            </Button>
+          </Stack>
         </Box>
       </Flex>
       <UserEditModal isOpen={isOpen} onClose={onClose} />

@@ -82,12 +82,12 @@ const UserEditModal = ({ isOpen, onClose }: Props) => {
                 type="mobile"
               />
             </FormControl>
-            <FormControl id="position">
-              <FormLabel>Position</FormLabel>
+            <FormControl id="language">
+              <FormLabel>Language</FormLabel>
               <Input
-                placeholder="position"
+                placeholder="language"
                 _placeholder={{ color: "gray.500" }}
-                type="position"
+                type="language"
               />
             </FormControl>
             <Stack spacing={6} direction={["column", "row"]}>

@@ -1,9 +1,10 @@
-import { SIGN_UP_ERROR, SIGN_UP_LOADING, SIGN_UP_SUCCESS } from "./signin.types";
+import { UserI } from "../../../Constants/Constants";
+import { SIGN_UP_ERROR, SIGN_UP_LOADING, SIGN_UP_SUCCESS } from "./signup.types";
 
 type AuthState = {
     loading: boolean;
     error: boolean;
-    data: {};
+    message: string ;
 };
 
 type AuthAction = {
@@ -13,10 +14,7 @@ type AuthAction = {
 
 export const authInitalState:AuthState = {
   loading: false,
-  data: {
-    token: "",
-    isAuthenticated: false,
-  },
+  message :"",
   error: false,
 };
 
@@ -33,23 +31,17 @@ export const authReducer = (state:AuthState = authInitalState, { type, payload }
       return {
         ...state,
         loading: false,
-        data: {
-          ...state.data,
-          token: payload,
-          isAuthenticated: true
-        }
+        message:"Registration Successfull"
       }
     }
     case SIGN_UP_ERROR: {
       return {
         ...state,
         loading: false,
-        error: true
+        error: true,
+        message:"Something went wrong"
       }
     }
-
-    
-
     default: return state;
   }
 
