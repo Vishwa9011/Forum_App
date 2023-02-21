@@ -1,5 +1,6 @@
 import { legacy_createStore, applyMiddleware, compose, combineReducers } from "redux";
 import thunk from "redux-thunk";
+import { TypedUseSelectorHook, useDispatch, useSelector } from "react-redux";
 
 declare global {
      interface Window {
@@ -20,3 +21,8 @@ export const store = legacy_createStore(combineReducers(RootReducers), composeEn
 
 export type RootState = ReturnType<typeof store.getState>
 export type AppDispatch = typeof store.dispatch;
+
+
+type DisppatchFn = () => AppDispatch;
+export const useAppDispatch: DisppatchFn = useDispatch;
+export const useAppSelector: TypedUseSelectorHook<RootState> = useSelector;
