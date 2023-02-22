@@ -1,9 +1,9 @@
 import React from 'react'
 
-function Edituser() {
+function Createpost() {
   return (
     <div>Edituser</div>
   )
 }
 
-export default Edituser
+export default Createpost
