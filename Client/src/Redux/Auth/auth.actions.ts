@@ -3,7 +3,7 @@ import { signInWithPopup } from "firebase/auth"
 import { auth, Provider } from '../../Configs/Firebase'
 import * as Types from "./auth.actionType"
 import axios from "axios";
-import { LoginCred, UserI } from "../../Constants/constant";
+import { UserI } from "../../Constants/constant";
 
 
 const GoogleAuth = () => async (dispatch: Dispatch) => {

@@ -19,21 +19,31 @@ import {
   Container,
 } from "@chakra-ui/react";
 import { FcGoogle, FcKey } from "react-icons/fc";
-import { GoogleAuth } from "../../../Redux/Auth/auth.actions";
+import { GoogleAuth, signup } from "../../../Redux/Auth/auth.actions";
 import { useDispatch } from "react-redux";
+import { UserI } from "../../../Constants/constant";
+
+const initialUserData: UserI = {
+  name: "",
+  email: "",
+  password: "",
+};
 
 const Signup = () => {
   const [showPassword, setShowPassword] = useState(false);
-  const [value, setValue] = React.useState("1");
   const dispatch: Dispatch<any> = useDispatch();
-  // const [firstname,setFirstname] = React.useState()
+  const [userData, setUserData] = useState(initialUserData);
 
-  const handlesubmit = () => {};
-  const handleGoogle = () => {
-    console.log("hi");
-
-    dispatch(GoogleAuth());
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    let val = e.target.value;
+    setUserData({ ...userData, [e.target.name]: val });
   };
+
+  const handlesubmit = () => {
+    dispatch(signup(userData));
+  };
+
+  const { name, email, password } = userData;
 
   return (
     <Container maxW="5xl">
@@ -54,7 +64,14 @@ const Signup = () => {
             justify={"center"}
             bg={useColorModeValue("gray.50", "gray.800")}
           >
-            <Stack spacing={8} mx={"auto"} maxW={"lg"} py={12} px={6}>
+            <Stack
+              spacing={8}
+              mx={"auto"}
+              maxW={"xl"}
+              py={12}
+              px={6}
+              width="100%"
+            >
               <Stack align={"center"}>
                 <Heading fontSize={"4xl"} textAlign={"center"}>
                   Sign up
@@ -72,32 +89,38 @@ const Signup = () => {
               <Box
                 rounded={"lg"}
                 bg={useColorModeValue("white", "gray.700")}
-                boxShadow={"lg"}
                 p={8}
+                width="100%"
               >
                 <Stack spacing={4}>
-                  <HStack>
-                    <Box>
-                      <FormControl id="firstName" isRequired>
-                        <FormLabel>First Name</FormLabel>
-                        <Input type="text" />
-                      </FormControl>
-                    </Box>
-                    <Box>
-                      <FormControl id="lastName">
-                        <FormLabel>Last Name</FormLabel>
-                        <Input type="text" />
-                      </FormControl>
-                    </Box>
-                  </HStack>
+                  <FormControl id="firstName" isRequired>
+                    <FormLabel>Name</FormLabel>
+                    <Input
+                      type="text"
+                      name="name"
+                      value={name}
+                      onChange={handleChange}
+                    />
+                  </FormControl>
+
                   <FormControl id="email" isRequired>
                     <FormLabel>Email address</FormLabel>
-                    <Input type="email" />
+                    <Input
+                      type="email"
+                      name="email"
+                      value={email}
+                      onChange={handleChange}
+                    />
                   </FormControl>
                   <FormControl id="password" isRequired>
                     <FormLabel>Password</FormLabel>
                     <InputGroup>
-                      <Input type={showPassword ? "text" : "password"} />
+                      <Input
+                        type={showPassword ? "text" : "password"}
+                        name="password"
+                        value={password}
+                        onChange={handleChange}
+                      />
                     </InputGroup>
                   </FormControl>
                   <Stack spacing={10} pt={2}>
@@ -120,7 +143,6 @@ const Signup = () => {
                       border="1px"
                       borderColor={"gray.300"}
                       _hover={{ bg: "grey.500", border: "2px solid #4299e1" }}
-                      onClick={handleGoogle}
                     >
                       <FcGoogle style={{ marginRight: "10px" }} /> SignIn with
                       Google
