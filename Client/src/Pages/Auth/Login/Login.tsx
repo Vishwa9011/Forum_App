@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import "./signinpage.css";
 import { Flex, Box, FormControl, FormLabel, Input, InputGroup, HStack, InputRightElement, Stack, Button, Heading, Checkbox, Text, useColorModeValue, Link, } from "@chakra-ui/react";
 import { FcSmartphoneTablet, FcGoogle } from "react-icons/fc";
-const Loginpage = () => {
+const Login = () => {
 
 	return (
 		<>
@@ -51,4 +51,4 @@ const Loginpage = () => {
 	);
 };
 
-export default Loginpage;
+export default Login;

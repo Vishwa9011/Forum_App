@@ -16,7 +16,7 @@ const Verifypage = () => {
               Send Verification to your Email
             </Button>
             <Text color={'gray.500'} fontSize={{ base: 'sm', sm: 'md' }}>
-              We’re looking for amazing personality just like you! Become a part
+              We're looking for amazing personality just like you! Become a part
               of our Forum team and skyrocket your way!
             </Text>
           </div>

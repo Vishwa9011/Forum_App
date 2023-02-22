@@ -1,8 +1,8 @@
 import React, { useState } from "react";
-import "./signinpage.css";
+import "./signup.css";
 import { Flex, Box, FormControl, FormLabel, Input, InputGroup, HStack, InputRightElement, Stack, Button, Heading, Text, useColorModeValue, Link, RadioGroup, Radio } from "@chakra-ui/react";
 import { FcGoogle, FcKey } from "react-icons/fc";
-const SignInpage = () => {
+const Signup = () => {
     const [showPassword, setShowPassword] = useState(false);
     const [value, setValue] = React.useState('1')
 
@@ -11,7 +11,7 @@ const SignInpage = () => {
     }
     return (
         <>
-            {/* <div>SignInpage</div> */}
+            {/* <div>Signup</div> */}
             <div id="main">
                 <div id="left">
                     <img id="img" src="https://cdn.pixabay.com/photo/2022/12/10/13/46/attack-7647136_960_720.png" alt="" />
@@ -87,4 +87,4 @@ const SignInpage = () => {
     );
 };
 
-export default SignInpage;
+export default Signup;
