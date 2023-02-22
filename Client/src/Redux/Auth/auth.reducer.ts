@@ -14,6 +14,7 @@ const initialUserCredState = {
      isGoogleAuthenticated: false,
      createdAt: 0,
      lastLogin: 0,
+     token: ''
 }
 
 export interface IAuthInitialState {

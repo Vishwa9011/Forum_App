@@ -165,10 +165,31 @@ async function verifyEmail(req, res) {
 }
 
 // * update the user details
-async function UpdateUser() {
-
+async function UpdateUser(req, res) {
+     const _id = req.params.id;
+     const payload = req.body;
+     try {
+          let user = await UserModel.findById(_id);
+          user = { ...user, payload };
+          await user.save();
+          return res.status(201).json({ status: 200, message: 'user has been updated', token })
+     } catch (error) {
+          console.log('error: ', error);
+          return res.status(201).json({ status: 401, error: error.message })
+     }
 }
 
+// * delete the user details
+async function DeleteUser(req, res) {
+     const _id = req.params.id;
+     try {
+          await UserModel.findByIdAndDelete(_id);
+          return res.status(201).json({ status: 200, message: 'user has been deleted', token })
+     } catch (error) {
+          console.log('error: ', error);
+          return res.status(201).json({ status: 401, error: error.message })
+     }
+}
 
 module.exports = {
      UserRouteHome,
@@ -177,5 +198,7 @@ module.exports = {
      GoogleAuth,
      UserRegisteration,
      sentVerificationEmail,
-     verifyEmail
+     verifyEmail,
+     UpdateUser,
+     DeleteUser
 }
