@@ -1,15 +1,24 @@
-import React, { useState } from "react";
+import React, { Dispatch, useState } from "react";
 import "./signinpage.css";
-import { Flex, Box, FormControl, FormLabel, Input, InputGroup, HStack, InputRightElement, Stack, Button, Heading, Text, useColorModeValue, Link, RadioGroup, Radio } from "@chakra-ui/react";
+import { Flex, Box, FormControl, FormLabel, Input, InputGroup, HStack, Stack, Button, Heading, Text, useColorModeValue, Link, RadioGroup, Radio } from "@chakra-ui/react";
 import { FcGoogle, FcKey } from "react-icons/fc";
+import { GoogleAuth } from "../../../Redux/Auth/auth.actions";
+import { useDispatch } from "react-redux";
 
 const Signup = () => {
     const [showPassword, setShowPassword] = useState(false);
     const [value, setValue] = React.useState('1')
+		const dispatch:Dispatch<any> = useDispatch();
+		// const [firstname,setFirstname] = React.useState()
 
 	const handlesubmit = () => {
 
 
+	}
+	const handleGoogle = ()=>{
+		console.log("hi");
+		
+		dispatch(GoogleAuth());
 	}
 
     return (
@@ -46,31 +55,6 @@ const Signup = () => {
                                             </FormControl>
                                         </Box>
                                     </HStack>
-                                    <FormControl id="gender" isRequired >
-                                        <FormLabel>Gender</FormLabel>
-                                        <RadioGroup onChange={setValue} value={value}>
-                                            <Stack direction='row'>
-                                                <Radio value='1'>Male</Radio>
-                                                <Radio value='2'>Female</Radio>
-                                                <Radio value='3'>Others</Radio>
-                                            </Stack>
-                                        </RadioGroup>
-                                    </FormControl>
-                                    <FormControl id="email" isRequired>
-                                        <FormLabel>Email address</FormLabel>
-                                        <Input type="email" />
-                                    </FormControl>
-                                    <FormControl id="password" isRequired>
-                                        <FormLabel>Password</FormLabel>
-                                        <InputGroup>
-                                            <Input type={showPassword ? 'text' : 'password'} />
-                                        </InputGroup>
-                                    </FormControl>
-                                    <Stack spacing={10} pt={2}>
-                                        <Button loadingText="Submitting" size="lg" bg={'blue.400'} color={'white'} _hover={{ bg: 'blue.500', }} onClick={handlesubmit}>
-                                            Sign up
-                                        </Button>
-
 									<FormControl id="email" isRequired>
 										<FormLabel>Email address</FormLabel>
 										<Input type="email" />
@@ -86,7 +70,7 @@ const Signup = () => {
 											Sign up
 										</Button>
 
-										<Button loadingText="Submitting" size="lg" bg={'white.400'} color={'black'} border="1px" borderColor={"gray.300"} _hover={{ bg: 'grey.500', border: "2px solid #4299e1" }}>
+										<Button loadingText="Submitting" size="lg" bg={'white.400'} color={'black'} border="1px" borderColor={"gray.300"} _hover={{ bg: 'grey.500', border: "2px solid #4299e1" }} onClick={handleGoogle}>
 											<FcGoogle style={{ marginRight: "10px" }} /> SignIn with Google
 										</Button>
 									</Stack>
@@ -97,7 +81,7 @@ const Signup = () => {
 									</Stack>
 								</Stack>
 							</Box>
-						</Stack>
+							</Stack>
 					</Flex>
 				</div>
 			</div>
