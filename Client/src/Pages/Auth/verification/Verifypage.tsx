@@ -1,6 +1,6 @@
 
 import React from 'react'
-import { Button, Heading, Text } from '@chakra-ui/react'
+import { Box, Button, Heading, Text } from '@chakra-ui/react'
 import "./verify.modules.css"
 
 const Verifypage = () => {
@@ -12,9 +12,11 @@ const Verifypage = () => {
           <div id="mail">
             <Heading id="verifyh1">Verify Your Email Address</Heading>
             <p>Please verify the email by clicking the button below</p>
-            <Button bg={'#ff6703'} color={'white'} _hover={{ bg: 'white', color: "black", border: "2px solid #4299e1" }}>
-              Send Verification to your Email
-            </Button>
+            <Box>
+              <Button bg={'orange'} color={'white'} _hover={{ bg: '#ff6703', color: "white" }}>
+                Send Verification Email
+              </Button>
+            </Box>
             <Text color={'gray.500'} fontSize={{ base: 'sm', sm: 'md' }}>
               We're looking for amazing personality just like you! Become a part
               of our Forum team and skyrocket your way!
