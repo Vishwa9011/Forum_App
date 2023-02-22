@@ -70,7 +70,7 @@ async function UserLogin(req, res) {
                const isMatched = await bcrypt.compare(password, user.password);
                if (isMatched) {
                     const token = await UserModel.getAuthorizationToken();
-                    res.status(201).json({ status: 200, message: "Login Success", token })
+                    res.status(201).json({ status: 200, message: "Login Success", credentials: user, token })
                } else {
                     res.status(201).json({ status: 401, message: "password not matched" })
                }
