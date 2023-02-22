@@ -18,6 +18,7 @@ const UserRouteHome = async (req, res) => {
      }
 }
 
+// ** User Registeration
 async function UserRegisteration(req, res) {
      const { password, ...payload } = req.body;
      try {
@@ -31,13 +32,14 @@ async function UserRegisteration(req, res) {
 
           await user.save();
 
-          res.status(201).json({ status: 200, message: "registeration success" })
+          res.status(201).json({ status: 200, message: "registeration success", credentials: user })
      } catch (error) {
           console.log('error: ', error);
           res.send(error)
      }
 }
 
+// * Google Authentication
 async function GoogleAuth(req, res) {
      const payload = req.body;
      try {
@@ -52,13 +54,14 @@ async function GoogleAuth(req, res) {
 
           await user.save();
 
-          res.status(201).json({ status: 200, message: "GoogleAuth success", token })
+          res.status(201).json({ status: 200, message: "GoogleAuth success", credentials: user, token })
      } catch (error) {
           console.log('error: ', error);
           res.send(error)
      }
 }
 
+// * login user
 async function UserLogin(req, res) {
      const { password, email } = req.body;
      try {
@@ -80,6 +83,7 @@ async function UserLogin(req, res) {
      }
 }
 
+// * logging out the user
 async function UserLogout(req, res) {
      const { email } = req.body;
      try {
@@ -98,6 +102,7 @@ async function UserLogout(req, res) {
      }
 }
 
+// * sending the verification email to the user email
 async function sentVerificationEmail(req, res) {
      const { email, password } = req.body;
 
@@ -147,7 +152,7 @@ async function verifyEmail(req, res) {
                     if (user.email === decode.email && user.password === decode.password) {
                          user.isVerified = true;
                          const token = await UserModel.getAuthorizationToken();
-                         return res.status(201).json({ status: 200, message: 'Email has been verified', token })
+                         return res.status(201).json({ status: 200, message: 'Email has been verified', credentials: user, token })
                     } else {
                          return res.status(201).json({ status: 403, message: 'Wrong credential' })
                     }
@@ -172,7 +177,7 @@ async function UpdateUser(req, res) {
           let user = await UserModel.findById(_id);
           user = { ...user, payload };
           await user.save();
-          return res.status(201).json({ status: 200, message: 'user has been updated', token })
+          return res.status(201).json({ status: 200, message: 'user has been updated', credentials: user })
      } catch (error) {
           console.log('error: ', error);
           return res.status(201).json({ status: 401, error: error.message })
@@ -184,12 +189,28 @@ async function DeleteUser(req, res) {
      const _id = req.params.id;
      try {
           await UserModel.findByIdAndDelete(_id);
-          return res.status(201).json({ status: 200, message: 'user has been deleted', token })
+          return res.status(201).json({ status: 200, message: 'user has been deleted' })
      } catch (error) {
           console.log('error: ', error);
           return res.status(201).json({ status: 401, error: error.message })
      }
 }
+
+// * UpdatePassword
+async function UpdatePassword(req, res) {
+     const _id = req.params.id;
+     const { password } = req.body;
+     try {
+          let user = await UserModel.findById(_id);
+          user = { ...user, password };
+          await user.save();
+          return res.status(201).json({ status: 200, message: 'Password has been updated', credentials: user })
+     } catch (error) {
+          console.log('error: ', error);
+          return res.status(201).json({ status: 401, error: error.message })
+     }
+}
+
 
 module.exports = {
      UserRouteHome,
@@ -200,5 +221,6 @@ module.exports = {
      sentVerificationEmail,
      verifyEmail,
      UpdateUser,
-     DeleteUser
+     DeleteUser,
+     UpdatePassword
 }

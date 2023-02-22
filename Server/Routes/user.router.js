@@ -20,4 +20,6 @@ UserRouter.post("/update/:id", user_controller.UpdateUser)
 
 UserRouter.post("/delete/:id", user_controller.DeleteUser)
 
+UserRouter.post("/newpassword/:id", user_controller.UpdatePassword)
+
 module.exports = { UserRouter };
