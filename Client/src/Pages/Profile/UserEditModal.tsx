@@ -88,12 +88,14 @@ const UserEditModal = ({ isOpen, onClose }: Props) => {
                 />
               </FormControl>
               <FormControl id="role" isRequired>
-                <FormLabel>Role</FormLabel>
-                <Input
-                  placeholder="EX.- Full stack web developer"
+                <FormLabel>Occupation</FormLabel>
+                <Select
+                  placeholder="Select Occupation"
                   _placeholder={{ color: "gray.500" }}
-                  type="number"
-                />
+                >
+                  <option value="student">Student</option>
+                  <option value="engineer">Engineer</option>
+                </Select>
               </FormControl>
             </Flex>
             <FormControl id="language" w="49%">

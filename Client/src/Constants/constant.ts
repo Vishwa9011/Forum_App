@@ -12,8 +12,14 @@ export interface IUser {
      readonly createdAt: number
      lastLogin: number
      token: string
+     occupation:Occupation | null
+     bio: string
 }
 
+export enum Occupation{
+     STUDENT = "STUDENT",
+     ENGINEER = "ENGINEER"  
+}
 
 export enum Role {
      ADMIN = "USER",
