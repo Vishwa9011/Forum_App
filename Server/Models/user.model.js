@@ -10,8 +10,11 @@ const userSchema = mongoose.Schema({
           required: true,
           lowercase: true
      },
-     password: { type: String, required: true },
-     gender: { type: String, required: true },
+     password: {
+          type: String,
+          required: true
+     },
+     gender: { type: String },
      online: {
           type: Boolean,
           required: true,
@@ -24,6 +27,14 @@ const userSchema = mongoose.Schema({
      phoneNumber: {
           type: Number,
           default: 0,
+     },
+     occupation: {
+          type: String,
+          default: "",
+     },
+     bio: {
+          type: String,
+          default: "",
      },
      role: {
           type: String,
