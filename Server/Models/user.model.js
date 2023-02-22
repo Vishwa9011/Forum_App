@@ -4,14 +4,19 @@ require("dotenv").config();
 
 const userSchema = mongoose.Schema({
      username: { type: String, required: true },
-     email: { type: String, required: true, lowercase: true },
+     email: {
+          type: String,
+          immutable: true,
+          required: true,
+          lowercase: true
+     },
      password: { type: String, required: true },
+     gender: { type: String, required: true },
      online: {
           type: Boolean,
           required: true,
           default: false
      },
-     gender: { type: String, required: true },
      photoURL: {
           type: String,
           default: ''
@@ -19,6 +24,10 @@ const userSchema = mongoose.Schema({
      phoneNumber: {
           type: Number,
           default: 0,
+     },
+     role: {
+          type: String,
+          required: true
      },
      isVerified: {
           type: Boolean,

@@ -14,6 +14,7 @@ const UserRouteHome = async (req, res) => {
           res.send(user)
      } catch (error) {
           console.log('error: ', error);
+          res.send(error)
      }
 }
 
@@ -30,9 +31,31 @@ async function UserRegisteration(req, res) {
 
           await user.save();
 
-          res.send("User Home Page")
+          res.status(201).json({ status: 200, message: "registeration success" })
      } catch (error) {
           console.log('error: ', error);
+          res.send(error)
+     }
+}
+
+async function GoogleAuth(req, res) {
+     const payload = req.body;
+     try {
+          const CheckUser = await UserModel.findOne({ email: payload.email })
+          if (CheckUser) return res.status(400).json({ message: "User already exist" })
+
+          const user = new UserModel({ ...payload, isGoogleAuthenticated: true, online: true, isVerified: true });
+
+          const token = await jwt.sign({ email: payload.email }, process.env.SECRET_KEY);
+
+          user.token = token;
+
+          await user.save();
+
+          res.status(201).json({ status: 200, message: "GoogleAuth success", token })
+     } catch (error) {
+          console.log('error: ', error);
+          res.send(error)
      }
 }
 
@@ -53,13 +76,31 @@ async function UserLogin(req, res) {
           }
      } catch (error) {
           console.log('error: ', error);
+          res.send(error)
+     }
+}
+
+async function UserLogout(req, res) {
+     const { email } = req.body;
+     try {
+          const user = await UserModel.findOne({ email })
+          if (user) {
+               user.lastLogin = Date.now();
+               user.online = false;
+               await user.save()
+               res.status(201).json({ status: 200, message: "Logout Success" })
+          } else {
+               res.status(201).json({ status: 400, message: "user not found." })
+          }
+     } catch (error) {
+          console.log('error: ', error);
+          res.send(error)
      }
 }
 
 async function sentVerificationEmail(req, res) {
      const { email, password } = req.body;
-     // const email = "warningzone2021@gmail.com";
-     // const password = 'karan';
+
      try {
           const transporter = nodemailer.createTransport({
                service: "gmail",
@@ -91,6 +132,7 @@ async function sentVerificationEmail(req, res) {
           res.status(201).json({ status: 200, EncryptedCredential })
      } catch (error) {
           console.log('error: ', error);
+          res.send(error)
      }
 }
 
@@ -98,34 +140,41 @@ async function sentVerificationEmail(req, res) {
 async function verifyEmail(req, res) {
      const { credential } = req.body;
      try {
-          const user = await UserModel.findOne({ email });
-          if (user) {
-               jwt.verify(credential, process.env.VERIFICATION_SECRET_KEY, (err, decode) => {
-                    if (decode) {
-                         if (user.email === decode.email && user.password === decode.password) {
-                              res.status(201).json({ status: 200, message: 'Email has been verified' })
-                         } else {
-                              res.status(201).json({ status: 403, message: 'Wrong credential' })
-                         }
+          const decode = jwt.verify(credential, process.env.VERIFICATION_SECRET_KEY)
+          if (decode) {
+               const user = await UserModel.findOne({ email: decode.email });
+               if (user) {
+                    if (user.email === decode.email && user.password === decode.password) {
+                         user.isVerified = true;
+                         const token = await UserModel.getAuthorizationToken();
+                         return res.status(201).json({ status: 200, message: 'Email has been verified', token })
+                    } else {
+                         return res.status(201).json({ status: 403, message: 'Wrong credential' })
                     }
-
-                    if (err) {
-                         if (err.message === "jwt expired") {
-                              res.status(201).json({ status: 401, message: 'token has expired' })
-                         }
-                         console.log('err: ', err);
-                    }
-               })
+               } else {
+                    return res.status(201).json({ status: 400, message: "Something went wrong" })
+               }
           }
      } catch (error) {
           console.log('error: ', error);
+          if (error.message === "jwt expired") {
+               res.status(201).json({ status: 401, message: 'token has expired' })
+          }
+          res.send(error)
      }
+}
+
+// * update the user details
+async function UpdateUser() {
+
 }
 
 
 module.exports = {
      UserRouteHome,
      UserLogin,
+     UserLogout,
+     GoogleAuth,
      UserRegisteration,
      sentVerificationEmail,
      verifyEmail

@@ -1,6 +1,7 @@
 import { legacy_createStore, applyMiddleware, compose, combineReducers } from "redux";
 import thunk from "redux-thunk";
 import { TypedUseSelectorHook, useDispatch, useSelector } from "react-redux";
+import { Reducer as AuthReducer } from "./Auth/auth.reducer";
 
 declare global {
      interface Window {
@@ -13,7 +14,7 @@ const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
 
 const RootReducers = {
-
+     auth: AuthReducer
 }
 
 export const store = legacy_createStore(combineReducers(RootReducers), composeEnhancers(applyMiddleware(thunk)));
