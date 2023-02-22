@@ -16,6 +16,7 @@ import {
   Button,
   ModalContent,
   Select,
+  Textarea,
 } from "@chakra-ui/react";
 import { SmallCloseIcon } from "@chakra-ui/icons";
 
@@ -89,21 +90,18 @@ const UserEditModal = ({ isOpen, onClose }: Props) => {
               </FormControl>
               <FormControl id="role" isRequired>
                 <FormLabel>Occupation</FormLabel>
-                <Select
-                  placeholder="Select Occupation"
-                  _placeholder={{ color: "gray.500" }}
-                >
+                <Select>
+                  <option value="">Select Occupation</option>
                   <option value="student">Student</option>
                   <option value="engineer">Engineer</option>
                 </Select>
               </FormControl>
             </Flex>
-            <FormControl id="language" w="49%">
-              <FormLabel>Language</FormLabel>
-              <Input
-                placeholder="language"
+            <FormControl id="bio">
+              <FormLabel>Bio</FormLabel>
+              <Textarea
+                placeholder="Write our bio"
                 _placeholder={{ color: "gray.500" }}
-                type="language"
               />
             </FormControl>
             <Stack spacing={6} direction={["column", "row"]}>
