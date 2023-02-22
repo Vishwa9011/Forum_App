@@ -126,7 +126,7 @@ async function sentVerificationEmail(req, res) {
                from: process.env.EMAIL,
                to: email,
                subject: "sent verification mail",
-               html: Email_template("http://localhost:8080/verify", EncryptedCredential)
+               html: Email_template("http://localhost:5173/verifyemail", EncryptedCredential)
           }
 
           transporter.sendMail(mailOptions, (err, info) => {

@@ -15,11 +15,11 @@ const PostSchema = Schema({
           type: String,
      },
      likes: {
-          type: [{ type: Schema.Types.ObjectId, ref: 'likes' }],
+          type: [{ type: Schema.Types.ObjectId, ref: 'Like' }],
           default: [],
      },
      comments: {
-          type: [{ type: Schema.Types.ObjectId, ref: 'comments' }],
+          type: [{ type: Schema.Types.ObjectId, ref: 'Comment' }],
           required: true,
           default: [],
      },
@@ -76,8 +76,14 @@ const CommentSchema = Schema({
      Edited: {
           type: Boolean,
           default: false
-     }
+     },
+     Likes: [{ type: Schema.Types.ObjectId, ref: "CommentLike" }]
 })
+
+const CommentLikeSchema = Schema({
+
+})
+
 
 const LikesSchema = Schema({
      authorID: {
@@ -90,11 +96,12 @@ const LikesSchema = Schema({
           required: true,
           immutable: true,
           lowercase: true
-     }
+     },
 })
 
 const PostModel = model('Post', PostSchema);
 const LikesModel = model('Like', LikesSchema);
 const CommentModel = model('Comment', CommentSchema);
+const CommentLikeModel = model('CommentLike', CommentLikeSchema);
 
-module.exports = { PostModel, CommentModel, LikesModel };
+module.exports = { PostModel, CommentModel, LikesModel, CommentLikeModel };
