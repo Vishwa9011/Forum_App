@@ -11,10 +11,38 @@ export interface IUser {
      isGoogleAuthenticated: boolean
      readonly createdAt: number
      lastLogin: number
+     token: string
 }
 
 
 export enum Role {
      ADMIN = "USER",
      USER = "USER"
+}
+
+
+export interface UserI {
+     name: string,
+     email: string,
+     password: string,
+}
+
+export interface ProcessEnv {
+     BASE_URL: string
+     NODE_ENV: 'development' | 'production';
+}
+
+export interface LoginCred {
+     email: string,
+     password: string
+}
+
+export interface LoginRes {
+     status?: number,
+     message: string,
+     token: string
+}
+
+export interface RegisterResI {
+     data: string
 }
