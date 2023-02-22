@@ -4,6 +4,7 @@ import { auth, Provider } from '../../Configs/Firebase'
 import * as Types from "./auth.actionType"
 import axios from "axios";
 import { UserI } from "../../Constants/constant";
+import {ToastType} from "../../Custom-Hooks/Toast"
 
 
 const GoogleAuth = () => async (dispatch: Dispatch) => {
@@ -39,13 +40,30 @@ const login = (email: string, password: string) => async (dispatch: Dispatch) =>
      }
 }
 
-const signup = (userData: UserI) => async (dispatch: Dispatch) => {
+const signup = (userData: UserI,navigate:Function, Toast:Function) => async (dispatch: Dispatch) => {
      dispatch({ type: Types.AUTH_LOADING });
      try {
-          let res = await axios.post("/user/signup", userData);
-          dispatch({ type: Types.SIGNUP_SUCCESS, payload: userData });
+          let res = await axios.post("/user/register", userData);
+          dispatch({type:Types.SIGNUP_SUCCESS,payload:res.data.credentials});
+          localStorage.setItem("user",JSON.stringify(res.data.credentials));
+          Toast("Registeration Succesfull",ToastType.success);
+          navigate("/verifyemail");
      } catch (error) {
           dispatch({ type: Types.AUTH_ERROR })
+          Toast("Something went wrong",ToastType.error);
+     }
+}
+
+
+export const verifyEmail = (email: string, password: string,Toast:Function) => async (dispatch: Dispatch) => {
+     dispatch({ type: Types.AUTH_LOADING });
+     try {
+          let res = await axios.post("/user/sentverificationemail", { email, password })
+          dispatch({ type: Types.VERIFY_EMAIL_SUCCESS,payload: res.data.EncryptedCredential });
+          Toast("Verification email sent, Please Check your mail",ToastType.success)
+     } catch (err) {
+          dispatch({ type: Types.AUTH_ERROR });
+          Toast("Server Error",ToastType.error)
      }
 }
 

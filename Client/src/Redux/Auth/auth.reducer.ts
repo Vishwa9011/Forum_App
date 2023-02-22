@@ -1,4 +1,4 @@
-import { IUser } from '../../Constants/constant';
+import { IUser, Occupation } from '../../Constants/constant';
 import * as Types from './auth.actionType';
 
 const initialUserCredState = {
@@ -14,7 +14,10 @@ const initialUserCredState = {
      isGoogleAuthenticated: false,
      createdAt: 0,
      lastLogin: 0,
-     token: ''
+     token: '',
+     occupation: null, 
+     bio:''
+
 }
 
 export interface IAuthInitialState {
@@ -41,8 +44,10 @@ export const Reducer = (state = initialState, { type, payload }: any) => {
           case Types.SIGNIN_SUCCESS:
                return ({ ...state, loading: false, error: '', userCredential: payload, authenticated: true })
           case Types.SIGNUP_SUCCESS:
-               return ({ ...state, loading: false, error: '', userCredential: payload, authenticated: true })
+               return ({ ...state, loading: false, error: '', userCredential: payload, authenticated: true });
           case Types.AUTH_OPERATION_SUCCESS:
+               return ({ ...state, loading: false, error: '', })
+          case Types.VERIFY_EMAIL_SUCCESS:
                return ({ ...state, loading: false, error: '', })
           case Types.AUTH_USER_PROFILE_PHOTO_UPDATE:
                return ({ ...state, loading: false, error: '', userCredential: { ...state.userCredential, photoURL: payload } })

@@ -17,14 +17,18 @@ import {
   RadioGroup,
   Radio,
   Container,
+  useToast,
 } from "@chakra-ui/react";
 import { FcGoogle, FcKey } from "react-icons/fc";
 import { GoogleAuth, signup } from "../../../Redux/Auth/auth.actions";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { UserI } from "../../../Constants/constant";
+import UseToastMsg from "../../../Custom-Hooks/Toast";
+import { RootState } from "../../../Redux/store";
+import { useNavigate } from "react-router-dom";
 
 const initialUserData: UserI = {
-  name: "",
+  username: "",
   email: "",
   password: "",
 };
@@ -33,17 +37,24 @@ const Signup = () => {
   const [showPassword, setShowPassword] = useState(false);
   const dispatch: Dispatch<any> = useDispatch();
   const [userData, setUserData] = useState(initialUserData);
+  const { Toast, Type } = UseToastMsg();
+  const { loading } = useSelector((store: RootState) => store.auth);
+  const navigate = useNavigate();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     let val = e.target.value;
     setUserData({ ...userData, [e.target.name]: val });
   };
 
-  const handlesubmit = () => {
-    dispatch(signup(userData));
-  };
+  const { username, email, password } = userData;
 
-  const { name, email, password } = userData;
+  const handlesubmit = () => {
+    if (!username || !email || !password) {
+      return Toast("Please fill all required feilds.", Type.info);
+    }
+    dispatch(signup(userData, navigate, Toast));
+    setUserData(initialUserData);
+  };
 
   return (
     <Container maxW="5xl">
@@ -93,12 +104,12 @@ const Signup = () => {
                 width="100%"
               >
                 <Stack spacing={4}>
-                  <FormControl id="firstName" isRequired>
+                  <FormControl id="name" isRequired>
                     <FormLabel>Name</FormLabel>
                     <Input
                       type="text"
-                      name="name"
-                      value={name}
+                      name="username"
+                      value={username}
                       onChange={handleChange}
                     />
                   </FormControl>
@@ -125,7 +136,8 @@ const Signup = () => {
                   </FormControl>
                   <Stack spacing={10} pt={2}>
                     <Button
-                      loadingText="Submitting"
+                      isLoading={loading}
+                      loadingText="Registering"
                       size="lg"
                       bg={"blue.400"}
                       color={"white"}
