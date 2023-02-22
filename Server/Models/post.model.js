@@ -2,53 +2,43 @@ const mongoose = require("mongoose");
 const jwt = require("jsonwebtoken");
 require("dotenv").config();
 
-const userSchema = mongoose.Schema({
-     username: { type: String, required: true },
-     email: {
-          type: String,
-          immutable: true,
-          required: true,
-          lowercase: true
-     },
-     password: {
+const PostSchema = mongoose.Schema({
+     title: {
           type: String,
           required: true
      },
-     gender: { type: String },
-     online: {
+     description: {
           type: Boolean,
           required: true,
           default: false
      },
-     photoURL: {
+     content: {
           type: String,
           default: ''
      },
-     phoneNumber: {
-          type: Number,
-          default: 0,
+     likes: {
+          type: [String],
+          default: [],
      },
-     occupation: {
-          type: String,
-          default: "",
-     },
-     bio: {
-          type: String,
-          default: "",
-     },
-     role: {
-          type: String,
-          required: true
-     },
-     isVerified: {
-          type: Boolean,
+     comments: {
+          type: [String],
           required: true,
-          default: false
+          default: [],
      },
      isGoogleAuthenticated: {
           type: Boolean,
           required: true,
           default: false
+     },
+     ownerEmail: {
+          type: String,
+          immutable: true,
+          required: true,
+          lowercase: true
+     },
+     ownerID: {
+          type: String,
+          required: true
      },
      createdAt: {
           type: Number,
@@ -62,7 +52,7 @@ const userSchema = mongoose.Schema({
      token: { type: String },
 })
 
-userSchema.methods.getAuthorizationToken = async function () {
+PostSchema.methods.getAuthorizationToken = async function () {
      const token = await jwt.sign({ email: this.email }, process.env.SECRET_KEY);
      this.online = true;
      this.token = token;
@@ -70,6 +60,6 @@ userSchema.methods.getAuthorizationToken = async function () {
      return token;
 }
 
-const UserModel = mongoose.model('user', userSchema);
+const PostModel = mongoose.model('Post', PostSchema);
 
-module.exports = { UserModel };
+module.exports = { PostModel };
