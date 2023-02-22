@@ -44,7 +44,10 @@ async function GoogleAuth(req, res) {
      const payload = req.body;
      try {
           const CheckUser = await UserModel.findOne({ email: payload.email })
-          if (CheckUser) return res.status(400).json({ message: "User already exist" })
+          if (CheckUser) {
+               const token = await CheckUser.getAuthorizationToken();
+               return res.status(201).json({ status: 200, message: "login success", credentials: user, token })
+          }
 
           const user = new UserModel({ ...payload, isGoogleAuthenticated: true, online: true, isVerified: true });
 
@@ -123,7 +126,7 @@ async function sentVerificationEmail(req, res) {
                from: process.env.EMAIL,
                to: email,
                subject: "sent verification mail",
-               html: Email_template("http://localhost:8080/verify", EncryptedCredential)
+               html: Email_template("http://localhost:5173/verifyemail", EncryptedCredential)
           }
 
           transporter.sendMail(mailOptions, (err, info) => {
