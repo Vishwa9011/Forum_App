@@ -1,10 +1,12 @@
 export interface IUser {
+     _id: string
      username: string
      readonly email: string
      password: string
      gender: string
      online: boolean
      photoURL: string
+     bio: string
      phoneNumber: number
      isVerified: boolean
      role: Role | null
@@ -39,8 +41,7 @@ export interface ProcessEnv {
 }
 
 export interface LoginCred {
-     email: string,
-     password: string
+
 }
 
 export interface LoginRes {
@@ -51,4 +52,41 @@ export interface LoginRes {
 
 export interface RegisterResI {
      data: string
+}
+
+export interface IPost {
+     _id: string
+     title: string
+     description: string
+     content: string
+     likes: ILikes[] | []
+     comments: IComment[] | []
+     author: IUser;
+     authorID: string
+     createdAt: number
+     updateAt: number
+     edited: boolean
+     RootComments: IComment[] | []
+     Replies: IComment[] | []
+}
+
+
+export interface IComment {
+     _id: string
+     message: string
+     postID: string
+     author: IUser
+     authorID: string
+     createdAt: number
+     parent?: string
+     parentID?: string
+     child: IComment[] | []
+     likes: ILikes[] | []
+     edited: boolean
+}
+
+export interface ILikes {
+     _id: string
+     author: string
+     authorID: string
 }

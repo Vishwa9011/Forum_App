@@ -2,6 +2,7 @@ import { IUser, Occupation } from '../../Constants/constant';
 import * as Types from './auth.actionType';
 
 const initialUserCredState = {
+     _id: '',
      username: "",
      email: "",
      password: "",

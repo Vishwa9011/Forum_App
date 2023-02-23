@@ -1,9 +1,35 @@
 import React, { useState } from "react";
 import "./signinpage.css";
+import { LoginCred } from "../../../Constants/constant";
+import { login } from "../../../Redux/Auth/auth.actions";
+import { Dispatch } from "redux";
+import { useDispatch } from "react-redux";
 import { Flex, Box, FormControl, FormLabel, Input, InputGroup, HStack, InputRightElement, Stack, Button, Heading, Checkbox, Text, useColorModeValue, Link, } from "@chakra-ui/react";
 import { FcSmartphoneTablet, FcGoogle } from "react-icons/fc";
-const Login = () => {
 
+
+const initialUserData: LoginCred = {
+	email: "",
+	password: ""
+};
+const Login = () => {
+	const [userData,setUserData] = useState(initialUserData);
+	const dispatch: Dispatch<any> = useDispatch();
+	const handleChange = (e: React.ChangeEvent<HTMLInputElement>)=>{
+		let val = e.target.value;
+		setUserData({...userData,[e.target.name]:val});
+
+	}
+	const {email,password} = userData;
+
+	const handleSubmit = ()=>{
+		if(!email || !password){
+			return alert("Please fill the required")
+		}
+		dispatch(login(email,password));
+		setUserData(initialUserData);
+		console.log(userData);
+	}
 	return (
 		<>
 			<div id="main">
@@ -23,18 +49,18 @@ const Login = () => {
 								<Stack spacing={4}>
 									<FormControl id="email">
 										<FormLabel>Email address</FormLabel>
-										<Input type="email" />
+										<Input type="email" name="email" value={email} onChange={handleChange}/>
 									</FormControl>
 									<FormControl id="password">
 										<FormLabel>Password</FormLabel>
-										<Input type="password" />
+										<Input type="password" name="password" value={password} onChange={handleChange}/>
 									</FormControl>
 									<Stack spacing={10}>
 										<Stack direction={{ base: 'column', sm: 'row' }} align={'start'} justify={'space-between'}>
 											<Checkbox>Remember me</Checkbox>
 											<Link color={'blue.400'}>Forgot password?</Link>
 										</Stack>
-										<Button bg={'blue.400'} color={'white'} _hover={{ bg: 'blue.500', }}>
+										<Button bg={'blue.400'} color={'white'} _hover={{ bg: 'blue.500', }} onClick={handleSubmit}>
 											Sign in
 										</Button>
 										<Button loadingText="Submitting" size="lg" bg={'white.400'} color={'black'} border="1px" borderColor={"gray.300"} _hover={{ bg: 'grey.500', border: "2px solid #4299e1" }}>
