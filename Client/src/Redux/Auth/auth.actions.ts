@@ -88,8 +88,9 @@ export const verifyemail = (credential: string,Toast:Function,navigate:Function)
           
           Toast(res.data.message,ToastType.info);
           if(res.data.status==401 || res.data.status==403 || res.data.status==400){
+               console.log(credential);
                dispatch({ type: Types.VERIFY_EMAIL_SUCCESS,payload: {message:res.data.message}});
-               navigate("/signup");
+               // navigate("/signup");
           } 
           else{
                dispatch({ type: Types.VERIFY_EMAIL_SUCCESS,payload: {user : res.data.credentials, token : res.data.token}});
