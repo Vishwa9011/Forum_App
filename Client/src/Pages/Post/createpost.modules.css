@@ -1,92 +1,34 @@
-#postmain{
-    width: 95%;
-    margin: auto;
-    margin-top: 100px;
-    /* border: 1px solid black; */
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 500px;
-    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
-    border-radius: 10px;
-}
-#filepost{
-    width: 100%;
-    /* border: 1px solid rgb(211, 31, 31); */
-    height: 100%;
-}
-#descriptionpost{
-    width: 100%;
-    /* border: 1px solid rgb(179, 43, 43); */
-    height: 100%;
-    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
-    border-top-right-radius: 10px;
-    border-bottom-right-radius: 10px;
-}
-
-.inputfile {
-	width: 0.1px;
-	height: 0.1px;
-	opacity: 0;
-	overflow: hidden;
-	position: absolute;
-	z-index: -1;
-}
-.inputfile + label {
-    font-size: 1.25em;
-    font-weight: 700;
-    color: white;
-    background-color: #fd6805;
-    display: inline-block;
-}
-
-.inputfile:focus + label,
-.inputfile + label:hover {
-    background-color: rgb(241, 241, 241);
-    color: black;
-}
-
-.inputfile + label {
-	cursor: pointer; /* "hand" cursor */
-}
-.inputfile:focus + label {
-	outline: 1px dotted #fd6805;
-	outline: -webkit-focus-ring-color auto 5px;
-}
-#labelup{
-    width: 25%;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 5px;
-    border-radius: 10px;
-}
-#postimg{
-    padding-top: 20px;
-    width: 90%;
-    margin: auto;
-    height: 90%;
-
-}
-#postimg>img{
-    border-radius: 10px;
-}
-#decdiv1{
-    width: 80%;
-    margin: auto;
-    padding-top: 20px;
-}
-/* #decdiv2{
-    height: 100%;
-    border: 1px solid black;
-} */
-
-#w3review{
-    row-gap: 4;
-    column-gap: 50;
-}
-#textarea{
-    border: 1px solid rgb(184, 184, 184);
-    padding: 10px;
+.image-input {
+    cursor: pointer;
+    position: relative;
     border-radius: 5px;
+    background: #025bee;
+    border: 1px solid #aaa;
+}
+
+.image-input-label {
+    top: 50%;
+    left: 50%;
+    width: 100%;
+    color: white;
+    font-weight: 600;
+    cursor: pointer;
+    position: absolute;
+    letter-spacing: 1px;
+    transform: translate(-50%, -50%);
+}
+
+
+.create-post-image {
+    width: 40px;
+    min-width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    overflow: hidden;
+    cursor: pointer;
+}
+
+.create-post-image>img {
+    object-fit: cover;
+    object-position: center;
 }

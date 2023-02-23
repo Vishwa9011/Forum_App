@@ -13,11 +13,10 @@ function CommentsList({ comments, replies }: Props) {
      return (
           <Box>
                <Box>
-                    {comments.map((comment) =>
+                    {comments.map((comment) => (
                          <Comment key={comment._id} comment={comment} replies={replies} />
-                    )}
+                    ))}
                </Box>
-
           </Box>
      )
 

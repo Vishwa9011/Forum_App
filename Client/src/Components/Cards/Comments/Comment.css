@@ -126,11 +126,15 @@
      gap: .5em;
      padding: .25em;
      display: flex;
-     font-size: var(--primary-font);
      color: var(--primary-text-color);
 }
 
-.comment-like {}
+.comment-like-reply button {
+     font-size: clamp(.7em, 2.5 + 1rem, .8em);
+     font-size: .8rem;
+     font-weight: 600;
+     color: #575757;
+}
 
 :is(.comment-like>p:first-child, .comment-reply>p:first-child) {
      padding: 0 .25em;

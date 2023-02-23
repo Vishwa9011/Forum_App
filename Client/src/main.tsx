@@ -14,7 +14,7 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <Router>
     <ChakraProvider>
       <Provider store={store}>
-      <App />
+        <App />
       </Provider>
     </ChakraProvider>
   </Router>

@@ -23,7 +23,7 @@ export const GoogleAuth = (navigate: Function, Toast: Function) => async (dispat
 
           const res = await axios.post("/user/googleauth", userDetail)
 
-          sessionStorage.setItem("user", JSON.stringify(res.data));
+          sessionStorage.setItem("user", JSON.stringify(res.data.credentials));
 
           Toast("Login Success", ToastType.success);
 
