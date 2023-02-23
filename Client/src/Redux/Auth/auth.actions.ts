@@ -54,7 +54,7 @@ export const signup = (userData: UserI, navigate: Function, Toast: Function) => 
           navigate("/sendverifyemail");
      } catch (error: any) {
           dispatch({ type: Types.AUTH_ERROR })
-          Toast(error.response.data.message, ToastType.error);
+          Toast(error.response?.data?.message || "Server Error", ToastType.error);
      }
 }
 
@@ -69,7 +69,7 @@ export const logout = (email:string,Toast:Function,navigate:Function) => async (
           navigate("/");
      } catch (error:any) {
           dispatch({ type: Types.AUTH_ERROR })
-          Toast(error.response.data.message,ToastType.error);
+          Toast(error.response.data.message || "Server Error",ToastType.error);
      }
 }
 
@@ -95,7 +95,7 @@ export const verifyemail = (credential: string, Toast: Function, navigate: Funct
           if(res.data.status==401 || res.data.status==403 || res.data.status==400){
                console.log(credential);
                dispatch({ type: Types.VERIFY_EMAIL_SUCCESS,payload: {message:res.data.message}});
-               // navigate("/signup");
+               navigate("/login");
           } 
           else{
                dispatch({ type: Types.VERIFY_EMAIL_SUCCESS,payload: {user : res.data.credentials, token : res.data.token}});

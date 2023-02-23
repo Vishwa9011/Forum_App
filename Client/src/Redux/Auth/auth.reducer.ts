@@ -30,18 +30,13 @@ export interface IAuthInitialState {
 
 
 var user = sessionStorage.getItem("user");
-
-if (!user) {
-     sessionStorage.setItem("user", JSON.stringify({}));
-}
-
-const data = JSON.parse(sessionStorage.getItem("user"))
+let  data = user ? JSON.parse(user) : null
 
 const initialState: IAuthInitialState = {
      loading: false,
      error: '',
      authenticated: false,
-     userCredential: data ? data : initialUserCredState
+     userCredential: data ? data : initialUserCredState 
 }
 
 export const Reducer = (state = initialState, { type, payload }: any) => {

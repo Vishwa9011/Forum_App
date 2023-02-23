@@ -13,7 +13,6 @@ import {
   Heading,
   Text,
   useColorModeValue,
-  Link,
   RadioGroup,
   Radio,
   Container,
@@ -24,7 +23,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { UserI } from "../../../Constants/constant";
 import UseToastMsg from "../../../Custom-Hooks/Toast";
 import { RootState } from "../../../Redux/store";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const initialUserData: UserI = {
   username: "",
@@ -61,16 +60,16 @@ const Signup = () => {
 
   return (
     <>
-      <Box maxH={"100vh"}>
+      <Flex h={"100vh"} alignItems="center">
         <Container maxW="5xl">
-          <Box id="main" shadow={"2xl"}>
-            <div id="left">
+          <Flex shadow={"2xl"}>
+            <Box id="left" display={{ base: "none", md: "flex" }}>
               <img
                 id="img"
                 src="https://cdn.pixabay.com/photo/2022/12/10/13/46/attack-7647136_960_720.png"
                 alt=""
               />
-            </div>
+            </Box>
             <div id="right">
               <Flex
                 maxH={"100vh"}
@@ -169,7 +168,10 @@ const Signup = () => {
                       </Stack>
                       <Stack>
                         <Text align={"center"}>
-                          Already a user? <Link color={"blue.400"}>Login</Link>
+                          Already a user?{" "}
+                          <Link to="/login" style={{ color: "blue" }}>
+                            Login
+                          </Link>
                         </Text>
                       </Stack>
                     </Stack>
@@ -177,9 +179,9 @@ const Signup = () => {
                 </Stack>
               </Flex>
             </div>
-          </Box>
+          </Flex>
         </Container>
-      </Box>
+      </Flex>
     </>
   );
 };
