@@ -164,11 +164,10 @@ async function verifyEmail(req, res) {
                }
           }
      } catch (error) {
-          console.log('error: ', error);
           if (error.message === "jwt expired") {
-               res.status(201).json({ status: 401, message: 'token has expired' })
+               return res.status(201).json({ status: 401, message: 'token has expired' })
           }
-          res.send(error)
+          res.send(error);
      }
 }
 

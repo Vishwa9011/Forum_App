@@ -1,14 +1,10 @@
-
-import React from 'react'
-import Login from './Pages/Auth/Login/Login';
-import Signup from './Pages/Auth/Login/Signup';
-
+import React from "react";
+import Application from "./Application";
 
 function App() {
   return (
     <>
-    <Signup/>
-    <Login/>
+      <Application />
     </>
   );
 }

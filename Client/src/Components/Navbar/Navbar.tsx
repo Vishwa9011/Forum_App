@@ -3,7 +3,6 @@ import {
   Box,
   Flex,
   HStack,
-  Link,
   useDisclosure,
   useColorModeValue,
   Stack,
@@ -12,6 +11,7 @@ import {
   InputRightElement,
   InputGroup,
   IconButton,
+  Text,
 } from "@chakra-ui/react";
 import {
   HamburgerIcon,
@@ -23,19 +23,23 @@ import {
 import { FaHome } from "react-icons/fa";
 import UserProfile from "./UserProfile";
 import SearchBar from "./SearchBar";
+import { Link } from "react-router-dom";
 
 const Links = [
   {
     name: "Home",
     icon: <FaHome />,
+    href: "/",
   },
   {
     name: "Message",
     icon: <ChatIcon />,
+    href: "/message",
   },
   {
     name: "Notification",
     icon: <BellIcon />,
+    href: "/notifications",
   },
 ];
 
@@ -54,7 +58,13 @@ export default function Navbar() {
             onClick={isOpen ? onClose : onOpen}
           />
           <HStack spacing={8} alignItems={"center"}>
-            <Box fontSize={"xl"} fontWeight="bold" cursor={"pointer"}>
+            <Box
+              as={Link}
+              to="/"
+              fontSize={"xl"}
+              fontWeight="bold"
+              cursor={"pointer"}
+            >
               Forum
             </Box>
             <HStack
@@ -64,7 +74,7 @@ export default function Navbar() {
             >
               {Links.map((link) => (
                 <NavLink key={link.name}>
-                  <Flex alignItems={"center"} gap="2">
+                  <Flex as={Link} to={link.href} alignItems={"center"} gap="2">
                     {link.icon}
                     {link.name}
                   </Flex>
@@ -91,7 +101,7 @@ export default function Navbar() {
             <Stack as={"nav"} spacing={4}>
               {Links.map((link) => (
                 <NavLink key={link.name}>
-                  <Flex alignItems={"center"} gap="4">
+                  <Flex as={Link} to={link.href} alignItems={"center"} gap="4">
                     {link.icon}
                     {link.name}
                   </Flex>
@@ -107,7 +117,7 @@ export default function Navbar() {
 }
 
 const NavLink = ({ children }: { children: ReactNode }) => (
-  <Link
+  <Text
     px={2}
     py={1}
     rounded={"md"}
@@ -115,8 +125,8 @@ const NavLink = ({ children }: { children: ReactNode }) => (
       textDecoration: "none",
       bg: useColorModeValue("gray.200", "gray.700"),
     }}
-    href={"#"}
+    cursor="pointer"
   >
     <Flex alignItems={"center"}>{children}</Flex>
-  </Link>
+  </Text>
 );
