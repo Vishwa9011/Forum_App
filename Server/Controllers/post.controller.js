@@ -1,4 +1,4 @@
-const { PostModel } = require("../Models/post.model");
+const { PostModel, CommentModel } = require("../Models/post.model");
 
 async function PostRouterHome(req, res) {
      try {
@@ -12,7 +12,16 @@ async function PostRouterHome(req, res) {
 
 async function AllPost(req, res) {
      try {
-          const posts = await PostModel.find();
+          const posts = await PostModel.find()
+               .populate([
+                    { path: "author", model: "user" },
+                    {
+                         path: "comments", model: "Comment",
+                         populate: {
+                              path: "author",
+                              model: "user"
+                         }
+                    }])
           res.status(200).json({ status: 200, posts, message: "all post has been sent." })
      } catch (error) {
           console.log('error: ', error);
@@ -70,17 +79,95 @@ async function UpdatePost(req, res) {
 
 async function DeletePost(req, res) {
      const id = req.params.id;
-     const payload = req.body
      try {
-          let post = PostModel.findById(id);
-          post = { ...post, ...payload };
-          await post.save()
-          res.status(201).json({ status: 200, message: "Post has been updated.", post });
+          await PostModel.findByIdAndUpdate(id);
+          res.status(201).json({ status: 200, message: "Post has been deleted." });
      } catch (error) {
           console.log('error: ', error);
           res.send(error)
      }
 }
+
+
+async function SinglePostComment(req, res) {
+     const id = req.params.id;
+     console.log('id: ', id);
+     try {
+          const postComment = await CommentModel.find({ postID: id }).sort({ createdAt: -1 }).populate('author');
+          res.status(200).json({ status: 200, message: "post comment has been sent.", postComment })
+     } catch (error) {
+          console.log('error: ', error);
+          res.send(error);
+     }
+}
+
+async function CreateComment(req, res) {
+     const payload = req.body;
+     try {
+          const comment = new CommentModel(payload);
+          await comment.save();
+
+          let post = await PostModel.findById(payload.postID);
+          const postComment = post.comments;
+          postComment.push(comment._id);
+          await post.save()
+
+          res.status(201).json({ status: 200, message: "comment has been created.", comment })
+     } catch (error) {
+          console.log('error: ', error);
+          res.send(error)
+     }
+}
+
+async function CreateCommentReply(req, res) {
+     const payload = req.body;
+     try {
+          var comment = new CommentModel(payload);
+          await comment.save();
+
+          var parentComment = await CommentModel.findById(payload.parentID);
+          parentComment = { ...parentComment, child: [...parentComment.child, comment._id] }
+          await parentComment.save()
+
+          var post = await PostModel.findById(payload.postID);
+          post = { ...post, comments: [...post.comments, comment._id] }
+          await post.save()
+
+          res.status(201).json({ status: 200, message: "comment has been created.", comment })
+     } catch (error) {
+          console.log('error: ', error);
+          res.send(error)
+     }
+}
+
+
+async function UpdateComment(req, res) {
+     const id = req.params.id;
+     const { message } = req.body;
+     try {
+          let comment = CommentModel.findById(id);
+          comment = { ...comment, message, edited: true };
+          await comment.save()
+          res.status(201).json({ status: 200, message: "Comment has been updated.", });
+     } catch (error) {
+          console.log('error: ', error);
+          res.send(error)
+     }
+}
+
+async function DeleteComment(req, res) {
+     const id = req.params.id;
+     try {
+          await CommentModel.findByIdAndDelete(id);
+          res.status(201).json({ status: 200, message: "Comment has been deleted." });
+     } catch (error) {
+          console.log('error: ', error);
+          res.send(error)
+     }
+}
+
+
+
 
 
 module.exports = {
@@ -90,5 +177,10 @@ module.exports = {
      SingleUserAllPost,
      CreatePost,
      UpdatePost,
-     DeletePost
+     DeletePost,
+     CreateComment,
+     CreateCommentReply,
+     SinglePostComment,
+     UpdateComment,
+     DeleteComment
 }

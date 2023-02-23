@@ -14,23 +14,19 @@ const PostSchema = Schema({
      content: {
           type: String,
      },
-     likes: {
-          type: [{ type: Schema.Types.ObjectId, ref: 'Like' }],
-          default: [],
-     },
-     comments: {
-          type: [{ type: Schema.Types.ObjectId, ref: 'Comment' }],
+     likes: [
+          { type: Schema.Types.ObjectId, ref: 'Like', default: [] }
+     ],
+     comments: [
+          { type: Schema.Types.ObjectId, ref: 'Comment', default: [] }
+     ],
+     author: {
+          type: Schema.Types.ObjectId,
           required: true,
-          default: [],
-     },
-     authorEmail: {
-          type: String,
-          immutable: true,
-          required: true,
-          lowercase: true
+          immutable: true
      },
      authorID: {
-          type: Schema.Types.ObjectId,
+          type: String,
           required: true,
           immutable: true
      },
@@ -43,7 +39,7 @@ const PostSchema = Schema({
           type: Number,
           default: () => Date.now()
      },
-     Edited: {
+     edited: {
           type: Boolean,
           default: false
      }
@@ -51,21 +47,25 @@ const PostSchema = Schema({
 
 
 const CommentSchema = Schema({
+     message: {
+          type: String,
+          required: true
+     },
      postID: {
           type: Schema.Types.ObjectId,
           required: true,
           immutable: true
      },
-     authorID: {
+     author: {
           type: Schema.Types.ObjectId,
-          required: true,
+          ref: "user",
+          // required: true,
           immutable: true
      },
-     authorEmail: {
+     authorID: {
           type: String,
-          required: true,
-          immutable: true,
-          lowercase: true
+          // required: true,
+          immutable: true
      },
      createdAt: {
           type: Number,
@@ -73,30 +73,58 @@ const CommentSchema = Schema({
           immutable: true,
           default: () => Date.now()
      },
-     Edited: {
+
+     parent: {
+          type: Schema.Types.ObjectId,
+          immutable: true,
+     },
+
+     parentID: {
+          type: String,
+          immutable: true,
+          default: null
+     },
+
+     child: [
+          { type: Schema.Types.ObjectId, ref: 'Comment', default: [] }
+     ],
+
+     edited: {
           type: Boolean,
           default: false
      },
-     Likes: [{ type: Schema.Types.ObjectId, ref: "CommentLike" }]
+
+     likes: [
+          { type: Schema.Types.ObjectId, ref: 'CommentLike', default: [] }
+     ]
+
 })
 
 const CommentLikeSchema = Schema({
-
-})
-
-
-const LikesSchema = Schema({
-     authorID: {
+     author: {
           type: Schema.Types.ObjectId,
           required: true,
           immutable: true
      },
-     authorEmail: {
+     authorID: {
           type: String,
           required: true,
-          immutable: true,
-          lowercase: true
+          immutable: true
+     }
+})
+
+
+const LikesSchema = Schema({
+     author: {
+          type: Schema.Types.ObjectId,
+          required: true,
+          immutable: true
      },
+     authorID: {
+          type: String,
+          required: true,
+          immutable: true
+     }
 })
 
 const PostModel = model('Post', PostSchema);
