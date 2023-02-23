@@ -12,6 +12,7 @@ import {
   StackDivider,
   Text,
 } from "@chakra-ui/react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 import { Link, useNavigate } from "react-router-dom";
@@ -21,9 +22,10 @@ import { logout } from "../../Redux/Auth/auth.actions";
 import { RootState } from "../../Redux/store";
 
 function UserCard() {
-
   const dispatch: Dispatch<any> = useDispatch();
-  const { userCredential } = useSelector((store: RootState) => store.auth);
+  const { userCredential } = useSelector((store: RootState) => ({
+    ...store.auth,
+  }));
   const { Toast, Type } = UseToastMsg();
   const navigate = useNavigate();
 
@@ -39,7 +41,11 @@ function UserCard() {
       <CardHeader>
         <Flex gap={"4"}>
           <Flex flex="1" gap="4" alignItems="center" flexWrap="wrap">
-            <Avatar bg={"red.500"} name="Ashok Kumar" src="#" />
+            <Avatar
+              bg={"red.500"}
+              name={userCredential.username}
+              src={userCredential.photoURL}
+            />
 
             <Box>
               <Heading size="sm">{userCredential.username}</Heading>
