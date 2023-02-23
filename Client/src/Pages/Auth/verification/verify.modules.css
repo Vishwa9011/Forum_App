@@ -1,5 +1,5 @@
-#main_verify{
-    width: 88%;
+#main_verify {
+
     margin: auto;
     margin-bottom: 20px;
     padding-bottom: 30px;
@@ -10,11 +10,12 @@
     /* margin: 10px; */
 }
 
-#img1verify{
+#img1verify {
     width: 20%;
     margin: auto;
 }
-#mail{
+
+#mail {
     width: 40%;
     margin: auto;
     display: grid;

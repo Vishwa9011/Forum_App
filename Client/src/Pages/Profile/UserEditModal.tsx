@@ -15,6 +15,8 @@ import {
   ModalOverlay,
   Button,
   ModalContent,
+  Select,
+  Textarea,
 } from "@chakra-ui/react";
 import { SmallCloseIcon } from "@chakra-ui/icons";
 
@@ -25,27 +27,21 @@ type Props = {
 
 const UserEditModal = ({ isOpen, onClose }: Props) => {
   return (
-    <Modal isOpen={isOpen} onClose={onClose}>
+    <Modal isOpen={isOpen} onClose={onClose} size="4xl">
       <ModalOverlay />
-      <ModalContent>
-        <Flex
-          align={"center"}
-          justify={"center"}
-          bg={useColorModeValue("gray.50", "gray.800")}
-        >
+      <ModalContent bg={useColorModeValue("gray.50", "gray.800")}>
+        <Flex align={"center"} justify={"left"} borderRadius={"5px"}>
           <Stack
+            w="full"
             spacing={4}
-            w={"full"}
-            maxW={"md"}
             bg={useColorModeValue("white", "gray.700")}
             rounded={"xl"}
-            boxShadow={"lg"}
             p={6}
           >
             <Heading lineHeight={1.1} fontSize={{ base: "xl", sm: "2xl" }}>
               User Profile Edit
             </Heading>
-            <FormControl id="userName">
+            <FormControl id="userName" w="min-content">
               <FormLabel>User Icon</FormLabel>
               <Stack direction={["column", "row"]} spacing={6}>
                 <Center>
@@ -66,31 +62,59 @@ const UserEditModal = ({ isOpen, onClose }: Props) => {
                 </Center>
               </Stack>
             </FormControl>
-            <FormControl id="userName">
-              <FormLabel>User name</FormLabel>
-              <Input
-                placeholder="UserName"
+            <Flex gap="20px">
+              <FormControl width={"100%"} id="userName">
+                <FormLabel>User Name</FormLabel>
+                <Input
+                  placeholder="UserName"
+                  _placeholder={{ color: "gray.500" }}
+                  type="text"
+                />
+              </FormControl>
+              <FormControl width={"100%"} id="gender">
+                <FormLabel>Gender</FormLabel>
+                <Select>
+                  <option value="male">Male</option>
+                  <option value="female">Female</option>
+                </Select>
+              </FormControl>
+            </Flex>
+            <Flex gap="20px">
+              <FormControl id="mobile" isRequired>
+                <FormLabel>Mobile Number</FormLabel>
+                <Input
+                  placeholder="+91 9999999999"
+                  _placeholder={{ color: "gray.500" }}
+                  type="number"
+                />
+              </FormControl>
+              <FormControl id="role" isRequired>
+                <FormLabel>Occupation</FormLabel>
+                <Select>
+                  <option value="">Select Occupation</option>
+                  <option value="student">Student</option>
+                  <option value="engineer">Engineer</option>
+                </Select>
+              </FormControl>
+            </Flex>
+            <FormControl id="bio">
+              <FormLabel>Bio</FormLabel>
+              <Textarea
+                placeholder="Write our bio"
                 _placeholder={{ color: "gray.500" }}
-                type="text"
-              />
-            </FormControl>
-            <FormControl id="mobile" isRequired>
-              <FormLabel>Mobile Number</FormLabel>
-              <Input
-                placeholder="+91 9999999999"
-                _placeholder={{ color: "gray.500" }}
-                type="mobile"
-              />
-            </FormControl>
-            <FormControl id="language">
-              <FormLabel>Language</FormLabel>
-              <Input
-                placeholder="language"
-                _placeholder={{ color: "gray.500" }}
-                type="language"
               />
             </FormControl>
             <Stack spacing={6} direction={["column", "row"]}>
+              <Button
+                bg={"blue.400"}
+                color={"white"}
+                w="full"
+                _hover={{
+                  bg: "blue.500",
+                }}
+              >
+                Save
+              </Button>
               <Button
                 bg={"red.400"}
                 color={"white"}
@@ -101,16 +125,6 @@ const UserEditModal = ({ isOpen, onClose }: Props) => {
                 onClick={onClose}
               >
                 Cancel
-              </Button>
-              <Button
-                bg={"blue.400"}
-                color={"white"}
-                w="full"
-                _hover={{
-                  bg: "blue.500",
-                }}
-              >
-                Submit
               </Button>
             </Stack>
           </Stack>

@@ -5,6 +5,7 @@ const cookieParser = require("cookie-parser");
 const { connection } = require("./Configs/db");
 const { PostRouter } = require("./Routes/post.routes");
 const { UserRouter } = require("./Routes/user.router");
+const cors = require("cors");
 
 const app = express();
 
@@ -14,6 +15,8 @@ app.use(cookieParser())
 app.use(cors())
 
 app.use(express.json());
+
+app.use(cors());
 
 app.use("/user", UserRouter)
 
