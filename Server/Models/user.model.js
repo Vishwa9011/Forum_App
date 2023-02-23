@@ -3,7 +3,10 @@ const jwt = require("jsonwebtoken");
 require("dotenv").config();
 
 const userSchema = mongoose.Schema({
-     username: { type: String, required: true },
+     username: {
+          type: String,
+          required: true
+     },
      email: {
           type: String,
           immutable: true,
@@ -14,7 +17,9 @@ const userSchema = mongoose.Schema({
           type: String,
           required: true
      },
-     gender: { type: String },
+     gender: {
+          type: String
+     },
      online: {
           type: Boolean,
           required: true,
@@ -59,11 +64,13 @@ const userSchema = mongoose.Schema({
           type: Number,
           default: () => Date.now()
      },
-     token: { type: String },
+     token: {
+          type: String
+     },
 })
 
 userSchema.methods.getAuthorizationToken = async function () {
-     const token = await jwt.sign({ email: this.email }, process.env.SECRET_KEY);
+     const token = jwt.sign({ email: this.email }, process.env.SECRET_KEY);
      this.online = true;
      this.token = token;
      await this.save();
@@ -72,4 +79,4 @@ userSchema.methods.getAuthorizationToken = async function () {
 
 const UserModel = mongoose.model('user', userSchema);
 
-module.exports = { UserModel };
+module.exports = { UserModel, userSchema };

@@ -1,34 +1,41 @@
 import React, { useState } from "react";
 import "./signinpage.css";
-import { LoginCred } from "../../../Constants/constant";
 import { login } from "../../../Redux/Auth/auth.actions";
 import { Dispatch } from "redux";
 import { useDispatch } from "react-redux";
 import { Flex, Box, FormControl, FormLabel, Input, InputGroup, HStack, InputRightElement, Stack, Button, Heading, Checkbox, Text, useColorModeValue, Link, } from "@chakra-ui/react";
 import { FcSmartphoneTablet, FcGoogle } from "react-icons/fc";
 
+interface ILoginCred {
+	email: string
+	password: string
+}
 
-const initialUserData: LoginCred = {
+const initialUserData: ILoginCred = {
 	email: "",
 	password: ""
 };
+
 const Login = () => {
-	const [userData,setUserData] = useState(initialUserData);
+	const [userData, setUserData] = useState(initialUserData);
+
 	const dispatch: Dispatch<any> = useDispatch();
-	const handleChange = (e: React.ChangeEvent<HTMLInputElement>)=>{
+
+	const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 		let val = e.target.value;
-		setUserData({...userData,[e.target.name]:val});
-
+		setUserData({ ...userData, [e.target.name]: val });
 	}
-	const {email,password} = userData;
 
-	const handleSubmit = ()=>{
-		if(!email || !password){
+	const { email, password } = userData;
+
+	const handleSubmit = () => {
+
+		if (!email || !password) {
 			return alert("Please fill the required")
 		}
-		dispatch(login(email,password));
+
+		dispatch(login(email, password));
 		setUserData(initialUserData);
-		console.log(userData);
 	}
 	return (
 		<>
@@ -49,11 +56,11 @@ const Login = () => {
 								<Stack spacing={4}>
 									<FormControl id="email">
 										<FormLabel>Email address</FormLabel>
-										<Input type="email" name="email" value={email} onChange={handleChange}/>
+										<Input type="email" name="email" value={email} onChange={handleChange} />
 									</FormControl>
 									<FormControl id="password">
 										<FormLabel>Password</FormLabel>
-										<Input type="password" name="password" value={password} onChange={handleChange}/>
+										<Input type="password" name="password" value={password} onChange={handleChange} />
 									</FormControl>
 									<Stack spacing={10}>
 										<Stack direction={{ base: 'column', sm: 'row' }} align={'start'} justify={'space-between'}>

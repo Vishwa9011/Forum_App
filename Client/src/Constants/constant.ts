@@ -14,13 +14,12 @@ export interface IUser {
      readonly createdAt: number
      lastLogin: number
      token: string
-     occupation:Occupation | null
-     bio: string
+     occupation: Occupation | null
 }
 
-export enum Occupation{
+export enum Occupation {
      STUDENT = "STUDENT",
-     ENGINEER = "ENGINEER"  
+     ENGINEER = "ENGINEER"
 }
 
 export enum Role {
@@ -38,10 +37,6 @@ export interface UserI {
 export interface ProcessEnv {
      BASE_URL: string
      NODE_ENV: 'development' | 'production';
-}
-
-export interface LoginCred {
-
 }
 
 export interface LoginRes {
