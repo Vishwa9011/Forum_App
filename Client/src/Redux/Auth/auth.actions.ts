@@ -47,25 +47,49 @@ const signup = (userData: UserI,navigate:Function, Toast:Function) => async (dis
           dispatch({type:Types.SIGNUP_SUCCESS,payload:res.data.credentials});
           localStorage.setItem("user",JSON.stringify(res.data.credentials));
           Toast("Registeration Succesfull",ToastType.success);
-          navigate("/verifyemail");
-     } catch (error) {
+          navigate("/sendverifyemail");
+     } catch (error:any) {
           dispatch({ type: Types.AUTH_ERROR })
-          Toast("Something went wrong",ToastType.error);
+          Toast(error.response.data.message,ToastType.error);
      }
 }
 
-
-export const verifyEmail = (email: string, password: string,Toast:Function) => async (dispatch: Dispatch) => {
+export const sendVerifyEmail = (email: string, password: string,Toast:Function) => async (dispatch: Dispatch) => {
      dispatch({ type: Types.AUTH_LOADING });
      try {
           let res = await axios.post("/user/sentverificationemail", { email, password })
-          dispatch({ type: Types.VERIFY_EMAIL_SUCCESS,payload: res.data.EncryptedCredential });
+          dispatch({ type: Types.SEND_VERIFY_EMAIL_SUCCESS,payload: res.data.EncryptedCredential });
           Toast("Verification email sent, Please Check your mail",ToastType.success)
      } catch (err) {
           dispatch({ type: Types.AUTH_ERROR });
           Toast("Server Error",ToastType.error)
      }
 }
+
+export const verifyemail = (credential: string,Toast:Function,navigate:Function) => async (dispatch: Dispatch) => {
+     dispatch({ type: Types.AUTH_LOADING });
+     try {
+          let res = await axios.post("/user/verifyemail", { credential });
+          
+          Toast(res.data.message,ToastType.info);
+          if(res.data.status==401 || res.data.status==403 || res.data.status==400){
+               dispatch({ type: Types.VERIFY_EMAIL_SUCCESS,payload: {message:res.data.message}});
+               navigate("/signup");
+          } 
+          else{
+               dispatch({ type: Types.VERIFY_EMAIL_SUCCESS,payload: {user : res.data.credentials, token : res.data.token}});
+               localStorage.setItem("token",res.data.token);
+               localStorage.setItem("user",JSON.stringify(res.data.credentials));
+               navigate("/");
+          } 
+     } catch (err) {
+          console.log(err)
+          dispatch({ type: Types.AUTH_ERROR });
+          Toast("Server Error",ToastType.error)
+     }
+}
+
+
 
 
 

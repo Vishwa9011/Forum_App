@@ -2,7 +2,8 @@ import React from "react";
 import { Route, Routes } from "react-router-dom";
 import Login from "./Pages/Auth/Login/Login";
 import Signup from "./Pages/Auth/Login/Signup";
-import Verifypage from "./Pages/Auth/verification/Verifypage";
+import SendVerificationEmail from "./Pages/Auth/verification/SendVerificationEmail";
+import VerifyEmail from "./Pages/Auth/verification/VerifyEmail";
 import Home from "./Pages/Home/Home";
 import Profile from "./Pages/Profile/Profile";
 
@@ -15,7 +16,8 @@ function Application() {
       <Route path="/login" element={<Login />} />
       <Route path="/signup" element={<Signup />} />
       <Route path="/profile" element={<Profile />} />
-      <Route path="/verifyemail" element={<Verifypage />} />
+      <Route path="/sendverifyemail" element={<SendVerificationEmail />} />
+      <Route path="/verifyemail" element={<VerifyEmail />} />
       <Route path="/profile/edit" element={<></>} />
     </Routes>
   );

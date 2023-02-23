@@ -6,7 +6,9 @@ export const AUTH_LOADING: string = 'auth/loading';
 export const AUTH_ERROR: string = 'auth/error';
 export const AUTH_OPERATION_SUCCESS: string = 'auth/OPERATION/SUCCESS';
 
-export const VERIFY_EMAIL_SUCCESS: string = 'auth/verifyemail/success' 
+export const SEND_VERIFY_EMAIL_SUCCESS: string = 'auth/sendverifyemail/success'
+export const VERIFY_EMAIL_SUCCESS: string = 'auth/verifyemail/success';
+export const VERIFY_EMAIL_FAIL: string = 'auth/verifyemail/fail'
 
 export const AUTH_USER_PROFILE_PHOTO_UPDATE: string = 'AUTH/PHOTO/UPDATE';
 export const AUTH_USER_PROFILE_UPDATE: string = 'AUTH/PROFILE/UPDATE';
