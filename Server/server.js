@@ -8,7 +8,7 @@ const { UserRouter } = require("./Routes/user.router");
 
 const app = express();
 
-app.use(cookieParser())
+// app.use(cookieParser())
 
 
 app.use(cors())
@@ -20,12 +20,12 @@ app.use("/user", UserRouter)
 app.use("/post", PostRouter)
 
 app.get("/", (req, res) => {
-     const cookie = req.cookies.User
-     if (cookie == null) {
-          res.cookie('User', "63f631014d5749dd2bf27257", { httpOnly: true });
-     } else {
-          console.log('cookie: ', cookie);
-     }
+     // const cookie = req.cookies.User
+     // if (cookie == null) {
+     //      res.cookie('User', "63f631014d5749dd2bf27257", { httpOnly: true });
+     // } else {
+     //      console.log('cookie: ', cookie);
+     // }
      res.send("Home Page")
 })
 

@@ -9,9 +9,9 @@ import { Dispatch } from "redux";
 
 const SendVerificationEmail = () => {
   const { Toast, Type } = UseToastMsg();
-  const { email, password } = useSelector(
-    (store: RootState) => store.auth.userCredential
-  );
+  const { email, password } = useSelector((store: RootState) => store.auth.userCredential);
+  console.log('email, password: ', email, password);
+
   const dispatch: Dispatch<any> = useDispatch();
 
   const handleVerify = () => {

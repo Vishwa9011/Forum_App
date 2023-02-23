@@ -15,7 +15,7 @@ const userSchema = mongoose.Schema({
      },
      password: {
           type: String,
-          required: true
+          default: ''
      },
      gender: {
           type: String
@@ -79,4 +79,4 @@ userSchema.methods.getAuthorizationToken = async function () {
 
 const UserModel = mongoose.model('user', userSchema);
 
-module.exports = { UserModel, userSchema };
+module.exports = { UserModel };

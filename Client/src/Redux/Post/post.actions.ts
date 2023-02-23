@@ -47,7 +47,14 @@ const getComments = (url: string) => async (dispatch: Dispatch) => {
 const createComment = (data: CreateCommentType) => async (dispatch: Dispatch<any>) => {
      dispatch({ type: Types.POST_LOADING });
      try {
-          const response = await axios.post(`/post/comment/new`, { ...data, author: "63f63dcb4d5749dd2bf27261", authorID: "63f63dcb4d5749dd2bf27261" });
+          const user = JSON.parse(sessionStorage.getItem("user") || "");
+          if (user == null) {
+               return alert("Please Login");
+          }
+
+          const author = user._id;
+          const response = await axios.post(`/post/comment/new`, { ...data, author, authorID: author });
+
           dispatch(getAllPost());
           dispatch({ type: Types.POST_OPERATION_SUCCESS })
      } catch (error) {

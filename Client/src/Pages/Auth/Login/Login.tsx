@@ -5,6 +5,9 @@ import { Dispatch } from "redux";
 import { useDispatch } from "react-redux";
 import { Flex, Box, FormControl, FormLabel, Input, InputGroup, HStack, InputRightElement, Stack, Button, Heading, Checkbox, Text, useColorModeValue, Link, } from "@chakra-ui/react";
 import { FcSmartphoneTablet, FcGoogle } from "react-icons/fc";
+import UseToastMsg from "../../../Custom-Hooks/Toast";
+import { useNavigate } from "react-router-dom";
+import { GoogleAuth } from './../../../Redux/Auth/auth.actions';
 
 interface ILoginCred {
 	email: string
@@ -17,9 +20,10 @@ const initialUserData: ILoginCred = {
 };
 
 const Login = () => {
-	const [userData, setUserData] = useState(initialUserData);
-
+	const { Toast } = UseToastMsg()
+	const navigate = useNavigate();
 	const dispatch: Dispatch<any> = useDispatch();
+	const [userData, setUserData] = useState(initialUserData);
 
 	const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 		let val = e.target.value;
@@ -34,18 +38,23 @@ const Login = () => {
 			return alert("Please fill the required")
 		}
 
-		dispatch(login(email, password));
+		dispatch(login(email, password, navigate, Toast));
 		setUserData(initialUserData);
 	}
+
+	const SignInWithGoogle = () => {
+		dispatch(GoogleAuth(navigate, Toast))
+	}
+
 	return (
 		<>
-			<div id="main">
-				<div id="left">
+			<Box id="main" p='40px'>
+				<Box id="left" minH='100%'>
 					<img id="img" src="https://cdn.pixabay.com/photo/2017/05/14/03/45/data-2311261__340.png" alt="" />
-				</div>
-				<div id="right">
-					<Flex minH={'100vh'} align={'center'} justify={'center'} bg={useColorModeValue('gray.50', 'gray.800')}>
-						<Stack spacing={10} mx={'auto'} maxW={'lg'} py={12} px={6}>
+				</Box>
+				<Box id="right" minH='100%'>
+					<Flex minW='450px' align={'center'} justify={'center'} bg={useColorModeValue('gray.50', 'gray.800')}>
+						<Stack spacing={10} mx={'auto'} maxW={'100%'} px={6}>
 							<Stack align={'center'}>
 								<Heading fontSize={'4xl'}>LogIn</Heading>
 								<Text fontSize={'lg'} color={'gray.600'} display={"flex"} justifyContent={"center"} alignItems={"center"}>
@@ -70,7 +79,7 @@ const Login = () => {
 										<Button bg={'blue.400'} color={'white'} _hover={{ bg: 'blue.500', }} onClick={handleSubmit}>
 											Sign in
 										</Button>
-										<Button loadingText="Submitting" size="lg" bg={'white.400'} color={'black'} border="1px" borderColor={"gray.300"} _hover={{ bg: 'grey.500', border: "2px solid #4299e1" }}>
+										<Button onClick={SignInWithGoogle} loadingText="Submitting" size="lg" bg={'white.400'} color={'black'} border="1px" borderColor={"gray.300"} _hover={{ bg: 'grey.500', border: "2px solid #4299e1" }}>
 											<FcGoogle style={{ marginRight: "10px" }} /> SgnIn with Google
 										</Button>
 									</Stack>
@@ -78,8 +87,8 @@ const Login = () => {
 							</Box>
 						</Stack>
 					</Flex>
-				</div>
-			</div>
+				</Box>
+			</Box>
 		</>
 	);
 };

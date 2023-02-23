@@ -4,7 +4,7 @@ import UserCard from "./UserCard";
 
 type Props = {};
 
-function UserProfile({}: Props) {
+function UserProfile({ }: Props) {
   return (
     <Menu>
       <MenuButton

@@ -7,12 +7,9 @@ import {
   useColorModeValue,
   Stack,
   Container,
-  Input,
-  InputRightElement,
-  InputGroup,
+
   IconButton,
   Text,
-  Divider,
 } from "@chakra-ui/react";
 import {
   HamburgerIcon,
@@ -25,6 +22,8 @@ import { FaHome } from "react-icons/fa";
 import UserProfile from "./UserProfile";
 import SearchBar from "./SearchBar";
 import { Link } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { RootState } from "../../Redux/store";
 
 const Links = [
   {
@@ -46,7 +45,7 @@ const Links = [
 
 export default function Navbar() {
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const token: string | null = localStorage.getItem("token");
+  const { userCredential } = useSelector((store: RootState) => store.auth)
 
   return (
     <Box bg={useColorModeValue("#fff", "gray.900")} px={4} shadow={"md"}>
@@ -74,19 +73,14 @@ export default function Navbar() {
               spacing={4}
               display={{ base: "none", md: "flex" }}
             >
-              {Links.map((link) => (
-                <NavLink key={link.name}>
-                  <Flex as={Link} to={link.href} alignItems={"center"} gap="2">
-                    {link.icon}
-                    {link.name}
-                  </Flex>
-                </NavLink>
+              {Links.map((link, i) => (
+                <Link key={i} to={`${link.href}`}>{link.name}</Link>
               ))}
             </HStack>
           </HStack>
           <Flex alignItems={"center"}>
             <SearchBar />
-            {token ? (
+            {userCredential?.email ? (
               <UserProfile />
             ) : (
               <Flex gap={2}>
@@ -100,27 +94,14 @@ export default function Navbar() {
               </Flex>
             )}
 
-            {/* <Button
-              variant={"solid"}
-              colorScheme={"teal"}
-              size={"sm"}
-              leftIcon={<AddIcon />}
-            >
-              Action
-            </Button> */}
           </Flex>
         </Flex>
 
         {isOpen ? (
           <Box pb={4} display={{ md: "none" }}>
             <Stack as={"nav"} spacing={4}>
-              {Links.map((link) => (
-                <NavLink key={link.name}>
-                  <Flex as={Link} to={link.href} alignItems={"center"} gap="4">
-                    {link.icon}
-                    {link.name}
-                  </Flex>
-                </NavLink>
+              {Links.map((link, i) => (
+                <Link key={i} to={`${link.href}`}>{link.name}</Link>
               ))}
             </Stack>
             <SearchBar />
@@ -131,17 +112,4 @@ export default function Navbar() {
   );
 }
 
-const NavLink = ({ children }: { children: ReactNode }) => (
-  <Text
-    px={2}
-    py={1}
-    rounded={"md"}
-    _hover={{
-      textDecoration: "none",
-      bg: useColorModeValue("gray.200", "gray.700"),
-    }}
-    cursor="pointer"
-  >
-    <Flex alignItems={"center"}>{children}</Flex>
-  </Text>
-);
+

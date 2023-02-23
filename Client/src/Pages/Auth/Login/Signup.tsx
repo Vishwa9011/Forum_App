@@ -33,7 +33,6 @@ const initialUserData: UserI = {
 };
 
 const Signup = () => {
-  const [showPassword, setShowPassword] = useState(false);
   const dispatch: Dispatch<any> = useDispatch();
   const [userData, setUserData] = useState(initialUserData);
   const { Toast, Type } = UseToastMsg();
@@ -49,11 +48,13 @@ const Signup = () => {
 
   const handlesubmit = () => {
     if (!username || !email || !password) {
-      return Toast("Please fill all required feilds.", Type.info);
+      return Toast("Please fill all required feilds.", Type.warning);
     }
-    if (password.length <= 8) {
-      return Toast("Password length should be greater than 8", Type.error);
+
+    if (password.length < 6) {
+      return Toast("Password length should be greater than 6", Type.warning);
     }
+
     dispatch(signup(userData, navigate, Toast));
     setUserData(initialUserData);
   };
@@ -130,7 +131,7 @@ const Signup = () => {
                         <FormLabel>Password</FormLabel>
                         <InputGroup>
                           <Input
-                            type={showPassword ? "text" : "password"}
+                            type={"password"}
                             name="password"
                             value={password}
                             onChange={handleChange}

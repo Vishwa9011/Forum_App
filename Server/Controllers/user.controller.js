@@ -46,18 +46,19 @@ async function GoogleAuth(req, res) {
           const CheckUser = await UserModel.findOne({ email: payload.email })
           if (CheckUser) {
                const token = await CheckUser.getAuthorizationToken();
-               return res.status(201).json({ status: 200, message: "login success", credentials: user, token })
+               return res.status(201).json({ status: 200, message: "login success", credentials: CheckUser, token })
+          } else {
+
+               const user = new UserModel({ ...payload, isGoogleAuthenticated: true, online: true, isVerified: true, password: "" });
+
+               const token = await jwt.sign({ email: payload.email }, process.env.SECRET_KEY);
+
+               user.token = token;
+
+               await user.save();
+
+               res.status(201).json({ status: 200, message: "GoogleAuth success", credentials: user, token })
           }
-
-          const user = new UserModel({ ...payload, isGoogleAuthenticated: true, online: true, isVerified: true });
-
-          const token = await jwt.sign({ email: payload.email }, process.env.SECRET_KEY);
-
-          user.token = token;
-
-          await user.save();
-
-          res.status(201).json({ status: 200, message: "GoogleAuth success", credentials: user, token })
      } catch (error) {
           console.log('error: ', error);
           res.send(error)
@@ -147,12 +148,15 @@ async function sentVerificationEmail(req, res) {
 // * verify email after clicking on email button;
 async function verifyEmail(req, res) {
      const { credential } = req.body;
+     console.log('credential: ', credential);
      try {
           const decode = jwt.verify(credential, process.env.VERIFICATION_SECRET_KEY)
+          console.log('decode: ', decode.password);
           if (decode) {
                const user = await UserModel.findOne({ email: decode.email });
+               console.log('user: ', user.password, decode.password, user.password == decode.password);
                if (user) {
-                    if (user.email === decode.email && user.password === decode.password) {
+                    if (user.password == decode.password) {
                          user.isVerified = true;
                          const token = await user.getAuthorizationToken();
                          return res.status(201).json({ status: 200, message: 'Email has been verified', credentials: user, token })

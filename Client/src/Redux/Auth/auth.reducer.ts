@@ -16,8 +16,8 @@ const initialUserCredState = {
      createdAt: 0,
      lastLogin: 0,
      token: '',
-     occupation: null, 
-     bio:''
+     occupation: null,
+     bio: ''
 
 }
 
@@ -25,15 +25,23 @@ export interface IAuthInitialState {
      loading: boolean
      error: string
      authenticated: boolean
-     userCredential: IUser
+     userCredential: IUser | {}
 }
 
+
+var user = sessionStorage.getItem("user");
+
+if (!user) {
+     sessionStorage.setItem("user", JSON.stringify({}));
+}
+
+const data = JSON.parse(sessionStorage.getItem("user"))
 
 const initialState: IAuthInitialState = {
      loading: false,
      error: '',
      authenticated: false,
-     userCredential: initialUserCredState
+     userCredential: data ? data : initialUserCredState
 }
 
 export const Reducer = (state = initialState, { type, payload }: any) => {
@@ -53,7 +61,7 @@ export const Reducer = (state = initialState, { type, payload }: any) => {
           case Types.VERIFY_EMAIL_FAIL:
                return ({ ...state, loading: false, error: payload.message });
           case Types.VERIFY_EMAIL_SUCCESS:
-          return ({ ...state, loading: false, error: '',  userCredential:{...payload.user,token:payload.token}});
+               return ({ ...state, loading: false, error: '', userCredential: { ...payload.user, token: payload.token } });
           case Types.AUTH_USER_PROFILE_PHOTO_UPDATE:
                return ({ ...state, loading: false, error: '', userCredential: { ...state.userCredential, photoURL: payload } })
           case Types.AUTH_USER_PROFILE_UPDATE:

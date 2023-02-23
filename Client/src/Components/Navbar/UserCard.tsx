@@ -12,25 +12,26 @@ import {
   StackDivider,
   Text,
 } from "@chakra-ui/react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 import { Link, useNavigate } from "react-router-dom";
 import { Dispatch } from "redux";
 import UseToastMsg from "../../Custom-Hooks/Toast";
 import { logout } from "../../Redux/Auth/auth.actions";
+import { RootState } from "../../Redux/store";
 
 function UserCard() {
-  const user: string | null = localStorage.getItem("user");
-  const pUser = user ? JSON.parse(user) : null;
+
   const dispatch: Dispatch<any> = useDispatch();
+  const { userCredential } = useSelector((store: RootState) => store.auth);
   const { Toast, Type } = UseToastMsg();
   const navigate = useNavigate();
 
   const signout = () => {
-    if (!pUser.email) {
+    if (!userCredential.email) {
       return Toast("Email is missing", Type.info);
     }
-    dispatch(logout(pUser.email, Toast, navigate));
+    dispatch(logout(userCredential.email, Toast, navigate));
   };
 
   return (
@@ -41,8 +42,8 @@ function UserCard() {
             <Avatar bg={"red.500"} name="Ashok Kumar" src="#" />
 
             <Box>
-              <Heading size="sm">{pUser.username}</Heading>
-              <Text>{pUser.occupation}</Text>
+              <Heading size="sm">{userCredential.username}</Heading>
+              <Text>{userCredential.occupation}</Text>
             </Box>
           </Flex>
         </Flex>
