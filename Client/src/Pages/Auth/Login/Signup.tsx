@@ -60,7 +60,7 @@ const Signup = () => {
 
   return (
     <>
-      <Flex h={"100vh"} alignItems="center">
+      <Flex minH={"100vh"} alignItems="center" py={4}>
         <Container maxW="5xl">
           <Flex shadow={"2xl"}>
             <Box id="left" display={{ base: "none", md: "flex" }}>
@@ -72,7 +72,7 @@ const Signup = () => {
             </Box>
             <div id="right">
               <Flex
-                maxH={"100vh"}
+                h="auto"
                 align={"center"}
                 justify={"center"}
                 bg={useColorModeValue("gray.50", "gray.800")}

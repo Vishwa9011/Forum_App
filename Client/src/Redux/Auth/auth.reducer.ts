@@ -59,8 +59,10 @@ export const Reducer = (state = initialState, { type, payload }: any) => {
                return ({ ...state, loading: false, error: '', userCredential: { ...payload.user, token: payload.token } });
           case Types.AUTH_USER_PROFILE_PHOTO_UPDATE:
                return ({ ...state, loading: false, error: '', userCredential: { ...state.userCredential, photoURL: payload } })
-          case Types.AUTH_USER_PROFILE_UPDATE:
+          case Types.USER_UPDATE_SUCCESS:
                return ({ ...state, loading: false, error: '', userCredential: payload })
+          case Types.USER_UPDATE_FAIL:
+          return ({ ...state, loading: false, error: payload.message })
           case Types.SIGNOUT_SUCCESS:
                return initialState;
           default:

@@ -179,8 +179,8 @@ async function UpdateUser(req, res) {
      const _id = req.params.id;
      const payload = req.body;
      try {
-          let user = await UserModel.findById(_id);
-          user = { ...user, payload };
+          let user = await UserModel.findOne({ _id });
+          Object.assign(user, payload);
           await user.save();
           return res.status(201).json({ status: 200, message: 'user has been updated', credentials: user })
      } catch (error) {

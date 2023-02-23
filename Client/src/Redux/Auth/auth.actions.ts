@@ -3,7 +3,7 @@ import { signInWithPopup } from "firebase/auth"
 import { auth, Provider } from '../../Configs/Firebase'
 import * as Types from "./auth.actionType"
 import axios from "axios";
-import { UserI } from "../../Constants/constant";
+import { IUser, UserI } from "../../Constants/constant";
 import { ToastType } from "../../Custom-Hooks/Toast"
 
 
@@ -64,7 +64,7 @@ export const logout = (email:string,Toast:Function,navigate:Function) => async (
      try {
           let res = await axios.post("/user/logout", {email});
           dispatch({type:Types.SIGNOUT_SUCCESS});
-          localStorage.clear();
+          sessionStorage.clear();
           Toast(res.data.message,ToastType.success);
           navigate("/");
      } catch (error:any) {
@@ -93,20 +93,45 @@ export const verifyemail = (credential: string, Toast: Function, navigate: Funct
           
           Toast(res.data.message,ToastType.info);
           if(res.data.status==401 || res.data.status==403 || res.data.status==400){
-               console.log(credential);
                dispatch({ type: Types.VERIFY_EMAIL_SUCCESS,payload: {message:res.data.message}});
+               Toast(res.data?.message|| "Something went wrong",ToastType.error)
                navigate("/login");
           } 
           else{
                dispatch({ type: Types.VERIFY_EMAIL_SUCCESS,payload: {user : res.data.credentials, token : res.data.token}});
-               localStorage.setItem("token",res.data.token);
-               localStorage.setItem("user",JSON.stringify(res.data.credentials));
+               sessionStorage.setItem("token",res.data.token);
+               sessionStorage.setItem("user",JSON.stringify(res.data.credentials));
+               Toast(res.data?.message|| "Login Success",ToastType.success)
                navigate("/");
           }
      } catch (err) {
           console.log(err)
           dispatch({ type: Types.AUTH_ERROR });
-          Toast("Server Error", ToastType.error)
+          Toast("Server Error", ToastType.error);
+     }
+}
+
+export const updateUser = (userData: IUser, onClose: Function, Toast: Function) => async (dispatch: Dispatch) => {
+     dispatch({ type: Types.AUTH_LOADING });
+     const id = userData._id;
+     console.log(id)
+     try {
+          let res = await axios.post(`user/update/${id}`, userData);
+          if(res.data.status==401){
+               dispatch({ type: Types.USER_UPDATE_FAIL,payload: {message:res.data.message}});
+               Toast(res.data?.message|| "Something went wrong",ToastType.error);
+               onClose();
+          } 
+          else{
+               dispatch({ type: Types.USER_UPDATE_SUCCESS, payload: res.data.credentials });
+               sessionStorage.setItem("user",JSON.stringify(res.data.credentials));
+               Toast(res.data?.message|| "User successfully updated",ToastType.success);
+               onClose();
+          }
+     } catch (error: any) {
+          console.log(error)
+          dispatch({ type: Types.AUTH_ERROR })
+          Toast(error.response?.data?.message || "Server Error", ToastType.error);
      }
 }
 

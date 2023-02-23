@@ -38,7 +38,11 @@ function UserCard() {
       <CardHeader>
         <Flex gap={"4"}>
           <Flex flex="1" gap="4" alignItems="center" flexWrap="wrap">
-            <Avatar bg={"red.500"} name={userCredential.username} src="#" />
+            <Avatar
+              bg={"red.500"}
+              name={userCredential.username}
+              src={userCredential.photoURL}
+            />
 
             <Box>
               <Heading size="sm">{userCredential.username}</Heading>
