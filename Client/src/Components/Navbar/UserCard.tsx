@@ -12,10 +12,27 @@ import {
   StackDivider,
   Text,
 } from "@chakra-ui/react";
+import { useDispatch } from "react-redux";
 
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { Dispatch } from "redux";
+import UseToastMsg from "../../Custom-Hooks/Toast";
+import { logout } from "../../Redux/Auth/auth.actions";
 
 function UserCard() {
+  const user: string | null = localStorage.getItem("user");
+  const pUser = user ? JSON.parse(user) : null;
+  const dispatch: Dispatch<any> = useDispatch();
+  const { Toast, Type } = UseToastMsg();
+  const navigate = useNavigate();
+
+  const signout = () => {
+    if (!pUser.email) {
+      return Toast("Email is missing", Type.info);
+    }
+    dispatch(logout(pUser.email, Toast, navigate));
+  };
+
   return (
     <Card maxW="sm">
       <CardHeader>
@@ -24,12 +41,14 @@ function UserCard() {
             <Avatar bg={"red.500"} name="Ashok Kumar" src="#" />
 
             <Box>
-              <Heading size="sm">Ashok Kumar</Heading>
-              <Text>Full Stack Web developer</Text>
+              <Heading size="sm">{pUser.username}</Heading>
+              <Text>{pUser.occupation}</Text>
             </Box>
           </Flex>
         </Flex>
         <Button
+          as={Link}
+          to="/profile"
           mt={4}
           w="100%"
           size="xs"
@@ -80,6 +99,7 @@ function UserCard() {
             size="xs"
             border="1px solid blue"
             borderRadius={"10px"}
+            onClick={signout}
           >
             Sign Out
           </Button>

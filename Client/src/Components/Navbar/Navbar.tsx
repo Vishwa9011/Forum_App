@@ -12,6 +12,7 @@ import {
   InputGroup,
   IconButton,
   Text,
+  Divider,
 } from "@chakra-ui/react";
 import {
   HamburgerIcon,
@@ -45,6 +46,7 @@ const Links = [
 
 export default function Navbar() {
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const token: string | null = localStorage.getItem("token");
 
   return (
     <Box bg={useColorModeValue("#fff", "gray.900")} px={4} shadow={"md"}>
@@ -84,7 +86,20 @@ export default function Navbar() {
           </HStack>
           <Flex alignItems={"center"}>
             <SearchBar />
-            <UserProfile />
+            {token ? (
+              <UserProfile />
+            ) : (
+              <Flex gap={2}>
+                <Text as={Link} to="/signup">
+                  Signup
+                </Text>
+                <Text>|</Text>
+                <Text as={Link} to="/login">
+                  Login
+                </Text>
+              </Flex>
+            )}
+
             {/* <Button
               variant={"solid"}
               colorScheme={"teal"}

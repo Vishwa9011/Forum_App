@@ -7,7 +7,7 @@ import { UserI } from "../../Constants/constant";
 import {ToastType} from "../../Custom-Hooks/Toast"
 
 
-const GoogleAuth = () => async (dispatch: Dispatch) => {
+export const GoogleAuth = () => async (dispatch: Dispatch) => {
      dispatch({ type: Types.AUTH_LOADING });
      try {
           const userCredential = await signInWithPopup(auth, Provider);
@@ -30,7 +30,7 @@ const GoogleAuth = () => async (dispatch: Dispatch) => {
      }
 }
 
-const login = (email: string, password: string) => async (dispatch: Dispatch) => {
+export const login = (email: string, password: string) => async (dispatch: Dispatch) => {
      dispatch({ type: Types.AUTH_LOADING });
      try {
           let res = await axios.post("/user/login", { email, password })
@@ -40,7 +40,7 @@ const login = (email: string, password: string) => async (dispatch: Dispatch) =>
      }
 }
 
-const signup = (userData: UserI,navigate:Function, Toast:Function) => async (dispatch: Dispatch) => {
+export const signup = (userData: UserI,navigate:Function, Toast:Function) => async (dispatch: Dispatch) => {
      dispatch({ type: Types.AUTH_LOADING });
      try {
           let res = await axios.post("/user/register", userData);
@@ -54,11 +54,26 @@ const signup = (userData: UserI,navigate:Function, Toast:Function) => async (dis
      }
 }
 
+export const logout = (email:string,Toast:Function,navigate:Function) => async (dispatch: Dispatch) => {
+     dispatch({ type: Types.AUTH_LOADING });
+     try {
+          let res = await axios.post("/user/logout", {email});
+          dispatch({type:Types.SIGNOUT_SUCCESS});
+          localStorage.clear();
+          Toast(res.data.message,ToastType.success);
+          navigate("/");
+     } catch (error:any) {
+          dispatch({ type: Types.AUTH_ERROR })
+          Toast(error.response.data.message,ToastType.error);
+     }
+}
+
 export const sendVerifyEmail = (email: string, password: string,Toast:Function) => async (dispatch: Dispatch) => {
      dispatch({ type: Types.AUTH_LOADING });
      try {
           let res = await axios.post("/user/sentverificationemail", { email, password })
           dispatch({ type: Types.SEND_VERIFY_EMAIL_SUCCESS,payload: res.data.EncryptedCredential });
+          console.log(res)
           Toast("Verification email sent, Please Check your mail",ToastType.success)
      } catch (err) {
           dispatch({ type: Types.AUTH_ERROR });
@@ -90,7 +105,3 @@ export const verifyemail = (credential: string,Toast:Function,navigate:Function)
 }
 
 
-
-
-
-export { GoogleAuth, signup, login };
