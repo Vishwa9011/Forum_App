@@ -16,16 +16,28 @@ import {
 } from "@chakra-ui/react";
 import { EditIcon } from "@chakra-ui/icons";
 import UserEditModal from "./UserEditModal";
-import { Link } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { Link, useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../Redux/store";
 import Navbar from "../../Components/Navbar/Navbar";
+import UseToastMsg from "../../Custom-Hooks/Toast";
+import { Dispatch } from "redux";
+import { logout } from "../../Redux/Auth/auth.actions";
 
 type Props = {};
 
 export default function Profile({}: Props) {
+  const { Toast, Type } = UseToastMsg();
+  const dispatch: Dispatch<any> = useDispatch();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const { userCredential } = useSelector((store: RootState) => store.auth);
+  const navigate = useNavigate();
+  const signout = () => {
+    if (!userCredential.email) {
+      return Toast("Email is missing", Type.info);
+    }
+    dispatch(logout(userCredential.email, Toast, navigate));
+  };
   return (
     <>
       <Navbar />
@@ -159,6 +171,7 @@ export default function Profile({}: Props) {
                 borderRadius={"10px"}
                 bg="#fff"
                 _hover={{ transform: "translateY(-2px)", boxShadow: "lg" }}
+                onClick={signout}
               >
                 Sign Out
               </Button>

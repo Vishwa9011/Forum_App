@@ -1,4 +1,4 @@
-import { ReactNode } from "react";
+import { useState, useEffect } from "react";
 import {
   Box,
   Flex,
@@ -7,7 +7,6 @@ import {
   useColorModeValue,
   Stack,
   Container,
-
   IconButton,
   Text,
 } from "@chakra-ui/react";
@@ -45,7 +44,7 @@ const Links = [
 
 export default function Navbar() {
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const { userCredential } = useSelector((store: RootState) => store.auth)
+  const { userCredential } = useSelector((store: RootState) => store.auth);
 
   return (
     <Box bg={useColorModeValue("#fff", "gray.900")} px={4} shadow={"md"}>
@@ -74,13 +73,15 @@ export default function Navbar() {
               display={{ base: "none", md: "flex" }}
             >
               {Links.map((link, i) => (
-                <Link key={i} to={`${link.href}`}>{link.name}</Link>
+                <Link key={i} to={`${link.href}`}>
+                  {link.name}
+                </Link>
               ))}
             </HStack>
           </HStack>
           <Flex alignItems={"center"}>
             <SearchBar />
-            {userCredential?.email ? (
+            {userCredential.token ? (
               <UserProfile />
             ) : (
               <Flex gap={2}>
@@ -93,7 +94,6 @@ export default function Navbar() {
                 </Text>
               </Flex>
             )}
-
           </Flex>
         </Flex>
 
@@ -101,7 +101,9 @@ export default function Navbar() {
           <Box pb={4} display={{ md: "none" }}>
             <Stack as={"nav"} spacing={4}>
               {Links.map((link, i) => (
-                <Link key={i} to={`${link.href}`}>{link.name}</Link>
+                <Link key={i} to={`${link.href}`}>
+                  {link.name}
+                </Link>
               ))}
             </Stack>
             <SearchBar />
@@ -111,5 +113,3 @@ export default function Navbar() {
     </Box>
   );
 }
-
-

@@ -30,14 +30,23 @@ export const GoogleAuth = () => async (dispatch: Dispatch) => {
      }
 }
 
-export const login = (email: string, password: string) => async (dispatch: Dispatch) => {
+export const login = (email: string, password: string, navigate:Function, Toast:Function) => async (dispatch: Dispatch) => {
      dispatch({ type: Types.AUTH_LOADING });
      try {
           let res = await axios.post("/user/login", { email, password });
-          console.log('res: ', res);
-          sessionStorage.setItem("user", JSON.stringify(res.data.credentials));
-
-          dispatch({ type: Types.SIGNIN_SUCCESS, })
+          if(res.data.status==401 || res.data.status==403 || res.data.status==400){
+               dispatch({ type: Types.AUTH_ERROR,payload: res.data.message});
+               Toast(res.data?.message|| "Something went wrong",ToastType.error)
+               navigate("/login");
+          } 
+          else{
+               dispatch({ type: Types.SIGNIN_SUCCESS,payload: {user : res.data.credentials, token : res.data.token}});
+               sessionStorage.setItem("token",res.data.token);
+               sessionStorage.setItem("user", JSON.stringify(res.data.credentials));
+               Toast(res.data?.message|| "Login Success",ToastType.success);
+               // navigate("/");
+               window.location.href= "/";
+          }
      } catch (err) {
           dispatch({ type: Types.AUTH_ERROR })
      }
@@ -66,7 +75,7 @@ export const logout = (email:string,Toast:Function,navigate:Function) => async (
           dispatch({type:Types.SIGNOUT_SUCCESS});
           sessionStorage.clear();
           Toast(res.data.message,ToastType.success);
-          navigate("/");
+          window.location.href= "/login";
      } catch (error:any) {
           dispatch({ type: Types.AUTH_ERROR })
           Toast(error.response.data.message || "Server Error",ToastType.error);
@@ -90,10 +99,8 @@ export const verifyemail = (credential: string, Toast: Function, navigate: Funct
      dispatch({ type: Types.AUTH_LOADING });
      try {
           let res = await axios.post("/user/verifyemail", { credential });
-          
-          Toast(res.data.message,ToastType.info);
           if(res.data.status==401 || res.data.status==403 || res.data.status==400){
-               dispatch({ type: Types.VERIFY_EMAIL_SUCCESS,payload: {message:res.data.message}});
+               dispatch({ type: Types.VERIFY_EMAIL_FAIL,payload: {message:res.data.message}});
                Toast(res.data?.message|| "Something went wrong",ToastType.error)
                navigate("/login");
           } 
@@ -105,7 +112,6 @@ export const verifyemail = (credential: string, Toast: Function, navigate: Funct
                navigate("/");
           }
      } catch (err) {
-          console.log(err)
           dispatch({ type: Types.AUTH_ERROR });
           Toast("Server Error", ToastType.error);
      }

@@ -12,6 +12,7 @@ import {
   StackDivider,
   Text,
 } from "@chakra-ui/react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 import { Link, useNavigate } from "react-router-dom";
@@ -22,7 +23,9 @@ import { RootState } from "../../Redux/store";
 
 function UserCard() {
   const dispatch: Dispatch<any> = useDispatch();
-  const { userCredential } = useSelector((store: RootState) => store.auth);
+  const { userCredential } = useSelector((store: RootState) => ({
+    ...store.auth,
+  }));
   const { Toast, Type } = UseToastMsg();
   const navigate = useNavigate();
 
