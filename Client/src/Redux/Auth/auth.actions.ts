@@ -40,12 +40,12 @@ export const login = (email: string, password: string, navigate:Function, Toast:
                navigate("/login");
           } 
           else{
-               dispatch({ type: Types.SIGNIN_SUCCESS,payload: {user : res.data.credentials, token : res.data.token}});
+               dispatch({ type: Types.SIGNIN_SUCCESS,payload:res.data.credentials});
                sessionStorage.setItem("token",res.data.token);
                sessionStorage.setItem("user", JSON.stringify(res.data.credentials));
+               console.log(res.data.credentials)
                Toast(res.data?.message|| "Login Success",ToastType.success);
-               // navigate("/");
-               window.location.href= "/";
+               navigate("/");
           }
      } catch (err) {
           dispatch({ type: Types.AUTH_ERROR })
@@ -75,7 +75,7 @@ export const logout = (email:string,Toast:Function,navigate:Function) => async (
           dispatch({type:Types.SIGNOUT_SUCCESS});
           sessionStorage.clear();
           Toast(res.data.message,ToastType.success);
-          window.location.href= "/login";
+          navigate("/login");
      } catch (error:any) {
           dispatch({ type: Types.AUTH_ERROR })
           Toast(error.response.data.message || "Server Error",ToastType.error);
@@ -87,7 +87,6 @@ export const sendVerifyEmail = (email: string, password: string,Toast:Function) 
      try {
           let res = await axios.post("/user/sentverificationemail", { email, password })
           dispatch({ type: Types.SEND_VERIFY_EMAIL_SUCCESS,payload: res.data.EncryptedCredential });
-          console.log(res)
           Toast("Verification email sent, Please Check your mail",ToastType.success)
      } catch (err) {
           dispatch({ type: Types.AUTH_ERROR });
@@ -105,7 +104,7 @@ export const verifyemail = (credential: string, Toast: Function, navigate: Funct
                navigate("/login");
           } 
           else{
-               dispatch({ type: Types.VERIFY_EMAIL_SUCCESS,payload: {user : res.data.credentials, token : res.data.token}});
+               dispatch({ type: Types.VERIFY_EMAIL_SUCCESS,payload: res.data.credential});
                sessionStorage.setItem("token",res.data.token);
                sessionStorage.setItem("user",JSON.stringify(res.data.credentials));
                Toast(res.data?.message|| "Login Success",ToastType.success)

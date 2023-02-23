@@ -149,6 +149,8 @@ const UserEditModal = ({ isOpen, onClose }: Props) => {
             </FormControl>
             <Stack spacing={6} direction={["column", "row"]}>
               <Button
+                isLoading={loading}
+                loadingText="Updating..."
                 bg={"blue.400"}
                 color={"white"}
                 w="full"

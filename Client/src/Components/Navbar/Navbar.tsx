@@ -10,13 +10,7 @@ import {
   IconButton,
   Text,
 } from "@chakra-ui/react";
-import {
-  HamburgerIcon,
-  CloseIcon,
-  SearchIcon,
-  BellIcon,
-  ChatIcon,
-} from "@chakra-ui/icons";
+import { HamburgerIcon, CloseIcon, BellIcon, ChatIcon } from "@chakra-ui/icons";
 import { FaHome } from "react-icons/fa";
 import UserProfile from "./UserProfile";
 import SearchBar from "./SearchBar";
