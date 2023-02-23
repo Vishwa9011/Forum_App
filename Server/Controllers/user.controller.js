@@ -34,7 +34,7 @@ async function UserRegisteration(req, res) {
 
           res.status(201).json({ status: 200, message: "registeration success", credentials: user })
      } catch (error) {
-          console.log('error: ', error);
+          // console.log('error: ', error);
           res.send(error)
      }
 }
@@ -148,13 +148,12 @@ async function sentVerificationEmail(req, res) {
 // * verify email after clicking on email button;
 async function verifyEmail(req, res) {
      const { credential } = req.body;
-     console.log('credential: ', credential);
+     // console.log('credential: ', credential);
      try {
           const decode = jwt.verify(credential, process.env.VERIFICATION_SECRET_KEY)
-          console.log('decode: ', decode.password);
+          // console.log('decode: ', decode.password);
           if (decode) {
                const user = await UserModel.findOne({ email: decode.email });
-               console.log('user: ', user.password, decode.password, user.password == decode.password);
                if (user) {
                     if (user.password == decode.password) {
                          user.isVerified = true;
