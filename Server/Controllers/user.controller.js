@@ -72,7 +72,7 @@ async function UserLogin(req, res) {
           if (user) {
                const isMatched = await bcrypt.compare(password, user.password);
                if (isMatched) {
-                    const token = await UserModel.getAuthorizationToken();
+                    const token = await user.getAuthorizationToken();
                     res.status(201).json({ status: 200, message: "Login Success", credentials: user, token })
                } else {
                     res.status(201).json({ status: 401, message: "password not matched" })
@@ -154,7 +154,7 @@ async function verifyEmail(req, res) {
                if (user) {
                     if (user.email === decode.email && user.password === decode.password) {
                          user.isVerified = true;
-                         const token = await UserModel.getAuthorizationToken();
+                         const token = await user.getAuthorizationToken();
                          return res.status(201).json({ status: 200, message: 'Email has been verified', credentials: user, token })
                     } else {
                          return res.status(201).json({ status: 403, message: 'Wrong credential' })

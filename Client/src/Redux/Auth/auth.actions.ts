@@ -4,7 +4,7 @@ import { auth, Provider } from '../../Configs/Firebase'
 import * as Types from "./auth.actionType"
 import axios from "axios";
 import { UserI } from "../../Constants/constant";
-import {ToastType} from "../../Custom-Hooks/Toast"
+import { ToastType } from "../../Custom-Hooks/Toast"
 
 
 export const GoogleAuth = () => async (dispatch: Dispatch) => {
@@ -33,26 +33,30 @@ export const GoogleAuth = () => async (dispatch: Dispatch) => {
 export const login = (email: string, password: string) => async (dispatch: Dispatch) => {
      dispatch({ type: Types.AUTH_LOADING });
      try {
-          let res = await axios.post("/user/login", { email, password })
+          let res = await axios.post("/user/login", { email, password });
+          console.log('res: ', res);
+          sessionStorage.setItem("user", JSON.stringify(res.data.credentials));
+
           dispatch({ type: Types.SIGNIN_SUCCESS, })
      } catch (err) {
           dispatch({ type: Types.AUTH_ERROR })
      }
 }
 
-export const signup = (userData: UserI,navigate:Function, Toast:Function) => async (dispatch: Dispatch) => {
+export const signup = (userData: UserI, navigate: Function, Toast: Function) => async (dispatch: Dispatch) => {
      dispatch({ type: Types.AUTH_LOADING });
      try {
           let res = await axios.post("/user/register", userData);
-          dispatch({type:Types.SIGNUP_SUCCESS,payload:res.data.credentials});
-          localStorage.setItem("user",JSON.stringify(res.data.credentials));
-          Toast("Registeration Succesfull",ToastType.success);
+          dispatch({ type: Types.SIGNUP_SUCCESS, payload: res.data.credentials });
+          localStorage.setItem("user", JSON.stringify(res.data.credentials));
+          Toast("Registeration Succesfull", ToastType.success);
           navigate("/sendverifyemail");
-     } catch (error:any) {
+     } catch (error: any) {
           dispatch({ type: Types.AUTH_ERROR })
-          Toast(error.response.data.message,ToastType.error);
+          Toast(error.response.data.message, ToastType.error);
      }
 }
+
 
 export const logout = (email:string,Toast:Function,navigate:Function) => async (dispatch: Dispatch) => {
      dispatch({ type: Types.AUTH_LOADING });
@@ -77,11 +81,11 @@ export const sendVerifyEmail = (email: string, password: string,Toast:Function) 
           Toast("Verification email sent, Please Check your mail",ToastType.success)
      } catch (err) {
           dispatch({ type: Types.AUTH_ERROR });
-          Toast("Server Error",ToastType.error)
+          Toast("Server Error", ToastType.error)
      }
 }
 
-export const verifyemail = (credential: string,Toast:Function,navigate:Function) => async (dispatch: Dispatch) => {
+export const verifyemail = (credential: string, Toast: Function, navigate: Function) => async (dispatch: Dispatch) => {
      dispatch({ type: Types.AUTH_LOADING });
      try {
           let res = await axios.post("/user/verifyemail", { credential });
@@ -97,12 +101,11 @@ export const verifyemail = (credential: string,Toast:Function,navigate:Function)
                localStorage.setItem("token",res.data.token);
                localStorage.setItem("user",JSON.stringify(res.data.credentials));
                navigate("/");
-          } 
+          }
      } catch (err) {
           console.log(err)
           dispatch({ type: Types.AUTH_ERROR });
-          Toast("Server Error",ToastType.error)
+          Toast("Server Error", ToastType.error)
      }
 }
-
 
