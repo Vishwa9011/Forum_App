@@ -16,7 +16,7 @@ UserRouter.post("/sentverificationemail", user_controller.sentVerificationEmail)
 
 UserRouter.post("/verifyemail", user_controller.verifyEmail)
 
-UserRouter.post("/update/:id", user_controller.UpdateUser);
+UserRouter.post("/update/:id", user_controller.UpdateUser)
 
 UserRouter.post("/delete/:id", user_controller.DeleteUser)
 

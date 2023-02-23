@@ -11,6 +11,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { createComment, getComments } from '../../../Redux/Post/post.actions'
 import { RootState } from '../../../Redux/store'
 import CommentForm from '../Comments/CommentForm'
+import { dateFormatter } from '../../../helper/helper'
 
 type Props = {
      post: IPost
@@ -18,9 +19,8 @@ type Props = {
 
 function PostCard({ post }: Props) {
      const [data, setData] = useState<any>([]);
-     const dispatch: Dispatch<any> = useDispatch()
-     // const { posts } = useSelector((store: RootState) => store.post);
-     const { userCredential } = useSelector((store: RootState) => store.auth);
+     const dispatch: Dispatch<any> = useDispatch();
+     const [showComments, setComments] = useState<boolean>(false);
 
      const onCreateComment = (message: string) => {
           const data = {
@@ -30,29 +30,26 @@ function PostCard({ post }: Props) {
           dispatch(createComment(data))
      }
 
-
-
      useEffect(() => {
           // dispatch(getComments("63f6011e651603c1b8e68269"))
      }, [])
 
 
-
      return (
-          <Box as='article' p='2'>
-               <Flex as='header' gap='10px' >
+          <Box as='article' p='2' border={'1px'} borderColor={'gray.400'} borderRadius='5px'>
+               <Flex as='header' gap='10px' pb='2'>
                     <Flex gap='10px'>
                          <Box className='post-header-image'>
-                              <Image src='https://png.pngtree.com/png-vector/20220817/ourmid/pngtree-cartoon-man-avatar-vector-ilustration-png-image_6111064.png' />
+                              <Image src={post.author.photoURL || "https://bit.ly/3kkJrly"} />
                          </Box>
                          <Box className='post-header-details'>
-                              <Text>{post.author.username}</Text>
-                              <Text>{post.author.bio}</Text>
-                              <Text>{post.createdAt}</Text>
+                              <Text textTransform={"capitalize"} >{post.author.username}</Text>
+                              <Text textTransform={"capitalize"} fontWeight={'semibold'} color='gray.600'>{post.author.bio}</Text>
+                              <Text fontWeight={'semibold'} color='gray.500'>{dateFormatter.format(post.createdAt)}</Text>
                          </Box>
                     </Flex>
                     <Flex ml={'auto'} align='center' gap='10px'>
-                         <Button>Follow</Button>
+                         <Button variant={'outline'}>+ Follow</Button>
                          <Box className='post-options-menu'>
                               <Box className='hamberger-menu'>
                                    <Text></Text>
@@ -75,12 +72,12 @@ function PostCard({ post }: Props) {
 
                <Box as='section' className='post-main'>
                     <Box className='post-content-description'>
-                         <Text className='post-content-title'>I Am the best Coder In the World</Text>
-                         <Text className='post-content-message'>Lorem ipsum dolor sit amet consectetur adipisicing elit. Quia, placeat in! Vel unde, nesciunt, voluptates explicabo doloribus, officiis animi numquam at dolores laudantium ipsum sequi repudiandae accusamus soluta? Culpa, beatae!</Text>
+                         <Text className='post-content-title'>{post.title}</Text>
+                         <Text className='post-content-message'>{post.description}</Text>
                          <input type='checkbox' className='expand-btn' data-expand-btn='' />
                     </Box>
                     <Box className='post-content-image'>
-                         <Image src='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSNPX-BSMWAUKrcRFDtDa-0F9Whjo-wl8JNkA&usqp=CAU' />
+                         <Image src={post?.content} />
                     </Box>
                </Box>
 
@@ -91,7 +88,7 @@ function PostCard({ post }: Props) {
                          <Text><BiLike /></Text>
                          <Text>Like</Text>
                     </Flex>
-                    <Flex align={'center'} gap='5px' flex={1} justify='center' p='2'>
+                    <Flex onClick={() => setComments(v => !v)} align={'center'} gap='5px' flex={1} justify='center' p='2'>
                          <Text><BiCommentDots /></Text>
                          <Text>Comment</Text>
                     </Flex>
@@ -103,14 +100,16 @@ function PostCard({ post }: Props) {
 
                <hr style={{ margin: "5px 0" }} />
 
-               <Box as='section' className='comments-container'>
+               {showComments && (
+                    <Box as='section' className='comments-container'>
 
-                    <CommentForm autoFocus={true} onSubmit={onCreateComment} />
+                         <CommentForm autoFocus={true} onSubmit={onCreateComment} />
 
-                    {post?.RootComments != null && post?.RootComments.length > 0 &&
-                         <CommentsList comments={post.RootComments} replies={post.Replies} />
-                    }
-               </Box>
+                         {post?.RootComments != null && post?.RootComments.length > 0 &&
+                              <CommentsList comments={post.RootComments} replies={post.Replies} />
+                         }
+                    </Box>
+               )}
           </Box >
      )
 }

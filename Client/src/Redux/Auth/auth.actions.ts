@@ -7,7 +7,7 @@ import { IUser, UserI } from "../../Constants/constant";
 import { ToastType } from "../../Custom-Hooks/Toast"
 
 
-export const GoogleAuth = () => async (dispatch: Dispatch) => {
+export const GoogleAuth = (navigate:Function,Toast:Function) => async (dispatch: Dispatch) => {
      dispatch({ type: Types.AUTH_LOADING });
      try {
           const userCredential = await signInWithPopup(auth, Provider);
@@ -24,6 +24,14 @@ export const GoogleAuth = () => async (dispatch: Dispatch) => {
           const response = await axios.post("/user/googleauth", userDetail)
           console.log('response: ', response);
 
+
+          sessionStorage.setItem("user", JSON.stringify(response.data.credentials));
+
+          Toast("Login Success", ToastType.success);
+
+          dispatch({ type: Types.SIGNIN_SUCCESS, payload: response.data.credentials })
+
+          navigate("/")
      } catch (error) {
           console.log('error: ', error);
           dispatch({ type: Types.AUTH_ERROR, payload: error });

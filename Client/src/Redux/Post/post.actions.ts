@@ -12,15 +12,18 @@ type CreateCommentType = {
      parent?: string
 }
 
-const getAllPost = () => async (dispatch: Dispatch) => {
+export const getAllPost = () => async (dispatch: Dispatch) => {
      dispatch({ type: Types.POST_LOADING });
      try {
           const response = await axios.get(`/post/all`);
           const posts = response.data.posts;
+          console.log('posts: ', posts);
 
           const FinalPosts = posts.map((post: IPost) => {
                const { null: RootComments, ...Replies } = commentsWithParentId(post.comments)
-               RootComments.sort((a: IComment, b: IComment) => b.createdAt - a.createdAt)
+               if (RootComments) {
+                    RootComments.sort((a: IComment, b: IComment) => b.createdAt - a.createdAt)
+               }
                return { ...post, RootComments, Replies }
           });
 
@@ -31,7 +34,7 @@ const getAllPost = () => async (dispatch: Dispatch) => {
      }
 }
 
-const getComments = (url: string) => async (dispatch: Dispatch) => {
+export const getComments = (url: string) => async (dispatch: Dispatch) => {
      dispatch({ type: Types.POST_LOADING });
      try {
           const response = await axios.get(`/post/${url}/comments`);
@@ -44,7 +47,21 @@ const getComments = (url: string) => async (dispatch: Dispatch) => {
      }
 }
 
-const createComment = (data: CreateCommentType) => async (dispatch: Dispatch<any>) => {
+export const createPost = (data: any) => async (dispatch: Dispatch<any>) => {
+     dispatch({ type: Types.POST_LOADING });
+     try {
+          const response = await axios.post(`/post/new`, data);
+          console.log('response: ', response);
+          dispatch(getAllPost());
+
+          dispatch({ type: Types.POST_OPERATION_SUCCESS })
+     } catch (error) {
+          console.log('error: ', error);
+          dispatch({ type: Types.POST_ERROR, payload: error });
+     }
+}
+
+export const createComment = (data: CreateCommentType) => async (dispatch: Dispatch<any>) => {
      dispatch({ type: Types.POST_LOADING });
      try {
           const user = JSON.parse(sessionStorage.getItem("user") || "");
@@ -64,7 +81,7 @@ const createComment = (data: CreateCommentType) => async (dispatch: Dispatch<any
 }
 
 
-const commentsWithParentId = (Comments: IComment[]) => {
+export const commentsWithParentId = (Comments: IComment[]) => {
      if (Comments == null) return []
      const group: any = {};
      Comments?.forEach((comment: any) => {
@@ -76,5 +93,3 @@ const commentsWithParentId = (Comments: IComment[]) => {
      return group;
 }
 
-
-export { getAllPost, getComments, createComment };

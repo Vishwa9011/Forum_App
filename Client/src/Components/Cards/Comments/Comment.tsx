@@ -41,21 +41,21 @@ function Comment({ comment, replies }: Props) {
                parentID: comment._id
           }
           dispatch(createComment(data))
+          setIsReplying(false);
      }
-
 
      return (
           <>
                <Box as='article' className='user-comment comment-body' mt='10px'>
                     <Box as="header" className='comment-user-img'>
-                         <Image src="https://media.licdn.com/dms/image/D4D03AQFkJ--zEu0m9A/profile-displayphoto-shrink_100_100/0/1668695872909?e=1681344000&v=beta&t=YrUhN0M9XSGgXbiaJeAxJHyQvcvhKFiGctSuS2dLOGs" alt="" />
+                         <Image src={comment.author.photoURL || "https://bit.ly/3kkJrly"} alt="" />
                     </Box>
                     <Box as='section' className='comment'>
-                         <Box as='section' className='comment-main'>
+                         <Box borderColor={'gray.400'} as='section' className='comment-main'>
                               <Box className='comment-header'>
                                    <Box>
-                                        {/* <Text className='comment-username'>{comment.author.username}</Text>
-                                        <Text className='comment-date-time'>{dateFormatter.format(comment.createdAt)}</Text> */}
+                                        <Text className='comment-username'>{comment.author.username}</Text>
+                                        <Text className='comment-date-time' fontWeight={'semibold'} color='gray.500'>{dateFormatter.format(comment.createdAt)}</Text>
                                    </Box>
                                    <Box className='comment-options-menu'>
                                         <Button className='hamberger-menu' fontSize={'1.5rem'}>
@@ -76,8 +76,8 @@ function Comment({ comment, replies }: Props) {
                                    </Box>
                               </Box>
                          </Box>
-                         <Box as='footer' className='comment-like-reply'>
-                              <Box className='comment-like'>
+                         <Box as='footer' className='comment-like-reply' color={'gray.700'} >
+                              <Box className='comment-like' >
                                    <IconBtn Icon={BiLike} arial-label="like">
                                         Like
                                    </IconBtn>
@@ -93,17 +93,21 @@ function Comment({ comment, replies }: Props) {
                          </Box>
                     </Box>
                </Box>
-               {IsReplying && (
-                    <Box className='nested-reply' marginLeft={'40px'}>
-                         <CommentForm onSubmit={onCommentReply} autoFocus={true} />
-                    </Box>
-               )}
+               {
+                    IsReplying && (
+                         <Box className='nested-reply' marginLeft={'40px'}>
+                              <CommentForm onSubmit={onCommentReply} autoFocus={true} />
+                         </Box>
+                    )
+               }
 
-               {childComments && childComments?.length > 0 && (
-                    <Box className='nested-comments' ml='45px'>
-                         <CommentsList comments={childComments} replies={replies} />
-                    </Box>
-               )}
+               {
+                    childComments && childComments?.length > 0 && (
+                         <Box className='nested-comments' ml='45px'>
+                              <CommentsList comments={childComments} replies={replies} />
+                         </Box>
+                    )
+               }
           </>
      )
 }
