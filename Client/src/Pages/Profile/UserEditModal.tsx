@@ -19,6 +19,12 @@ import {
   Textarea,
 } from "@chakra-ui/react";
 import { SmallCloseIcon } from "@chakra-ui/icons";
+import { IUser } from "../../Constants/constant";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "../../Redux/store";
+import { updateUser } from "../../Redux/Auth/auth.actions";
+import { Dispatch } from "redux";
+import UseToastMsg from "../../Custom-Hooks/Toast";
 
 type Props = {
   isOpen: boolean;
@@ -26,6 +32,24 @@ type Props = {
 };
 
 const UserEditModal = ({ isOpen, onClose }: Props) => {
+  const { userCredential, loading } = useSelector(
+    (store: RootState) => store.auth
+  );
+  const { Toast } = UseToastMsg();
+  const [userData, setUserData] = React.useState(userCredential);
+  const dispatch: Dispatch<any> = useDispatch();
+
+  const { username, gender, phoneNumber, photoURL, bio, occupation } = userData;
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    let val = e.target.value;
+    setUserData({ ...userData, [e.target.name]: val });
+  };
+
+  const handleUpdate = () => {
+    dispatch(updateUser(userData, onClose, Toast));
+  };
+
   return (
     <Modal isOpen={isOpen} onClose={onClose} size="4xl">
       <ModalOverlay />
@@ -41,11 +65,16 @@ const UserEditModal = ({ isOpen, onClose }: Props) => {
             <Heading lineHeight={1.1} fontSize={{ base: "xl", sm: "2xl" }}>
               User Profile Edit
             </Heading>
-            <FormControl id="userName" w="min-content">
+            <FormControl id="user" w="min-content">
               <FormLabel>User Icon</FormLabel>
               <Stack direction={["column", "row"]} spacing={6}>
                 <Center>
-                  <Avatar size="xl" bg="blue.500" name="Ashok Kumar" src="#">
+                  <Avatar
+                    size="xl"
+                    bg="blue.500"
+                    name={username}
+                    src={photoURL}
+                  >
                     <AvatarBadge
                       as={IconButton}
                       size="sm"
@@ -69,11 +98,15 @@ const UserEditModal = ({ isOpen, onClose }: Props) => {
                   placeholder="UserName"
                   _placeholder={{ color: "gray.500" }}
                   type="text"
+                  name="username"
+                  value={username}
+                  onChange={handleChange}
                 />
               </FormControl>
               <FormControl width={"100%"} id="gender">
                 <FormLabel>Gender</FormLabel>
-                <Select>
+                <Select name="gender" value={gender} onChange={handleChange}>
+                  <option value="">Select Gender</option>
                   <option value="male">Male</option>
                   <option value="female">Female</option>
                 </Select>
@@ -86,11 +119,18 @@ const UserEditModal = ({ isOpen, onClose }: Props) => {
                   placeholder="+91 9999999999"
                   _placeholder={{ color: "gray.500" }}
                   type="number"
+                  name="phoneNumber"
+                  value={phoneNumber}
+                  onChange={handleChange}
                 />
               </FormControl>
               <FormControl id="role" isRequired>
                 <FormLabel>Occupation</FormLabel>
-                <Select>
+                <Select
+                  name="occupation"
+                  value={occupation}
+                  onChange={handleChange}
+                >
                   <option value="">Select Occupation</option>
                   <option value="student">Student</option>
                   <option value="engineer">Engineer</option>
@@ -102,16 +142,22 @@ const UserEditModal = ({ isOpen, onClose }: Props) => {
               <Textarea
                 placeholder="Write our bio"
                 _placeholder={{ color: "gray.500" }}
+                name="bio"
+                value={bio}
+                onChange={handleChange}
               />
             </FormControl>
             <Stack spacing={6} direction={["column", "row"]}>
               <Button
+                isLoading={loading}
+                loadingText="Updating..."
                 bg={"blue.400"}
                 color={"white"}
                 w="full"
                 _hover={{
                   bg: "blue.500",
                 }}
+                onClick={handleUpdate}
               >
                 Save
               </Button>

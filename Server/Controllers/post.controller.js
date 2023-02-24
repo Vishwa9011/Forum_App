@@ -1,3 +1,4 @@
+require("dotenv").config()
 const { PostModel, CommentModel } = require("../Models/post.model");
 
 async function PostRouterHome(req, res) {
@@ -21,7 +22,7 @@ async function AllPost(req, res) {
                               path: "author",
                               model: "user"
                          }
-                    }])
+                    }]).sort({createdAt:-1})
           res.status(200).json({ status: 200, posts, message: "all post has been sent." })
      } catch (error) {
           console.log('error: ', error);
@@ -51,12 +52,15 @@ async function SingleUserAllPost(req, res) {
      }
 }
 
+
+
 async function CreatePost(req, res) {
      const payload = req.body;
+     console.log('payload: ', payload);
      try {
           const post = new PostModel(payload);
-          await post.save();
-          res.status(201).json({ status: 200, message: "Post has been created.", post });
+          await post.save()
+          res.status(201).json({ status: 200, message: "Post has been created." });
      } catch (error) {
           console.log('error: ', error);
           res.send(error)
@@ -66,6 +70,7 @@ async function CreatePost(req, res) {
 async function UpdatePost(req, res) {
      const id = req.params.id;
      const payload = req.body
+     console.log('payload: ', payload);
      try {
           let post = PostModel.findById(id);
           post = { ...post, ...payload, updatedAt: Date.now(), edited: true };

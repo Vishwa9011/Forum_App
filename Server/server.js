@@ -5,6 +5,14 @@ const cookieParser = require("cookie-parser");
 const { connection } = require("./Configs/db");
 const { PostRouter } = require("./Routes/post.routes");
 const { UserRouter } = require("./Routes/user.router");
+const cloudinary = require("cloudinary").v2;
+
+cloudinary.config({
+     cloud_name: 'dpzbtnmfl',
+     secure: true,
+     api_key: process.env.CLOUDINARY_API_KEY,
+     api_secret: process.env.CLOUDINARY_SECRET_KEY,
+})
 
 const app = express();
 

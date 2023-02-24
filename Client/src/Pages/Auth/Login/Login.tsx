@@ -23,6 +23,8 @@ import {
 } from "@chakra-ui/react";
 import { FcSmartphoneTablet, FcGoogle } from "react-icons/fc";
 import UseToastMsg from "../../../Custom-Hooks/Toast";
+import { useSelector } from "react-redux";
+import { RootState } from "../../../Redux/store";
 import { useNavigate, Link as Navlink } from "react-router-dom";
 import { GoogleAuth } from "./../../../Redux/Auth/auth.actions";
 
@@ -38,6 +40,7 @@ const initialUserData: ILoginCred = {
 
 const Login = () => {
 	const { Toast } = UseToastMsg();
+	const { loading } = useSelector((store: RootState) => store.auth);
 	const navigate = useNavigate();
 	const dispatch: Dispatch<any> = useDispatch();
 	const [userData, setUserData] = useState(initialUserData);
@@ -47,7 +50,8 @@ const Login = () => {
 		setUserData({ ...userData, [e.target.name]: val });
 	};
 
-	const { email, password } = userData;
+
+  const { email, password } = userData;
 
 	const handleSubmit = () => {
 		if (!email && !password) {
@@ -131,6 +135,7 @@ const Login = () => {
 													<Link color={"blue.400"}>Forgot password?</Link>
 												</Stack>
 												<Button
+													isLoading={loading}
 													bg={"blue.400"}
 													color={"white"}
 													_hover={{ bg: "blue.500" }}
@@ -178,6 +183,7 @@ const Login = () => {
 			</Box>
 		</>
 	);
+  
 };
 
 export default Login;
