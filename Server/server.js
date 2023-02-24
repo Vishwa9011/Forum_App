@@ -5,19 +5,8 @@ const cookieParser = require("cookie-parser");
 const { connection } = require("./Configs/db");
 const { PostRouter } = require("./Routes/post.routes");
 const { UserRouter } = require("./Routes/user.router");
-const cloudinary = require("cloudinary").v2;
-
-cloudinary.config({
-     cloud_name: 'dpzbtnmfl',
-     secure: true,
-     api_key: process.env.CLOUDINARY_API_KEY,
-     api_secret: process.env.CLOUDINARY_SECRET_KEY,
-})
 
 const app = express();
-
-// app.use(cookieParser())
-
 
 app.use(cors())
 
@@ -28,14 +17,17 @@ app.use("/user", UserRouter)
 app.use("/post", PostRouter)
 
 app.get("/", (req, res) => {
-     // const cookie = req.cookies.User
-     // if (cookie == null) {
-     //      res.cookie('User', "63f631014d5749dd2bf27257", { httpOnly: true });
-     // } else {
-     //      console.log('cookie: ', cookie);
-     // }
      res.send("Home Page")
 })
+
+app.get("*", (req, res) => {
+     res.status(404).json("not found")
+})
+
+app.use(function (err, req, res, next) {
+     res.send("Error")
+})
+
 
 const port = process.env.PORT || 8080
 app.listen(port, async () => {

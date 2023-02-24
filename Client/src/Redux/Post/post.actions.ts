@@ -61,6 +61,24 @@ export const createPost = (data: any) => async (dispatch: Dispatch<any>) => {
      }
 }
 
+
+export const updatePost = (id: string, data: { title: string, description: string, image?: any }) => async (dispatch: Dispatch<any>) => {
+     dispatch({ type: Types.POST_LOADING });
+     try {
+          const response = await axios.post(`/post/update/${id}`, data);
+          console.log('response: ', response);
+
+          dispatch(getAllPost());
+
+          dispatch({ type: Types.POST_OPERATION_SUCCESS })
+     } catch (error) {
+          console.log('error: ', error);
+          dispatch({ type: Types.POST_ERROR, payload: error });
+     }
+}
+
+
+
 export const createComment = (data: CreateCommentType) => async (dispatch: Dispatch<any>) => {
      dispatch({ type: Types.POST_LOADING });
      try {

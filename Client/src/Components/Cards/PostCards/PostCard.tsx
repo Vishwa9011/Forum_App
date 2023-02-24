@@ -12,12 +12,15 @@ import { createComment, getComments } from '../../../Redux/Post/post.actions'
 import { RootState } from '../../../Redux/store'
 import CommentForm from '../Comments/CommentForm'
 import { dateFormatter } from '../../../helper/helper'
+import UpdatePost from '../../../Pages/Post/UpdatePost'
 
 type Props = {
-     post: IPost
+     post: IPost,
+     onOpen: () => void,
+     update: (post: IPost) => void,
 }
 
-function PostCard({ post }: Props) {
+function PostCard({ post, onOpen, update }: Props) {
      const [data, setData] = useState<any>([]);
      const dispatch: Dispatch<any> = useDispatch();
      const [showComments, setComments] = useState<boolean>(false);
@@ -33,7 +36,6 @@ function PostCard({ post }: Props) {
      useEffect(() => {
           // dispatch(getComments("63f6011e651603c1b8e68269"))
      }, [])
-
 
      return (
           <Box as='article' p='2' border={'1px'} borderColor={'gray.400'} borderRadius='5px'>
@@ -59,7 +61,7 @@ function PostCard({ post }: Props) {
                               <Box className='post-options-list'>
                                    <UnorderedList fontWeight={'semibold'} >
                                         <ListItem>Report</ListItem>
-                                        <ListItem>Edit</ListItem>
+                                        <ListItem onClick={() => (onOpen(), update(post))}>Edit</ListItem>
                                         <ListItem>Delete</ListItem>
                                         <ListItem>Save</ListItem>
                                    </UnorderedList>

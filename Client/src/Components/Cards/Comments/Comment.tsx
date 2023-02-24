@@ -77,7 +77,7 @@ function Comment({ comment, replies }: Props) {
                               </Box>
                          </Box>
                          <Box as='footer' className='comment-like-reply' color={'gray.700'} >
-                              <Box className='comment-like' >
+                              <Box className='comment-like'>
                                    <IconBtn Icon={BiLike} arial-label="like">
                                         Like
                                    </IconBtn>

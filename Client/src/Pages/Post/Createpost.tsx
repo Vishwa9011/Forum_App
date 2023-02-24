@@ -3,6 +3,7 @@ import "./createpost.modules.css"
 import { BsUpload } from "react-icons/bs";
 import { Box, Button, Flex, FormControl, FormLabel, Image, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Stack, Text, Textarea, useDisclosure } from '@chakra-ui/react';
 import { MdUpload } from "react-icons/md";
+import { IoCloudDone } from "react-icons/io5";
 import { Input } from '@chakra-ui/input';
 import { useDispatch, useSelector } from 'react-redux';
 import { Dispatch } from 'redux';
@@ -15,7 +16,8 @@ function Createpost() {
    const { Toast } = UseToastMsg();
    const titleRef = useRef<HTMLInputElement>(null)
    const descRef = useRef<HTMLTextAreaElement>(null)
-   const imageRef = useRef<HTMLInputElement>(null)
+   const imageRef = useRef<HTMLInputElement>(null);
+   const [ImageFile, setImageFile] = useState<any>([])
    const { isOpen, onOpen, onClose } = useDisclosure()
    const [error, setError] = useState<boolean>(false)
    const dispatch: Dispatch<any> = useDispatch()
@@ -49,13 +51,11 @@ function Createpost() {
             }
             console.log('data: ', data);
             dispatch(createPost(data))
+            onClose()
          })
          .catch((err) => {
             console.log(err)
          })
-
-
-
    }
 
    return (
@@ -74,10 +74,17 @@ function Createpost() {
                <ModalCloseButton />
                <ModalBody pb={2}>
                   <Stack spacing={'10px'}>
-                     <FormControl className='image-input' _hover={{ bg: "#307eff" }}>
-                        <FormLabel gap='10px' justifyContent={'center'} display={'flex'} className='image-input-label' alignItems='center'><MdUpload />Choose the Image</FormLabel>
-                        <Input ref={imageRef} type='file' visibility={'hidden'} />
-                     </FormControl>
+                     {(ImageFile && ImageFile.length) ?
+                        <Flex align={'center'} justify='space-between' borderRadius={'5px'} bg='green.200' color={'blackAlpha.800'} fontWeight='semibold' w='100%' p='2' px='4' border={'1px'} borderColor='gray.200'>
+                           File Uploaded
+                           <Text as='span'><IoCloudDone /></Text>
+                        </Flex>
+                        :
+                        <FormControl className='image-input' _hover={{ bg: "#307eff" }}>
+                           <FormLabel gap='10px' justifyContent={'center'} display={'flex'} className='image-input-label' alignItems='center'><MdUpload />Choose the Image</FormLabel>
+                           <Input ref={imageRef} onChange={e => setImageFile(e.target.files)} type='file' visibility={'hidden'} />
+                        </FormControl>
+                     }
                      <FormControl >
                         <FormLabel>Title</FormLabel>
                         <Input placeholder='Title' ref={titleRef} />
