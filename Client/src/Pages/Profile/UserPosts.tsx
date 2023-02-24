@@ -1,4 +1,11 @@
-import { Box, Button, Container, Grid, useDisclosure } from "@chakra-ui/react";
+import {
+  Box,
+  Button,
+  Container,
+  Grid,
+  GridItem,
+  useDisclosure,
+} from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
@@ -11,6 +18,7 @@ import {
 } from "../../Redux/Post/post.actions";
 import { RootState } from "../../Redux/store";
 import UpdatePost from "../Post/UpdatePost";
+import UserPostCard from "./UserPostCard";
 
 function UserPost() {
   const dispatch: Dispatch<any> = useDispatch();
@@ -28,34 +36,24 @@ function UserPost() {
   };
 
   return (
-    <Container maxW="5xl" mt="40px">
-      <Grid maxW={"500px"} m="auto">
-        <Box>
-          {/* <Button as={Link} to='/create'>Create Post</Button> */}
-          {/* <Createpost /> */}
-          {post && (
-            <UpdatePost
-              post={post}
-              isOpen={isOpen}
-              onOpen={onOpen}
-              onClose={onClose}
-            />
-          )}
-        </Box>
-        <Grid gap="20px" minH="600px">
-          {posts.map((post: IPost) => {
-            return (
-              <PostCard
-                post={post}
-                update={UpdatePostData}
-                onOpen={onOpen}
-                key={post._id}
-              />
-            );
-          })}
-        </Grid>
-      </Grid>
-    </Container>
+    <Grid
+      my={"40px"}
+      gap={"20px 20px"}
+      templateColumns={{
+        base: `repeat(2, 1fr)`,
+        md: "repeat(3, 1fr)",
+        lg: "repeat(4, 1fr)",
+      }}
+      cursor="pointer"
+    >
+      {posts.map((post: IPost) => {
+        return (
+          <GridItem key={post._id}>
+            <UserPostCard post={post} />
+          </GridItem>
+        );
+      })}
+    </Grid>
   );
 }
 
