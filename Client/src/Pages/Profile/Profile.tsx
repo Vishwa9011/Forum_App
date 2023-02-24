@@ -23,6 +23,7 @@ import Navbar from "../../Components/Navbar/Navbar";
 import UseToastMsg from "../../Custom-Hooks/Toast";
 import { Dispatch } from "redux";
 import { logout } from "../../Redux/Auth/auth.actions";
+import UserPost from "./UserPosts";
 
 type Props = {};
 
@@ -180,6 +181,7 @@ export default function Profile({}: Props) {
         </Flex>
         <UserEditModal isOpen={isOpen} onClose={onClose} />
       </Container>
+      <UserPost />
     </>
   );
 }

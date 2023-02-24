@@ -5,6 +5,7 @@ const post_controller = require("../Controllers/post.controller")
 PostRouter.get("/", post_controller.PostRouterHome);
 
 PostRouter.get("/all", post_controller.AllPost);
+PostRouter.get("/all/:id", post_controller.SingleUserAllPost);
 
 PostRouter.get("/:id", post_controller.AllPost);
 
