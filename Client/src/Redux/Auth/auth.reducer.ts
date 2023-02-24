@@ -55,7 +55,7 @@ export const Reducer = (state = initialState, { type, payload }: any) => {
           case Types.VERIFY_EMAIL_FAIL:
                return ({ ...state, loading: false, error: payload.message });
           case Types.VERIFY_EMAIL_SUCCESS:
-               return ({ ...state, loading: false, error: '', userCredential: { ...payload } });
+               return ({ ...state, loading: false, error: '', userCredential: payload});
           case Types.AUTH_USER_PROFILE_PHOTO_UPDATE:
                return ({ ...state, loading: false, error: '', userCredential: { ...state.userCredential, photoURL: payload } })
           case Types.USER_UPDATE_SUCCESS:

@@ -65,7 +65,6 @@ export const signup = (userData: UserI, navigate: Function, Toast: Function) => 
      try {
           let res = await axios.post("/user/register", userData);
           dispatch({ type: Types.SIGNUP_SUCCESS, payload: res.data.credentials });
-          console.log(res.data)
           sessionStorage.setItem("user", JSON.stringify(res.data.credentials));
           Toast("Registeration Succesfull", ToastType.success);
           navigate("/sendverifyemail");
@@ -112,8 +111,7 @@ export const verifyemail = (credential: string, Toast: Function, navigate: Funct
                navigate("/login");
           } 
           else{
-               dispatch({ type: Types.VERIFY_EMAIL_SUCCESS,payload: res.data.credential});
-               sessionStorage.setItem("token",res.data.token);
+               dispatch({ type: Types.VERIFY_EMAIL_SUCCESS,payload: res.data.credentials});
                sessionStorage.setItem("user",JSON.stringify(res.data.credentials));
                Toast(res.data?.message|| "Login Success",ToastType.success)
                navigate("/");
