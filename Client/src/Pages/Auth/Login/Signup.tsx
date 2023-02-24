@@ -7,14 +7,11 @@ import {
   FormLabel,
   Input,
   InputGroup,
-  HStack,
   Stack,
   Button,
   Heading,
   Text,
   useColorModeValue,
-  RadioGroup,
-  Radio,
   Container,
 } from "@chakra-ui/react";
 import { FcGoogle, FcKey } from "react-icons/fc";
@@ -57,6 +54,11 @@ const Signup = () => {
     dispatch(signup(userData, navigate, Toast));
     setUserData(initialUserData);
   };
+
+  const SignInWithGoogle = () => {
+    dispatch(GoogleAuth(navigate, Toast));
+  };
+
 
   return (
     <>
@@ -151,6 +153,7 @@ const Signup = () => {
                         </Button>
 
                         <Button
+                          onClick={SignInWithGoogle}
                           loadingText="Submitting"
                           size="lg"
                           bg={"white.400"}
@@ -169,9 +172,9 @@ const Signup = () => {
                       <Stack>
                         <Text align={"center"}>
                           Already a user?{" "}
-                          <Link to="/login" style={{ color: "blue" }}>
+                          <Text as={Link} to="/login" color={"blue.600"} _hover={{ textDecoration: 'underline' }}>
                             Login
-                          </Link>
+                          </Text>
                         </Text>
                       </Stack>
                     </Stack>
@@ -181,7 +184,7 @@ const Signup = () => {
             </div>
           </Flex>
         </Container>
-      </Flex>
+      </Flex >
     </>
   );
 };

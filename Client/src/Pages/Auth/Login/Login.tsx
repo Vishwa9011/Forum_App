@@ -18,14 +18,13 @@ import {
 	Checkbox,
 	Text,
 	useColorModeValue,
-	Link,
 	Container,
 } from "@chakra-ui/react";
 import { FcSmartphoneTablet, FcGoogle } from "react-icons/fc";
 import UseToastMsg from "../../../Custom-Hooks/Toast";
 import { useSelector } from "react-redux";
 import { RootState } from "../../../Redux/store";
-import { useNavigate, Link as Navlink } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { GoogleAuth } from "./../../../Redux/Auth/auth.actions";
 
 interface ILoginCred {
@@ -51,7 +50,7 @@ const Login = () => {
 	};
 
 
-  const { email, password } = userData;
+	const { email, password } = userData;
 
 	const handleSubmit = () => {
 		if (!email && !password) {
@@ -87,7 +86,7 @@ const Login = () => {
 							>
 								<Stack spacing={4} mx={"auto"} maxW={"xl"} px={6} py={4} width={"100%"}>
 									<Stack align={"center"}>
-										<Heading fontSize={"3xl"} textAlign={"center"}>LogIn</Heading>
+										<Heading fontSize={"3xl"} textAlign={"center"}>Login</Heading>
 										<Text
 											fontSize={"lg"}
 											color={"gray.600"}
@@ -132,7 +131,7 @@ const Login = () => {
 													justify={"space-between"}
 												>
 													<Checkbox>Remember me</Checkbox>
-													<Link color={"blue.400"}>Forgot password?</Link>
+													<Text color={"blue.400"}>Forgot password?</Text>
 												</Stack>
 												<Button
 													isLoading={loading}
@@ -162,14 +161,12 @@ const Login = () => {
 												<div style={{ textAlign: "center" }}>
 													<Text>
 														New User?{" "}
-														<Navlink
+														<Text as={Link}
 															to={"/signup"}
-															style={{
-																color: "#4299e1",
-															}}
+															color={"blue.600"} _hover={{ textDecoration: 'underline' }}
 														>
 															Create a new account
-														</Navlink>
+														</Text>
 													</Text>
 												</div>
 											</Stack>
@@ -183,7 +180,7 @@ const Login = () => {
 			</Box>
 		</>
 	);
-  
+
 };
 
 export default Login;
