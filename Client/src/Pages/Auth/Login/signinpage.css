@@ -1,7 +1,4 @@
 #main {
-    height: auto;
-    margin-top: 50px;
-    margin-bottom: 50px;
     display: flex;
     justify-content: space-between;
     /* border: 1px solid red; */
@@ -9,6 +6,7 @@
 
 #left {
     width: 100%;
+    
     /* border: 1px solid black; */
     border-top-left-radius: 10px;
     border-bottom-left-radius: 10px;
@@ -30,3 +28,9 @@
     border-bottom-left-radius: 10px;
     /* object-fit:contain; */
 }
+
+/* @media (min-width: 308px) and (max-width: 497px){
+    #right{
+        padding-top: 10px;
+    }
+} */

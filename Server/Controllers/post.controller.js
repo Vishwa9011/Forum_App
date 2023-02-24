@@ -22,7 +22,7 @@ async function AllPost(req, res) {
                               path: "author",
                               model: "user"
                          }
-                    }])
+                    }]).sort({createdAt:-1})
           res.status(200).json({ status: 200, posts, message: "all post has been sent." })
      } catch (error) {
           console.log('error: ', error);
