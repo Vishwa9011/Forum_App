@@ -18,11 +18,11 @@ function SearchPopup({ toggle }: Props) {
   const FilterData = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchText(e.target.value.toLowerCase());
     const searchText = e.target.value.toLowerCase();
-    const filteredDataFromSearchData = searchData.filter(
+    const filteredDataFromSearchData = posts.filter(
       (post: IPost) =>
-        item.bran.toLowerCase().includes(searchText) ||
-        item.description.toLowerCase().includes(searchText) ||
-        item.category.toLowerCase().includes(searchText)
+        post.title.toLowerCase().includes(searchText) ||
+        post.description.toLowerCase().includes(searchText) ||
+        post.author.username.toLowerCase().includes(searchText)
     );
     setFilteredData(filteredDataFromSearchData);
   };
@@ -73,7 +73,7 @@ function SearchPopup({ toggle }: Props) {
                 </Button>
                 <Box w="100%">
                   <Input
-                    placeholder="Search"
+                    placeholder="Search user and posts"
                     ref={inputRef}
                     variant="unstyled"
                     onChange={FilterData}
@@ -82,9 +82,9 @@ function SearchPopup({ toggle }: Props) {
                 </Box>
               </Flex>
               <Box>
-                {posts.length ? (
+                {filteredData.length && searchText ? (
                   <Box maxH="50vh" overflowY={"scroll"}>
-                    <SearchTable posts={posts} />
+                    <SearchTable posts={filteredData} />
                   </Box>
                 ) : null}
               </Box>
