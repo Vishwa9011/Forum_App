@@ -16,9 +16,7 @@ function Post() {
      const dispatch: Dispatch<any> = useDispatch()
      const { posts, likes } = useSelector((store: RootState) => store.post);
      const { userCredential, following } = useSelector((store: RootState) => store.auth);
-     const [post, setPost] = useState<boolean>(false)
      const [isOpen, onOpen, onClose]: any = useToggle(false)
-
 
      const GroupLikedPost = useMemo(() => {
           const group: any = {};
@@ -52,9 +50,6 @@ function Post() {
           onOpen()
      }
 
-     useEffect(() => {
-          dispatch(getAllPost());
-     }, [])
 
      return (
           <Box>
@@ -80,4 +75,4 @@ function Post() {
      )
 }
 
-export default Post
+export default Post;

@@ -29,36 +29,45 @@ function PostCard({ post, IsLikedPost, IsFollowing }: Props) {
      const { Toast } = UseToastMsg();
      const dispatch: Dispatch<any> = useDispatch();
      const [showComments, setComments] = useState<boolean>(false);
-     const { userCredential, following } = useSelector((store: RootState) => store.auth)
-     const [isOpen, onOpen, onClose]: any = useToggle(false)
-     const { likes } = useSelector((store: RootState) => store.post)
+     const { userCredential } = useSelector((store: RootState) => store.auth);
+     const [isOpen, onOpen, onClose]: any = useToggle(false);
 
      const onCreateComment = (message: string) => {
-          if (!userCredential._id) navigate("/login")
+          if (!userCredential._id) navigate("/login");
           const data = {
                message,
                postID: post._id,
                author: userCredential._id,
-               authorID: userCredential._id
-          }
-          dispatch(createComment(data))
-     }
+               authorID: userCredential._id,
+          };
+          dispatch(createComment(data));
+     };
 
      const DeletePost = () => {
-          dispatch(deletePost(post._id))
-     }
+          dispatch(deletePost(post._id));
+     };
 
      const FollowUser = () => {
-          if (!userCredential._id) navigate("/login")
+          if (!userCredential._id) navigate("/login");
 
           const data = {
                userID: userCredential._id,
-               followingID: post.authorID
-          }
-          console.log('data: ', data);
-          dispatch(followUser(data, Toast))
-     }
+               followingID: post.authorID,
+          };
+          console.log("data: ", data);
+          dispatch(followUser(data, Toast));
+     };
 
+     const UnFollowUser = () => {
+          if (!userCredential._id) navigate("/login");
+
+          const data = {
+               userID: userCredential._id,
+               followingID: post.authorID,
+          };
+          console.log("data: ", data);
+          dispatch(unFollowUser(data, Toast));
+     };
 
      const LikePost = () => {
           dispatch(likePost(post._id, userCredential._id))
@@ -67,6 +76,7 @@ function PostCard({ post, IsLikedPost, IsFollowing }: Props) {
      const UnLikePost = () => {
           dispatch(unLikePost(post._id, userCredential._id))
      }
+
 
      return (
           <Box as='article' p='2' pb='0' border={'1px'} borderColor={'gray.400'} borderRadius='5px'>
@@ -158,6 +168,7 @@ function PostCard({ post, IsLikedPost, IsFollowing }: Props) {
                )}
           </Box >
      )
+
 }
 
-export default PostCard
+export default PostCard;

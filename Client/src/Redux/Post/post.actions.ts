@@ -34,6 +34,42 @@ export const getAllPost = () => async (dispatch: Dispatch) => {
      }
 }
 
+export const getSingleUserAllPost = (_id:string) => async (dispatch: Dispatch) => {
+     dispatch({ type: Types.POST_LOADING });
+     try {
+          let id = _id;
+          const response = await axios.get(`post/all/${id}`);
+          const posts = response.data.posts;
+
+          const FinalPosts = posts.map((post: IPost) => {
+               const { null: RootComments, ...Replies } = commentsWithParentId(post.comments)
+               if (RootComments) {
+                    RootComments.sort((a: IComment, b: IComment) => b.createdAt - a.createdAt)
+               }
+               return { ...post, RootComments, Replies }
+          });
+
+          dispatch({ type: Types.GET_SINGLE_USER_ALLPOST_SUCCESS, payload: FinalPosts });
+     } catch (error) {
+          console.log('error: ', error);
+          dispatch({ type: Types.POST_ERROR, payload: error });
+     }
+}
+
+export const getSinglePost = (_id:string,setPost:Function) => async (dispatch: Dispatch) => {
+     dispatch({ type: Types.POST_LOADING });
+     try {
+          let id = _id;
+          const response = await axios.get(`post/singlepost/${id}`);
+          const post = response.data.post;
+          dispatch({ type: Types.GET_SINGLE_POST_SUCCESS, payload: post });
+          setPost(post);
+     } catch (error) {
+          console.log('error: ', error);
+          dispatch({ type: Types.POST_ERROR, payload: error });
+     }
+}
+
 export const getComments = (url: string) => async (dispatch: Dispatch) => {
      dispatch({ type: Types.POST_LOADING });
      try {
