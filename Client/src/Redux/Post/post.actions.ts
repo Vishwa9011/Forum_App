@@ -34,7 +34,7 @@ export const getAllPost = () => async (dispatch: Dispatch) => {
      }
 }
 
-export const getSingleUserAllPost = (_id:string) => async (dispatch: Dispatch) => {
+export const getSingleUserAllPost = (_id: string) => async (dispatch: Dispatch) => {
      dispatch({ type: Types.POST_LOADING });
      try {
           let id = _id;
@@ -56,7 +56,7 @@ export const getSingleUserAllPost = (_id:string) => async (dispatch: Dispatch) =
      }
 }
 
-export const getSinglePost = (_id:string,setPost:Function) => async (dispatch: Dispatch) => {
+export const getSinglePost = (_id: string, setPost: Function) => async (dispatch: Dispatch) => {
      dispatch({ type: Types.POST_LOADING });
      try {
           let id = _id;
@@ -128,13 +128,26 @@ export const deletePost = (id: string) => async (dispatch: Dispatch<any>) => {
 
 
 //  * likes
+
+export const postLikes = (id: string) => async (dispatch: Dispatch<any>) => {
+     try {
+          const response = await axios.get(`/post/${id}/postlikes`);
+          console.log('response: ', response);
+          dispatch({ type: Types.GET_POST_LIKE_SUCCESS, payload: response.data.likes })
+     } catch (error: any) {
+          console.log('error: ', error.message);
+          dispatch({ type: Types.POST_ERROR, payload: error });
+     }
+}
+
+
 export const likePost = (id: string, userId: string) => async (dispatch: Dispatch<any>) => {
      dispatch({ type: Types.POST_LOADING });
      try {
           const response = await axios.post(`/post/${id}/like`, { userId });
           console.log('response: ', response.data);
 
-          dispatch(getAllPost());
+          dispatch(postLikes(userId));
 
           dispatch({ type: Types.GET_POST_LIKE_SUCCESS, payload: response.data.likes })
      } catch (error: any) {
@@ -149,7 +162,7 @@ export const unLikePost = (id: string, userId: string) => async (dispatch: Dispa
           const response = await axios.post(`/post/${id}/unlike`, { userId });
           console.log('response: ', response);
 
-          dispatch(getAllPost());
+          dispatch(postLikes(userId));
 
           dispatch({ type: Types.GET_POST_LIKE_SUCCESS, payload: response.data.likes })
      } catch (error: any) {
@@ -158,16 +171,6 @@ export const unLikePost = (id: string, userId: string) => async (dispatch: Dispa
      }
 }
 
-export const postLikes = (id: string, Toast: Function) => async (dispatch: Dispatch<any>) => {
-     try {
-          const response = await axios.get(`/post/${id}/postlikes`);
-          console.log('response: ', response);
-          dispatch({ type: Types.GET_POST_LIKE_SUCCESS, payload: response.data.likes })
-     } catch (error: any) {
-          console.log('error: ', error.message);
-          dispatch({ type: Types.POST_ERROR, payload: error });
-     }
-}
 
 
 

@@ -44,7 +44,6 @@ function Post() {
           return FollowingGroup[id] == undefined
      }
 
-
      function openCreatePost() {
           if (!userCredential._id) {
                return navigate("/login")

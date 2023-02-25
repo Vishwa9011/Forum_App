@@ -147,7 +147,7 @@ function PostCard({ post, IsLikedPost, IsFollowing }: Props) {
                <Flex as='footer' p='1' className='post-footer'>
                     <Flex tabIndex={0} color={IsLikedPost ? "blue.400" : ''} onClick={IsLikedPost ? UnLikePost : LikePost} align={'center'} gap='5px' flex={1} justify='center' p='2'>
                          <Text>{IsLikedPost ? <AiFillLike /> : <BiLike />}</Text>
-                         <Text> <span>{post.likes}</span> Like</Text>
+                         <Text> <span>{IsLikedPost ? post.likes + 1 : post.likes}</span> Like</Text>
                     </Flex>
                     <Flex onClick={() => setComments(v => !v)} align={'center'} gap='5px' flex={1} justify='center' p='2'>
                          <Text><BiCommentDots /></Text>
