@@ -56,6 +56,20 @@ export const getSingleUserAllPost = (_id:string) => async (dispatch: Dispatch) =
      }
 }
 
+export const getSinglePost = (_id:string,setPost:Function) => async (dispatch: Dispatch) => {
+     dispatch({ type: Types.POST_LOADING });
+     try {
+          let id = _id;
+          const response = await axios.get(`post/singlepost/${id}`);
+          const post = response.data.post;
+          dispatch({ type: Types.GET_SINGLE_POST_SUCCESS, payload: post });
+          setPost(post);
+     } catch (error) {
+          console.log('error: ', error);
+          dispatch({ type: Types.POST_ERROR, payload: error });
+     }
+}
+
 export const getComments = (url: string) => async (dispatch: Dispatch) => {
      dispatch({ type: Types.POST_LOADING });
      try {

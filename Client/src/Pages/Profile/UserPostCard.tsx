@@ -13,6 +13,7 @@ import {
 } from "@chakra-ui/react";
 import { BsStar, BsStarFill, BsStarHalf } from "react-icons/bs";
 import { FiShoppingCart } from "react-icons/fi";
+import { Link } from "react-router-dom";
 import { IPost } from "../../Constants/constant";
 
 type Props = {
@@ -27,7 +28,7 @@ function UserPostCard({ post }: Props) {
         borderWidth="1px"
         rounded="lg"
         shadow="lg"
-        _hover={{ transform: "scale(1.1)" }}
+        _hover={{ transform: "scale(1.05)" }}
         transition="transform 0.3s ease"
         position="relative"
       >
@@ -65,6 +66,9 @@ function UserPostCard({ post }: Props) {
           rounded="lg"
         >
           <Button
+            as={Link}
+            to={`/post/${post._id}`}
+            size={"sm"}
             position="absolute"
             top="50%"
             left="50%"

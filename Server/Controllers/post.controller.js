@@ -33,7 +33,15 @@ async function AllPost(req, res) {
 async function SinglePost(req, res) {
      const id = req.params.id;
      try {
-          const post = await PostModel.findById(id);
+          const post = await PostModel.findById(id).populate([
+               { path: "author", model: "user" },
+               {
+                    path: "comments", model: "Comment",
+                    populate: {
+                         path: "author",
+                         model: "user"
+                    }
+               }])
           res.status(200).json({ status: 200, post, message: "post has been sent." })
      } catch (error) {
           console.log('error: ', error);

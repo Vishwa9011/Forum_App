@@ -32,6 +32,8 @@ export const Reducer = (state = initialState, { type, payload }: any) => {
                return ({ ...state, loading: false, error: "", posts: payload });
           case Types.GET_SINGLE_USER_ALLPOST_SUCCESS:
                return ({ ...state, loading: false, error: "", posts: payload });
+          case Types.GET_SINGLE_POST_SUCCESS:
+               return ({ ...state, loading: false, error: "" });
           case Types.GET_POST_COMMENT_SUCCESS:
                return ({ ...state, loading: false, error: "", RootComments: payload.RootComments, Replies: payload.comments });
           default:
