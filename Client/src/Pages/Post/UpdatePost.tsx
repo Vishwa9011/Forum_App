@@ -12,33 +12,30 @@ import UseToastMsg, { ToastType } from '../../Custom-Hooks/Toast';
 import { RootState } from '../../Redux/store';
 import { IPost } from '../../Constants/constant';
 import { IoCloudDone } from 'react-icons/io5';
+import useToggle from '../../Custom-Hooks/useToggle';
 
 interface props {
      post: IPost,
-     isOpen: boolean,
-     onOpen: () => void,
-     onClose: () => void
 }
 
-function UpdatePost({ post, isOpen, onOpen, onClose }: props) {
+function UpdatePost({ post }: props) {
      const { Toast } = UseToastMsg();
      const [title, setTitle] = useState(post.title);
      const [description, setDescription] = useState(post.description);
      const [imageFile, setImageFile] = useState<any>([]);
-     const [error, setError] = useState<boolean>(false)
-     const dispatch: Dispatch<any> = useDispatch()
-     const { userCredential } = useSelector((store: RootState) => store.auth)
+     const [error, setError] = useState<boolean>(false);
+     const dispatch: Dispatch<any> = useDispatch();
+     const [isOpen, onOpen, onClose]: any = useToggle(false)
 
      const onUpdatePost = () => {
-
-
-          if (!imageFile.length) return UpadateTitleandDescription()
 
           if (title == "" || description == "") {
                return setError(true)
           } else {
                setError(false)
           }
+
+          if (!imageFile.length) return UpadateTitleandDescription()
 
           const form = new FormData();
           form.append("file", imageFile[0]);
@@ -65,11 +62,14 @@ function UpdatePost({ post, isOpen, onOpen, onClose }: props) {
      }
 
      const UpadateTitleandDescription = () => {
+          console.log("without images");
           dispatch(updatePost(post._id, { title, description }))
+          onClose()
      }
 
      return (
           <>
+               <Button w='100%' h='100%' p='.5em' pl='.75em' variant={'unstyled'} textAlign='left' onClick={onOpen}>Edit</Button>
                <Modal closeOnOverlayClick={false} isOpen={isOpen} onClose={onClose}>
                     <ModalOverlay />
                     <ModalContent>
@@ -77,10 +77,10 @@ function UpdatePost({ post, isOpen, onOpen, onClose }: props) {
                          <ModalCloseButton />
                          <ModalBody pb={2}>
                               <Stack spacing={'10px'}>
-                                   <Box>
+                                   <Box m='auto'>
                                         <Image src={post.content} objectFit={'contain'} objectPosition='center' />
                                    </Box>
-                                   {(imageFile && imageFile.length) ?
+                                   {(imageFile && imageFile.length > 0) ?
                                         <Flex align={'center'} justify='space-between' borderRadius={'5px'} bg='green.200' color={'blackAlpha.800'} fontWeight='semibold' w='100%' p='2' px='4' border={'1px'} borderColor='gray.200'>
                                              File Uploaded
                                              <Text as='span'><IoCloudDone /></Text>

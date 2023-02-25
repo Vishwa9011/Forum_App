@@ -28,8 +28,8 @@ export const getAllPost = () => async (dispatch: Dispatch) => {
           });
 
           dispatch({ type: Types.GET_POST_DATA_SUCCESS, payload: FinalPosts })
-     } catch (error) {
-          console.log('error: ', error);
+     } catch (error: any) {
+          console.log('error: ', error.message);
           dispatch({ type: Types.POST_ERROR, payload: error });
      }
 }
@@ -41,8 +41,8 @@ export const getComments = (url: string) => async (dispatch: Dispatch) => {
           const { null: RootComments, ...comments } = commentsWithParentId(response.data.postComment)
           console.log('RootComments: ', RootComments);
           dispatch({ type: Types.GET_POST_COMMENT_SUCCESS, payload: { RootComments, comments } })
-     } catch (error) {
-          console.log('error: ', error);
+     } catch (error: any) {
+          console.log('error: ', error.message);
           dispatch({ type: Types.POST_ERROR, payload: error });
      }
 }
@@ -55,8 +55,8 @@ export const createPost = (data: any) => async (dispatch: Dispatch<any>) => {
           dispatch(getAllPost());
 
           dispatch({ type: Types.POST_OPERATION_SUCCESS })
-     } catch (error) {
-          console.log('error: ', error);
+     } catch (error: any) {
+          console.log('error: ', error.message);
           dispatch({ type: Types.POST_ERROR, payload: error });
      }
 }
@@ -65,35 +65,63 @@ export const createPost = (data: any) => async (dispatch: Dispatch<any>) => {
 export const updatePost = (id: string, data: { title: string, description: string, image?: any }) => async (dispatch: Dispatch<any>) => {
      dispatch({ type: Types.POST_LOADING });
      try {
-          const response = await axios.post(`/post/update/${id}`, data);
-          console.log('response: ', response);
+          const response = await axios.patch(`/post/update/${id}`, data);
 
           dispatch(getAllPost());
 
           dispatch({ type: Types.POST_OPERATION_SUCCESS })
-     } catch (error) {
-          console.log('error: ', error);
+     } catch (error: any) {
+          console.log('error: ', error.message);
           dispatch({ type: Types.POST_ERROR, payload: error });
      }
 }
 
+export const deletePost = (id: string) => async (dispatch: Dispatch<any>) => {
+     dispatch({ type: Types.POST_LOADING });
+     try {
+          await axios.delete(`/post/delete/${id}`);
 
+          dispatch(getAllPost());
+
+          dispatch({ type: Types.POST_OPERATION_SUCCESS })
+     } catch (error: any) {
+          console.log('error: ', error.message);
+          dispatch({ type: Types.POST_ERROR, payload: error });
+     }
+}
 
 export const createComment = (data: CreateCommentType) => async (dispatch: Dispatch<any>) => {
      dispatch({ type: Types.POST_LOADING });
      try {
-          const user = JSON.parse(sessionStorage.getItem("user") || "");
-          if (user == null) {
-               return alert("Please Login");
-          }
-
-          const author = user._id;
-          const response = await axios.post(`/post/comment/new`, { ...data, author, authorID: author });
-
+          await axios.post(`/post/comment/new`, data);
           dispatch(getAllPost());
           dispatch({ type: Types.POST_OPERATION_SUCCESS })
-     } catch (error) {
-          console.log('error: ', error);
+     } catch (error: any) {
+          console.log('error: ', error.message);
+          dispatch({ type: Types.POST_ERROR, payload: error });
+     }
+}
+
+export const updateComment = (message: string, id: string) => async (dispatch: Dispatch<any>) => {
+     dispatch({ type: Types.POST_LOADING });
+     try {
+          await axios.patch(`/post/comment/update/${id}`, { message });
+          dispatch(getAllPost());
+          dispatch({ type: Types.POST_OPERATION_SUCCESS })
+     } catch (error: any) {
+          console.log('error: ', error.message);
+          dispatch({ type: Types.POST_ERROR, payload: error });
+     }
+}
+
+export const deleteComment = (id: string) => async (dispatch: Dispatch<any>) => {
+     dispatch({ type: Types.POST_LOADING });
+     try {
+          await axios.delete(`/post/comment/delete/${id}`);
+          dispatch(getAllPost());
+          dispatch({ type: Types.POST_OPERATION_SUCCESS })
+     } catch (error: any) {
+          console.log('error: ', error.message);
           dispatch({ type: Types.POST_ERROR, payload: error });
      }
 }

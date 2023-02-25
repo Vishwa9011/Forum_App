@@ -1,7 +1,6 @@
 import React, { useState, useRef } from 'react'
 import "./createpost.modules.css"
-import { BsUpload } from "react-icons/bs";
-import { Box, Button, Flex, FormControl, FormLabel, Image, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Stack, Text, Textarea, useDisclosure } from '@chakra-ui/react';
+import { Box, Button, Flex, FormControl, FormLabel, Image, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Stack, Text, Textarea } from '@chakra-ui/react';
 import { MdUpload } from "react-icons/md";
 import { IoCloudDone } from "react-icons/io5";
 import { Input } from '@chakra-ui/input';
@@ -11,28 +10,37 @@ import { createPost } from '../../Redux/Post/post.actions';
 import axios from 'axios';
 import UseToastMsg, { ToastType } from '../../Custom-Hooks/Toast';
 import { RootState } from '../../Redux/store';
+import useToggle from '../../Custom-Hooks/useToggle';
+import { Navigate, useNavigate } from 'react-router-dom';
 
 function Createpost() {
    const { Toast } = UseToastMsg();
+   const navigate = useNavigate()
    const titleRef = useRef<HTMLInputElement>(null)
    const descRef = useRef<HTMLTextAreaElement>(null)
-   const imageRef = useRef<HTMLInputElement>(null);
    const [ImageFile, setImageFile] = useState<any>([])
-   const { isOpen, onOpen, onClose } = useDisclosure()
-   const [error, setError] = useState<boolean>(false)
+   const [isOpen, onOpen, onClose]: any = useToggle(false)
+   const [Error, setError] = useState<boolean>(false)
    const dispatch: Dispatch<any> = useDispatch()
    const { userCredential } = useSelector((store: RootState) => store.auth)
 
    const onCreatePost = () => {
 
-      if (!titleRef.current?.value || !descRef.current?.value || !imageRef.current?.files) {
-         return setError(true)
+      if (!titleRef.current?.value || !descRef.current?.value || !ImageFile.length) {
+         const data = {
+            title: titleRef.current!.value,
+            description: descRef.current!.value,
+            content: ImageFile[0],
+            author: userCredential._id,
+            authorID: userCredential._id
+         }
+         return setError(true);
       } else {
-         setError(false)
+         setError(false);
       }
 
       const form = new FormData();
-      form.append("file", imageRef.current!.files[0]);
+      form.append("file", ImageFile[0]);
       form.append("upload_preset", "sfunzr0m")
       form.append("cloud_name", "dpzbtnmfl")
 
@@ -58,13 +66,20 @@ function Createpost() {
          })
    }
 
+   function openCreatPost() {
+      if (!userCredential._id) {
+         return navigate("/login")
+      }
+      onOpen()
+   }
+
    return (
       <>
          <Flex p='2' my='5' gap='20px' justify={'space-between'} border='1px' borderColor={'gray.400'} borderRadius={'5px'}>
             <Box className='create-post-image'>
                <Image src={userCredential.photoURL || "https://bit.ly/3kkJrly"} />
             </Box>
-            <Button variant={'outline'} w='100%' borderRadius={'10px'} onClick={onOpen} color={''}>Create Post</Button>
+            <Button variant={'outline'} w='100%' borderRadius={'10px'} onClick={openCreatPost} color={''}>Create Post</Button>
          </Flex>
 
          <Modal closeOnOverlayClick={false} isOpen={isOpen} onClose={onClose}>
@@ -82,7 +97,7 @@ function Createpost() {
                         :
                         <FormControl className='image-input' _hover={{ bg: "#307eff" }}>
                            <FormLabel gap='10px' justifyContent={'center'} display={'flex'} className='image-input-label' alignItems='center'><MdUpload />Choose the Image</FormLabel>
-                           <Input ref={imageRef} onChange={e => setImageFile(e.target.files)} type='file' visibility={'hidden'} />
+                           <Input type='file' onChange={e => setImageFile(e.target.files)} visibility={'hidden'} />
                         </FormControl>
                      }
                      <FormControl >
@@ -94,7 +109,7 @@ function Createpost() {
                         <Textarea placeholder='Description' ref={descRef} />
                      </FormControl>
                   </Stack>
-                  {error && <Box className='post-error' color={'red.300'} letterSpacing='1px'>
+                  {Error && <Box className='post-error' color={'red.300'} letterSpacing='1px'>
                      <Text>Please fill all fields</Text>
                   </Box>}
                </ModalBody>

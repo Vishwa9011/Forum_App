@@ -1,44 +1,73 @@
-import { Box, Button, Flex, Image, Input, ListItem, Stack, Text, UnorderedList } from '@chakra-ui/react'
+import { Box, Button, Flex, Image, ListItem, Text, UnorderedList } from '@chakra-ui/react'
 import React, { useEffect, useMemo, useState } from 'react'
 import { BiCommentDots, BiLike } from 'react-icons/bi'
 import { FaShare } from 'react-icons/fa'
-import './PostCard.css'
-import axios from 'axios'
-import { IComment, IPost } from '../../../Constants/constant'
+import { IPost } from '../../../Constants/constant'
 import CommentsList from '../Comments/CommentsList';
 import { Dispatch } from 'redux'
 import { useDispatch, useSelector } from 'react-redux'
-import { createComment, getComments } from '../../../Redux/Post/post.actions'
+import { createComment, deletePost, getComments } from '../../../Redux/Post/post.actions'
 import { RootState } from '../../../Redux/store'
 import CommentForm from '../Comments/CommentForm'
 import { dateFormatter } from '../../../helper/helper'
 import UpdatePost from '../../../Pages/Post/UpdatePost'
+import './PostCard.css'
+import { useNavigate } from 'react-router-dom'
+import { followUser, unFollowUser } from '../../../Redux/Auth/auth.actions'
+import UseToastMsg from '../../../Custom-Hooks/Toast'
 
 type Props = {
      post: IPost,
-     onOpen: () => void,
-     update: (post: IPost) => void,
 }
 
-function PostCard({ post, onOpen, update }: Props) {
-     const [data, setData] = useState<any>([]);
+function PostCard({ post }: Props) {
+     const navigate = useNavigate();
+     const { Toast } = UseToastMsg()
      const dispatch: Dispatch<any> = useDispatch();
      const [showComments, setComments] = useState<boolean>(false);
+     const { userCredential } = useSelector((store: RootState) => store.auth)
 
      const onCreateComment = (message: string) => {
+          if (!userCredential._id) navigate("/login")
           const data = {
                message,
-               postID: post._id
+               postID: post._id,
+               author: userCredential._id,
+               authorID: userCredential._id
           }
           dispatch(createComment(data))
      }
 
-     useEffect(() => {
-          // dispatch(getComments("63f6011e651603c1b8e68269"))
-     }, [])
+     const DeletePost = () => {
+          dispatch(deletePost(post._id))
+     }
+
+
+     const FollowUser = () => {
+          if (!userCredential._id) navigate("/login")
+
+          const data = {
+               userID: userCredential._id,
+               followingID: post.authorID
+          }
+          console.log('data: ', data);
+          dispatch(followUser(data, Toast))
+     }
+
+     const UnFollowUser = () => {
+          if (!userCredential._id) navigate("/login")
+
+          const data = {
+               userID: userCredential._id,
+               followingID: post.authorID
+          }
+          console.log('data: ', data);
+          dispatch(unFollowUser(data, Toast))
+     }
+
 
      return (
-          <Box as='article' p='2' border={'1px'} borderColor={'gray.400'} borderRadius='5px'>
+          <Box as='article' p='2' pb='0' border={'1px'} borderColor={'gray.400'} borderRadius='5px'>
                <Flex as='header' gap='10px' pb='2'>
                     <Flex gap='10px'>
                          <Box className='post-header-image'>
@@ -51,7 +80,8 @@ function PostCard({ post, onOpen, update }: Props) {
                          </Box>
                     </Flex>
                     <Flex ml={'auto'} align='center' gap='10px'>
-                         <Button variant={'outline'}>+ Follow</Button>
+                         {(!userCredential?.following?.includes(post.authorID)) && <Button variant={'outline'} onClick={FollowUser}>+ Follow</Button>}
+                         {<Button variant={'outline'} onClick={UnFollowUser}>+ unFollow</Button>}
                          <Box className='post-options-menu'>
                               <Box className='hamberger-menu'>
                                    <Text></Text>
@@ -59,10 +89,14 @@ function PostCard({ post, onOpen, update }: Props) {
                                    <Text></Text>
                               </Box>
                               <Box className='post-options-list'>
-                                   <UnorderedList fontWeight={'semibold'} >
+                                   <UnorderedList fontWeight={'semibold'}>
                                         <ListItem>Report</ListItem>
-                                        <ListItem onClick={() => (onOpen(), update(post))}>Edit</ListItem>
-                                        <ListItem>Delete</ListItem>
+                                        {post.authorID == userCredential._id && (
+                                             <>
+                                                  <ListItem className='edit-btn'><UpdatePost post={post} /></ListItem>
+                                                  <ListItem onClick={DeletePost}>Delete</ListItem>
+                                             </>
+                                        )}
                                         <ListItem>Save</ListItem>
                                    </UnorderedList>
                               </Box>
@@ -76,7 +110,9 @@ function PostCard({ post, onOpen, update }: Props) {
                     <Box className='post-content-description'>
                          <Text className='post-content-title'>{post.title}</Text>
                          <Text className='post-content-message'>{post.description}</Text>
-                         <input type='checkbox' className='expand-btn' data-expand-btn='' />
+                         {post.description.length > 150 && <Box className='expand-btn'>
+                              <input type="checkbox" data-expand-btn='true' />
+                         </Box>}
                     </Box>
                     <Box className='post-content-image'>
                          <Image src={post?.content} />

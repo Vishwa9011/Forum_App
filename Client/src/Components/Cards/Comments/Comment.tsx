@@ -13,7 +13,7 @@ import { RootState } from '../../../Redux/store'
 import CommentsList from './CommentsList'
 import CommentForm from './CommentForm'
 import { Dispatch } from 'redux'
-import { createComment } from '../../../Redux/Post/post.actions'
+import { createComment, deleteComment, updateComment } from '../../../Redux/Post/post.actions'
 
 type Props = {
      comment: IComment,
@@ -26,6 +26,8 @@ function Comment({ comment, replies }: Props) {
 
      const dispatch: Dispatch<any> = useDispatch()
      const [IsReplying, setIsReplying] = useState(false);
+     const [IsEditing, setIsEditing] = useState(false);
+     const { userCredential } = useSelector((store: RootState) => store.auth)
 
      const getReplies = (parentID: string): IComment[] => {
           return replies[parentID];
@@ -38,36 +40,45 @@ function Comment({ comment, replies }: Props) {
                message,
                postID: comment.postID,
                parent: comment._id,
-               parentID: comment._id
+               parentID: comment._id,
+               author: userCredential._id,
+               authorID: userCredential._id
           }
           dispatch(createComment(data))
           setIsReplying(false);
+     }
+
+     const onCommentUpdate = (message: string) => {
+          dispatch(updateComment(message, comment._id))
+          setIsEditing(false)
      }
 
      return (
           <>
                <Box as='article' className='user-comment comment-body' mt='10px'>
                     <Box as="header" className='comment-user-img'>
-                         <Image src={comment.author.photoURL || "https://bit.ly/3kkJrly"} alt="" />
+                         <Image src={comment.author?.photoURL || "https://bit.ly/3kkJrly"} alt="" />
                     </Box>
                     <Box as='section' className='comment'>
                          <Box borderColor={'gray.400'} as='section' className='comment-main'>
                               <Box className='comment-header'>
                                    <Box>
-                                        <Text className='comment-username'>{comment.author.username}</Text>
+                                        <Text className='comment-username'>{comment.author?.username}</Text>
                                         <Text className='comment-date-time' fontWeight={'semibold'} color='gray.500'>{dateFormatter.format(comment.createdAt)}</Text>
                                    </Box>
-                                   <Box className='comment-options-menu'>
-                                        <Button className='hamberger-menu' fontSize={'1.5rem'}>
-                                             <HiDotsVertical />
-                                        </Button>
-                                        <Box className='comment-options-list'>
-                                             <UnorderedList fontWeight={'semibold'} >
-                                                  <ListItem>Edit</ListItem>
-                                                  <ListItem>Delete</ListItem>
-                                             </UnorderedList>
-                                        </Box>
-                                   </Box>
+                                   {(comment.authorID === userCredential?._id) &&
+                                        (<Box className='comment-options-menu'>
+                                             <Button className='hamberger-menu' fontSize={'1.5rem'}>
+                                                  <HiDotsVertical />
+                                             </Button>
+                                             <Box className='comment-options-list'>
+                                                  <UnorderedList fontWeight={'semibold'} >
+                                                       <ListItem onClick={() => setIsEditing(true)}>Edit</ListItem>
+                                                       <ListItem onClick={() => dispatch(deleteComment(comment._id))}>Delete</ListItem>
+                                                  </UnorderedList>
+                                             </Box>
+                                        </Box>)
+                                   }
                               </Box>
                               <Box className="comment-description">
                                    <Text>{comment.message}</Text>
@@ -93,21 +104,23 @@ function Comment({ comment, replies }: Props) {
                          </Box>
                     </Box>
                </Box>
-               {
-                    IsReplying && (
-                         <Box className='nested-reply' marginLeft={'40px'}>
-                              <CommentForm onSubmit={onCommentReply} autoFocus={true} />
-                         </Box>
-                    )
-               }
+               {IsReplying && (
+                    <Box className='nested-reply' marginLeft={'40px'}>
+                         <CommentForm onSubmit={onCommentReply} autoFocus={true} />
+                    </Box>
+               )}
 
-               {
-                    childComments && childComments?.length > 0 && (
-                         <Box className='nested-comments' ml='45px'>
-                              <CommentsList comments={childComments} replies={replies} />
-                         </Box>
-                    )
-               }
+               {IsEditing && (
+                    <Box className='nested-reply' marginLeft={'40px'}>
+                         <CommentForm onSubmit={onCommentUpdate} initialValue={comment.message} autoFocus={true} />
+                    </Box>
+               )}
+
+               {childComments && childComments?.length > 0 && (
+                    <Box className='nested-comments' ml='45px'>
+                         <CommentsList comments={childComments} replies={replies} />
+                    </Box>
+               )}
           </>
      )
 }

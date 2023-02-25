@@ -11,11 +11,10 @@ interface IChildren {
 function RequiredRoute({ children }: IChildren) {
      const navigate = useNavigate()
 
-     const sessionData = sessionStorage.getItem("user");
-     console.log('sessionData: ', sessionData);
+     var user = sessionStorage.getItem("user");
+     let data = user ? JSON.parse(user) : null
 
-     if (sessionData == null) {
-          sessionStorage.setItem("user", "")
+     if (data == null) {
           navigate("/login")
      }
 
