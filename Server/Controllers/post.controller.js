@@ -17,8 +17,7 @@ async function AllPost(req, res) {
                .populate([
                     { path: "author", model: "user" },
                     {
-                         path: "comments", model: "Comment",
-                         populate: {
+                         path: "comments", model: "Comment", populate: {
                               path: "author",
                               model: "user"
                          }
@@ -36,12 +35,11 @@ async function SinglePost(req, res) {
           const post = await PostModel.findById(id).populate([
                { path: "author", model: "user" },
                {
-                    path: "comments", model: "Comment",
-                    populate: {
-                         path: "author",
-                         model: "user"
+                    path: "comments", model: "Comment", populate: {
+                         path: "author", model: "user"
                     }
-               }])
+               }
+          ])
           res.status(200).json({ status: 200, post, message: "post has been sent." })
      } catch (error) {
           console.log('error: ', error);
@@ -192,6 +190,12 @@ async function LikePost(req, res) {
      const { userId } = req.body
      console.log('userId: ', userId);
      try {
+
+          const check = await LikesModel.findOne({ postID: id, authorID: userId, author: userId });
+          if (check) {
+               return res.status(403).json({ status: 403, msg: "already liked the post" })
+          }
+
           const like = new LikesModel({ postID: id, authorID: userId, author: userId });
           await like.save()
 

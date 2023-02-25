@@ -8,10 +8,7 @@ PostRouter.get("/all", post_controller.AllPost);
 
 PostRouter.get("/all/:id", post_controller.SingleUserAllPost);
 
-PostRouter.get("/singlepost/:id", post_controller.SinglePost);
-
-PostRouter.get("/:id", post_controller.AllPost);
-
+PostRouter.get("/:id", post_controller.SinglePost);
 
 PostRouter.get("/userPost/:id", post_controller.AllPost);
 
