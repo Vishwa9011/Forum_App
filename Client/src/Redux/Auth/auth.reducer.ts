@@ -1,4 +1,4 @@
-import { IUser, Occupation } from '../../Constants/constant';
+import { IFollow, IUser, Occupation } from '../../Constants/constant';
 import * as Types from './auth.actionType';
 
 const initialUserCredState = {
@@ -17,7 +17,9 @@ const initialUserCredState = {
      lastLogin: 0,
      token: '',
      occupation: null,
-     bio: ''
+     bio: '',
+     followerCount: 0,
+     followingCount: 0
 }
 
 export interface IAuthInitialState {
@@ -25,17 +27,17 @@ export interface IAuthInitialState {
      error: string
      authenticated: boolean
      userCredential: IUser
+     followers: IFollow[]
+     following: IFollow[]
 }
 
-
-// var user = sessionStorage.getItem("user");
-// let  data = user ? JSON.parse(user) : null
 
 const initialState: IAuthInitialState = {
      loading: false,
      error: '',
      authenticated: false,
-     // userCredential: data ? data : initialUserCredState 
+     followers: [],
+     following: [],
      userCredential: initialUserCredState
 }
 
@@ -46,7 +48,7 @@ export const Reducer = (state = initialState, { type, payload }: any) => {
           case Types.AUTH_ERROR:
                return ({ ...state, loading: false, error: payload });
           case Types.SIGNIN_SUCCESS:
-               return ({ ...state, loading: false, error: '', userCredential: { ...payload }, authenticated: true })
+               return ({ ...state, loading: false, error: '', userCredential: payload, authenticated: true })
           case Types.SIGNUP_SUCCESS:
                return ({ ...state, loading: false, error: '', userCredential: payload, authenticated: true });
           case Types.AUTH_OPERATION_SUCCESS:
@@ -57,6 +59,10 @@ export const Reducer = (state = initialState, { type, payload }: any) => {
                return ({ ...state, loading: false, error: payload.message });
           case Types.VERIFY_EMAIL_SUCCESS:
                return ({ ...state, loading: false, error: '', userCredential: payload });
+          case Types.GET_USER_FOLLOWER:
+               return ({ ...state, loading: false, error: '', followers: payload });
+          case Types.GET_USER_FOLLOWING:
+               return ({ ...state, loading: false, error: '', following: payload });
           case Types.AUTH_USER_PROFILE_PHOTO_UPDATE:
                return ({ ...state, loading: false, error: '', userCredential: { ...state.userCredential, photoURL: payload } })
           case Types.USER_UPDATE_SUCCESS:

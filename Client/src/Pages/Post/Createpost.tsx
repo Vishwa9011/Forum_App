@@ -13,13 +13,16 @@ import { RootState } from '../../Redux/store';
 import useToggle from '../../Custom-Hooks/useToggle';
 import { Navigate, useNavigate } from 'react-router-dom';
 
-function Createpost() {
+type props = {
+   onClose(): void
+}
+
+function Createpost({ onClose }: props) {
    const { Toast } = UseToastMsg();
    const navigate = useNavigate()
    const titleRef = useRef<HTMLInputElement>(null)
    const descRef = useRef<HTMLTextAreaElement>(null)
    const [ImageFile, setImageFile] = useState<any>([])
-   const [isOpen, onOpen, onClose]: any = useToggle(false)
    const [Error, setError] = useState<boolean>(false)
    const dispatch: Dispatch<any> = useDispatch()
    const { userCredential } = useSelector((store: RootState) => store.auth)
@@ -66,23 +69,11 @@ function Createpost() {
          })
    }
 
-   function openCreatPost() {
-      if (!userCredential._id) {
-         return navigate("/login")
-      }
-      onOpen()
-   }
+
 
    return (
       <>
-         <Flex p='2' my='5' gap='20px' justify={'space-between'} border='1px' borderColor={'gray.400'} borderRadius={'5px'}>
-            <Box className='create-post-image'>
-               <Image src={userCredential.photoURL || "https://bit.ly/3kkJrly"} />
-            </Box>
-            <Button variant={'outline'} w='100%' borderRadius={'10px'} onClick={openCreatPost} color={''}>Create Post</Button>
-         </Flex>
-
-         <Modal closeOnOverlayClick={false} isOpen={isOpen} onClose={onClose}>
+         <Modal closeOnOverlayClick={false} isOpen={true} onClose={onClose}>
             <ModalOverlay />
             <ModalContent>
                <ModalHeader>Create your Post</ModalHeader>

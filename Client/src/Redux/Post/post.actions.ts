@@ -90,6 +90,52 @@ export const deletePost = (id: string) => async (dispatch: Dispatch<any>) => {
      }
 }
 
+
+//  * likes
+export const likePost = (id: string, userId: string) => async (dispatch: Dispatch<any>) => {
+     dispatch({ type: Types.POST_LOADING });
+     try {
+          const response = await axios.post(`/post/${id}/like`, { userId });
+          console.log('response: ', response.data);
+
+          dispatch(getAllPost());
+
+          dispatch({ type: Types.GET_POST_LIKE_SUCCESS, payload: response.data.likes })
+     } catch (error: any) {
+          console.log('error: ', error.message);
+          dispatch({ type: Types.POST_ERROR, payload: error });
+     }
+}
+
+export const unLikePost = (id: string, userId: string) => async (dispatch: Dispatch<any>) => {
+     dispatch({ type: Types.POST_LOADING });
+     try {
+          const response = await axios.post(`/post/${id}/unlike`, { userId });
+          console.log('response: ', response);
+
+          dispatch(getAllPost());
+
+          dispatch({ type: Types.GET_POST_LIKE_SUCCESS, payload: response.data.likes })
+     } catch (error: any) {
+          console.log('error: ', error.message);
+          dispatch({ type: Types.POST_ERROR, payload: error });
+     }
+}
+
+export const postLikes = (id: string, Toast: Function) => async (dispatch: Dispatch<any>) => {
+     try {
+          const response = await axios.get(`/post/${id}/postlikes`);
+          console.log('response: ', response);
+          dispatch({ type: Types.GET_POST_LIKE_SUCCESS, payload: response.data.likes })
+     } catch (error: any) {
+          console.log('error: ', error.message);
+          dispatch({ type: Types.POST_ERROR, payload: error });
+     }
+}
+
+
+
+
 export const createComment = (data: CreateCommentType) => async (dispatch: Dispatch<any>) => {
      dispatch({ type: Types.POST_LOADING });
      try {

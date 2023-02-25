@@ -17,6 +17,12 @@ PostRouter.patch("/update/:id", post_controller.UpdatePost);
 
 PostRouter.delete("/delete/:id", post_controller.DeletePost);
 
+PostRouter.post("/:id/like", post_controller.LikePost);
+
+PostRouter.post("/:id/unlike", post_controller.UnLikePost);
+
+PostRouter.get("/:id/postlikes", post_controller.GetPostLikes);
+
 
 // ? Comments
 

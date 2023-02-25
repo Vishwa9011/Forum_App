@@ -1,26 +1,23 @@
 import { Box, Button, Image, ListItem, Text, UnorderedList } from '@chakra-ui/react'
-import React, { useState } from 'react'
+import * as Action from '../../../Redux/Post/post.actions';
 import { IComment } from '../../../Constants/constant'
+import { useDispatch, useSelector } from 'react-redux'
 import { dateFormatter } from '../../../helper/helper'
-import IconBtn from '../../IconBtn/IconBtn'
-import { BiLike } from 'react-icons/bi'
-import { FaReply, FaShare } from 'react-icons/fa'
+import { RootState } from '../../../Redux/store'
 import { HiDotsVertical } from 'react-icons/hi'
+import IconBtn from '../../IconBtn/IconBtn'
+import CommentsList from './CommentsList'
+import { FaReply } from 'react-icons/fa'
+import CommentForm from './CommentForm'
+import React, { useState } from 'react'
+import { Dispatch } from 'redux'
 
 import "./Comment.css"
-import { useDispatch, useSelector } from 'react-redux'
-import { RootState } from '../../../Redux/store'
-import CommentsList from './CommentsList'
-import CommentForm from './CommentForm'
-import { Dispatch } from 'redux'
-import { createComment, deleteComment, updateComment } from '../../../Redux/Post/post.actions'
 
 type Props = {
      comment: IComment,
      replies: any,
 }
-
-
 
 function Comment({ comment, replies }: Props) {
 
@@ -44,12 +41,12 @@ function Comment({ comment, replies }: Props) {
                author: userCredential._id,
                authorID: userCredential._id
           }
-          dispatch(createComment(data))
+          dispatch(Action.createComment(data))
           setIsReplying(false);
      }
 
      const onCommentUpdate = (message: string) => {
-          dispatch(updateComment(message, comment._id))
+          dispatch(Action.updateComment(message, comment._id))
           setIsEditing(false)
      }
 
@@ -74,7 +71,7 @@ function Comment({ comment, replies }: Props) {
                                              <Box className='comment-options-list'>
                                                   <UnorderedList fontWeight={'semibold'} >
                                                        <ListItem onClick={() => setIsEditing(true)}>Edit</ListItem>
-                                                       <ListItem onClick={() => dispatch(deleteComment(comment._id))}>Delete</ListItem>
+                                                       <ListItem onClick={() => dispatch(Action.deleteComment(comment._id))}>Delete</ListItem>
                                                   </UnorderedList>
                                              </Box>
                                         </Box>)
@@ -88,11 +85,11 @@ function Comment({ comment, replies }: Props) {
                               </Box>
                          </Box>
                          <Box as='footer' className='comment-like-reply' color={'gray.700'} >
-                              <Box className='comment-like'>
+                              {/* <Box className='comment-like'>
                                    <IconBtn Icon={BiLike} arial-label="like">
                                         Like
                                    </IconBtn>
-                              </Box>
+                              </Box> */}
                               <Box className='comment-reply'>
                                    <IconBtn
                                         Icon={FaReply}

@@ -24,6 +24,10 @@ UserRouter.post("/follow", user_controller.FollowUser)
 
 UserRouter.post("/unfollow", user_controller.UnFollowUser)
 
+UserRouter.get("/:id/follower", user_controller.UserFollower)
+
+UserRouter.get("/:id/following", user_controller.UserFollowing)
+
 UserRouter.patch("/newpassword/:id", user_controller.UpdatePassword)
 
 module.exports = { UserRouter };

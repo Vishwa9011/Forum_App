@@ -13,6 +13,8 @@ export interface IUser {
      isGoogleAuthenticated: boolean
      readonly createdAt: number
      lastLogin: number
+     followerCount: number
+     followingCount: number
      token: string
      occupation: Occupation | null
 }
@@ -27,18 +29,22 @@ export enum Role {
      USER = "USER"
 }
 
+export interface IFollow {
+     _id: string
+     userID: string
+     followingID: string
+     followerID: string
+}
 
 export interface UserI {
      username: string,
      email: string,
      password: string,
 }
-
 export interface ProcessEnv {
      BASE_URL: string
      NODE_ENV: 'development' | 'production';
 }
-
 export interface LoginRes {
      status?: number,
      message: string,
@@ -54,7 +60,7 @@ export interface IPost {
      title: string
      description: string
      content: string
-     likes: ILikes[] | []
+     likes: number
      comments: IComment[] | []
      author: IUser;
      authorID: string
@@ -82,6 +88,7 @@ export interface IComment {
 
 export interface ILikes {
      _id: string
+     postID: string
      author: string
      authorID: string
 }
