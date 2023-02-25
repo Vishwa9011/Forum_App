@@ -50,6 +50,9 @@ function Post() {
           onOpen()
      }
 
+     useEffect(() => {
+          dispatch(getAllPost())
+     }, [])
 
      return (
           <Box>
