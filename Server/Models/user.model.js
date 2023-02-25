@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 const jwt = require("jsonwebtoken");
+const { PostModel, CommentModel, CommentLikeModel, LikesModel } = require("./post.model");
 require("dotenv").config();
 
 const userSchema = mongoose.Schema({
@@ -67,6 +68,30 @@ const userSchema = mongoose.Schema({
      token: {
           type: String
      },
+     follower: [
+          { type: mongoose.Schema.Types.ObjectId, ref: "user", required: true, default: [] }
+     ],
+     following: [
+          { type: mongoose.Schema.Types.ObjectId, ref: "user", required: true, default: [] }
+     ],
+})
+
+const FollowSchema = mongoose.Schema({
+     userID: {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: "user",
+          required: true
+     },
+     followerID: {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: "user",
+          required: true
+     },
+     followingID: {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: "user",
+          required: true
+     },
 })
 
 userSchema.methods.getAuthorizationToken = async function () {
@@ -77,6 +102,23 @@ userSchema.methods.getAuthorizationToken = async function () {
      return token;
 }
 
-const UserModel = mongoose.model('user', userSchema);
+userSchema.methods.removeRecords = async function () {
 
-module.exports = { UserModel };
+     const userId = this._id
+
+     await UserModel.findByIdAndDelete(userIds);
+
+     await PostModel.deleteMany({ author: userId });
+
+     await CommentModel.deleteMany({ author: userId });
+
+     await CommentLikeModel.deleteMany({ author: userId })
+
+     await LikesModel.deleteMany({ author: userId })
+
+}
+
+const UserModel = mongoose.model('user', userSchema);
+const FollowModel = mongoose.model('follow', FollowSchema);
+
+module.exports = { UserModel, FollowModel };

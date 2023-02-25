@@ -1,17 +1,16 @@
 require("dotenv").config();
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
+const { default: mongoose } = require("mongoose");
 const nodemailer = require("nodemailer");
 const { Email_template } = require("../helper/EmaiL.template");
-const { UserModel } = require("../Models/user.model");
+const { UserModel, FollowModel } = require("../Models/user.model");
 
-const UserRouteHome = async (req, res) => {
-     const { _id } = req.query;
-     console.log('_id: ', _id);
+async function UserDetail(req, res) {
+     const id = req.params.id;
      try {
-          const user = await UserModel.findById(_id)
-          console.log('user: ', user);
-          res.send(user)
+          const user = await UserModel.findById(id)
+          res.status(200).json({ msg: "user details fetched", credentials: user })
      } catch (error) {
           console.log('error: ', error);
           res.send(error)
@@ -193,7 +192,8 @@ async function UpdateUser(req, res) {
 async function DeleteUser(req, res) {
      const _id = req.params.id;
      try {
-          await UserModel.findByIdAndDelete(_id);
+          const user = await UserModel.findById(_id);
+          await user.removeRecords();
           return res.status(201).json({ status: 200, message: 'user has been deleted' })
      } catch (error) {
           console.log('error: ', error);
@@ -207,7 +207,7 @@ async function UpdatePassword(req, res) {
      const { password } = req.body;
      try {
           let user = await UserModel.findById(_id);
-          user = { ...user, password };
+          user.password = password;
           await user.save();
           return res.status(201).json({ status: 200, message: 'Password has been updated', credentials: user })
      } catch (error) {
@@ -216,9 +216,66 @@ async function UpdatePassword(req, res) {
      }
 }
 
+async function FollowUser(req, res) {
+     const payload = req.body;
+     try {
+
+          const userID = mongoose.Types.ObjectId(payload.userID)
+          const followingID = mongoose.Types.ObjectId(payload.followingID)
+
+          const follow = new FollowModel({ userID, followingID: followingID, followerID: followingID })
+          await follow.save()
+
+          const user = await UserModel.findById(userID);
+          user.following = [...user.following, followingID]
+          await user.save();
+
+          const targetUser = await UserModel.findById(followingID);
+          targetUser.follower = [...user.follower, userID]
+          await targetUser.save();
+
+          return res.status(201).json({ status: 200, message: 'Followed the user.', credentials: user })
+     } catch (error) {
+          console.log('error: ', error);
+          return res.status(201).json({ status: 401, error: error.message })
+     }
+}
+
+async function UnFollowUser(req, res) {
+     const payload = req.body;
+     try {
+          const userID = mongoose.Types.ObjectId(payload.userID)
+          const followingID = mongoose.Types.ObjectId(payload.followingID)
+
+          await FollowModel.findOneAndDelete({ userID: payload.userID, followingID: payload.followingID, followerID: payload.followingID })
+
+          const user = await UserModel.findById(userID);
+          user.following = user.following.filter((user) => {
+               console.log({ user, followingID });
+               return user != followingID
+          });
+          await user.save();
+
+          const targetUser = await UserModel.findById(followingID);
+          targetUser.follower = user.follower.filter((user) => {
+               console.log({ user, userID });
+               return user != userID
+          });
+          await targetUser.save()
+
+          return res.status(201).json({ status: 200, message: 'Unfollowed the user.', credentials: user })
+     } catch (error) {
+          console.log('error: ', error);
+          return res.status(201).json({ status: 401, error: error.message })
+     }
+}
+
+
+
+
 
 module.exports = {
-     UserRouteHome,
+     UserDetail,
      UserLogin,
      UserLogout,
      GoogleAuth,
@@ -227,5 +284,7 @@ module.exports = {
      verifyEmail,
      UpdateUser,
      DeleteUser,
-     UpdatePassword
+     UpdatePassword,
+     FollowUser,
+     UnFollowUser
 }

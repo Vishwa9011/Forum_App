@@ -45,7 +45,6 @@ const PostSchema = Schema({
      }
 })
 
-
 const CommentSchema = Schema({
      message: {
           type: String,
@@ -127,9 +126,46 @@ const LikesSchema = Schema({
      }
 })
 
+
+PostSchema.methods.removeRecords = async function (next) {
+
+     try {
+
+          const postID = this._id
+
+          await PostModel.deleteOne({ postID: postID });
+
+          await CommentModel.deleteMany({ postID: postID });
+
+          await CommentLikeModel.deleteMany({ postID: postID })
+
+          await LikesModel.deleteMany({ postID: postID })
+
+          next();
+
+     } catch (error) {
+          console.log('error: ', error);
+     }
+}
+
+
+CommentSchema.methods.removeRecords = async function () {
+     try {
+
+          await CommentModel.findByIdAndDelete(this._id);
+
+          await CommentModel.deleteMany({ parentID: this._id });
+
+     } catch (error) {
+          console.log('error: ', error);
+
+     }
+}
+
+
+
 const PostModel = model('Post', PostSchema);
 const LikesModel = model('Like', LikesSchema);
 const CommentModel = model('Comment', CommentSchema);
 const CommentLikeModel = model('CommentLike', CommentLikeSchema);
-
 module.exports = { PostModel, CommentModel, LikesModel, CommentLikeModel };
