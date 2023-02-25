@@ -33,7 +33,15 @@ async function AllPost(req, res) {
 async function SinglePost(req, res) {
      const id = req.params.id;
      try {
-          const post = await PostModel.findById(id);
+          const post = await PostModel.findById(id).populate([
+               { path: "author", model: "user" },
+               {
+                    path: "comments", model: "Comment",
+                    populate: {
+                         path: "author",
+                         model: "user"
+                    }
+               }])
           res.status(200).json({ status: 200, post, message: "post has been sent." })
      } catch (error) {
           console.log('error: ', error);
@@ -44,8 +52,17 @@ async function SinglePost(req, res) {
 async function SingleUserAllPost(req, res) {
      const id = req.params.id;
      try {
-          const posts = await PostModel.find({ _id: id });
-          res.status(200).json({ status: 200, posts, message: "all post of user has been sent." })
+          const posts = await PostModel.find({ author: id })
+               .populate([
+                    { path: "author", model: "user" },
+                    {
+                         path: "comments", model: "Comment",
+                         populate: {
+                              path: "author",
+                              model: "user"
+                         }
+                    }]).sort({ createdAt: -1 })
+          res.status(200).json({ status: 200, posts, message: "all post has been sent." })
      } catch (error) {
           console.log('error: ', error);
           res.send(error);
