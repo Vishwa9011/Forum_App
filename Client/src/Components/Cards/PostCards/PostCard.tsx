@@ -89,7 +89,7 @@ function PostCard({ post, IsLikedPost, IsFollowing }: Props) {
                {isOpen && <UpdatePost post={post} onClose={onClose} />}
 
                <Flex as='header' gap='10px' pb='2'>
-                    <Flex gap='10px' as={Link} to={`/user/${post._id}`}>
+                    <Flex gap='10px' as={Link} to={`/user/${post.authorID}`}>
                          <Box className='post-header-image'>
                               <Image src={post.author.photoURL || "https://bit.ly/3kkJrly"} />
                          </Box>
@@ -145,15 +145,15 @@ function PostCard({ post, IsLikedPost, IsFollowing }: Props) {
                <hr style={{ margin: "5px 0" }} />
 
                <Flex as='footer' p='1' className='post-footer'>
-                    <Flex tabIndex={0} color={IsLikedPost ? "blue.400" : ''} onClick={IsLikedPost ? UnLikePost : LikePost} align={'center'} gap='5px' flex={1} justify='center' p='2'>
+                    <Flex className='user-select-reject' tabIndex={0} color={IsLikedPost ? "blue.400" : ''} onClick={IsLikedPost ? UnLikePost : LikePost} align={'center'} gap='5px' flex={1} justify='center' p='2'>
                          <Text>{IsLikedPost ? <AiFillLike /> : <BiLike />}</Text>
                          <Text> <span>{IsLikedPost ? post.likes + 1 : post.likes}</span> Like</Text>
                     </Flex>
-                    <Flex onClick={() => setComments(v => !v)} align={'center'} gap='5px' flex={1} justify='center' p='2'>
+                    <Flex className='user-select-reject' onClick={() => setComments(v => !v)} align={'center'} gap='5px' flex={1} justify='center' p='2'>
                          <Text><BiCommentDots /></Text>
                          <Text>Comment</Text>
                     </Flex>
-                    <Flex align={'center'} gap='5px' flex={1} justify='center' p='2'>
+                    <Flex className='user-select-reject' align={'center'} gap='5px' flex={1} justify='center' p='2'>
                          <Text><FaShare /></Text>
                          <Text>Share</Text>
                     </Flex>

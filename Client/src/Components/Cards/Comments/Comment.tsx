@@ -13,6 +13,7 @@ import React, { useState } from 'react'
 import { Dispatch } from 'redux'
 
 import "./Comment.css"
+import { Link } from 'react-router-dom';
 
 type Props = {
      comment: IComment,
@@ -59,7 +60,7 @@ function Comment({ comment, replies }: Props) {
                     <Box as='section' className='comment'>
                          <Box borderColor={'gray.400'} as='section' className='comment-main'>
                               <Box className='comment-header'>
-                                   <Box>
+                                   <Box as={Link} to={`/user/${comment.authorID}`}>
                                         <Text className='comment-username'>{comment.author?.username}</Text>
                                         <Text className='comment-date-time' fontWeight={'semibold'} color='gray.500'>{dateFormatter.format(comment.createdAt)}</Text>
                                    </Box>

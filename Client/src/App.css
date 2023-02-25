@@ -12,3 +12,7 @@ li {
 a {
      text-decoration: none;
 }
+
+.user-select-reject {
+     user-select: none;
+}
