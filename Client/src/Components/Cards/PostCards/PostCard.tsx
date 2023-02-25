@@ -33,7 +33,7 @@ function PostCard({ post, IsLikedPost, IsFollowing }: Props) {
      const [isOpen, onOpen, onClose]: any = useToggle(false);
 
      const onCreateComment = (message: string) => {
-          if (!userCredential._id) navigate("/login");
+          if (!userCredential._id) return navigate("/login");
           const data = {
                message,
                postID: post._id,
@@ -44,11 +44,12 @@ function PostCard({ post, IsLikedPost, IsFollowing }: Props) {
      };
 
      const DeletePost = () => {
+          if (!userCredential._id) return navigate("/login");
           dispatch(deletePost(post._id));
      };
 
      const FollowUser = () => {
-          if (!userCredential._id) navigate("/login");
+          if (!userCredential._id) return navigate("/login");
 
           const data = {
                userID: userCredential._id,
@@ -59,7 +60,7 @@ function PostCard({ post, IsLikedPost, IsFollowing }: Props) {
      };
 
      const UnFollowUser = () => {
-          if (!userCredential._id) navigate("/login");
+          if (!userCredential._id) return navigate("/login");
 
           const data = {
                userID: userCredential._id,
@@ -70,13 +71,13 @@ function PostCard({ post, IsLikedPost, IsFollowing }: Props) {
      };
 
      const LikePost = () => {
-          if (!userCredential._id) navigate("/login");
+          if (!userCredential._id) return navigate("/login");
 
           dispatch(likePost(post._id, userCredential._id))
      }
 
      const UnLikePost = () => {
-          if (!userCredential._id) navigate("/login");
+          if (!userCredential._id) return navigate("/login");
 
           dispatch(unLikePost(post._id, userCredential._id))
      }

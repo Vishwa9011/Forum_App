@@ -72,7 +72,7 @@ function Post() {
                     </Box>
                     <Grid gap='10px' minH='fit-content'>
                          {posts.map((post: IPost) => {
-                              return <PostCard post={post} key={post._id} IsLikedPost={isLikedPost(post.authorID) || false} IsFollowing={IsFollowing(post.authorID)} />
+                              return <PostCard post={post} key={post._id} IsLikedPost={isLikedPost(post.authorID)} IsFollowing={IsFollowing(post.authorID)} />
                          })}
                     </Grid>
                </Grid>
