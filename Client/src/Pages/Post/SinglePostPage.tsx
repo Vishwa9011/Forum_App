@@ -1,4 +1,4 @@
-import { Box } from "@chakra-ui/react";
+import { Box, useDisclosure } from "@chakra-ui/react";
 import React, { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { useParams } from "react-router-dom";
@@ -22,10 +22,19 @@ function SinglePostPage() {
       dispatch(getSinglePost(id, setPost));
     }
   }, []);
+
+  const UpdatePostData = (post: IPost) => {
+    setPost(post);
+  };
+
   return (
     <>
       <Navbar />
-      {post ? <SingleUserCard post={post} /> : "Please Wait"}
+      {post ? (
+        <SingleUserCard post={post} update={UpdatePostData} onOpen={onOpen} />
+      ) : (
+        "Please Wait"
+      )}
       {post && (
         <UpdatePost
           post={post}
