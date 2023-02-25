@@ -3,15 +3,11 @@ import React from 'react'
 function useToggle(initial = false) {
      const [state, setState] = React.useState<boolean>(initial);
 
-     function onClose() {
-          setState(false);
+     function onToggle() {
+          setState(!state);
      }
 
-     function onOpen() {
-          setState(true)
-     }
-
-     return [state, onOpen, onClose]
+     return [state, onToggle,]
 }
 
 export default useToggle

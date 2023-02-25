@@ -49,6 +49,24 @@ export interface RegisterResI {
      data: string
 }
 
+export interface IProduct {
+     id: string 
+     brand: string
+     description: string
+     rating: number
+     totalReview: string
+     price: number
+     mrp: number
+     discount?: number
+     category: string
+     defaultImage: string
+     qty?: number
+     images: {
+          image1: string
+          image2?: string
+          image3?: string
+     }
+}
 export interface IPost {
      _id: string
      title: string

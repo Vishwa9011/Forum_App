@@ -28,8 +28,8 @@ export interface IAuthInitialState {
 }
 
 
-// var user = sessionStorage.getItem("user");
-// let  data = user ? JSON.parse(user) : null
+var user = sessionStorage.getItem("user");
+let  data = user ? JSON.parse(user) : null
 
 const initialState: IAuthInitialState = {
      loading: false,
