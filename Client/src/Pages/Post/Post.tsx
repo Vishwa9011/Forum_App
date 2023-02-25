@@ -19,6 +19,9 @@ function Post() {
      const [isOpen, onOpen, onClose]: any = useToggle(false)
 
      const GroupLikedPost = useMemo(() => {
+
+          if (!likes) return;
+
           const group: any = {};
           likes.forEach((check: ILikes) => {
                group[check.authorID] = check;
@@ -31,6 +34,7 @@ function Post() {
      }
 
      const FollowingGroup = useMemo(() => {
+          if (!following) return;
           const group: any = {};
           following.forEach((check: IFollow) => {
                group[check.followingID] = check;
