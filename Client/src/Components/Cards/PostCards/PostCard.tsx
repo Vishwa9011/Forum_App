@@ -70,10 +70,14 @@ function PostCard({ post, IsLikedPost, IsFollowing }: Props) {
      };
 
      const LikePost = () => {
+          if (!userCredential._id) navigate("/login");
+
           dispatch(likePost(post._id, userCredential._id))
      }
 
      const UnLikePost = () => {
+          if (!userCredential._id) navigate("/login");
+
           dispatch(unLikePost(post._id, userCredential._id))
      }
 
