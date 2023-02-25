@@ -1,7 +1,8 @@
 import { Box, Button, Flex, Input } from "@chakra-ui/react";
-import { useRef, useEffect } from "react";
+import { useRef, useEffect, useState } from "react";
 import { BsSearch } from "react-icons/bs";
 import { useSelector } from "react-redux";
+import { IPost, IUser } from "../../Constants/constant";
 import { RootState } from "../../Redux/store";
 import "./SearchBar.css";
 import SearchTable from "./SearchTable";
@@ -11,6 +12,20 @@ type Props = { toggle(): void };
 function SearchPopup({ toggle }: Props) {
   const inputRef = useRef<HTMLInputElement>(null);
   const { posts } = useSelector((store: RootState) => store.post);
+  const [filteredData, setFilteredData] = useState<IPost[]>([]);
+  const [searchText, setSearchText] = useState("");
+
+  const FilterData = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchText(e.target.value.toLowerCase());
+    const searchText = e.target.value.toLowerCase();
+    const filteredDataFromSearchData = searchData.filter(
+      (post: IPost) =>
+        item.bran.toLowerCase().includes(searchText) ||
+        item.description.toLowerCase().includes(searchText) ||
+        item.category.toLowerCase().includes(searchText)
+    );
+    setFilteredData(filteredDataFromSearchData);
+  };
 
   useEffect(() => {
     inputRef.current?.focus();
@@ -41,9 +56,10 @@ function SearchPopup({ toggle }: Props) {
                 bg="white"
                 justifyContent="flex-start"
                 gap="10px"
-                padding={"15px"}
+                padding={"10px"}
                 borderRadius="10px"
                 color="#000"
+                my={4}
               >
                 <Button
                   variant={"unstyled"}
@@ -60,8 +76,8 @@ function SearchPopup({ toggle }: Props) {
                     placeholder="Search"
                     ref={inputRef}
                     variant="unstyled"
-                    // onChange={FilterData}
-                    // value={searchText}
+                    onChange={FilterData}
+                    value={searchText}
                   />
                 </Box>
               </Flex>

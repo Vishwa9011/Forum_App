@@ -20,7 +20,7 @@ type Props = {
 
 const SearchTable = ({ posts }: Props) => {
   return (
-    <TableContainer bg="whiteAlpha.700" borderRadius={"lg"} my={4}>
+    <TableContainer bg="whiteAlpha.700" borderRadius={"lg"}>
       <Table variant="simple">
         {/* <TableCaption>Imperial to metric conversion factors</TableCaption> */}
         <Thead>
