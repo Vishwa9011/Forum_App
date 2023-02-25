@@ -27,9 +27,9 @@ PostRouter.delete("/delete/:id", post_controller.DeletePost);
 
 PostRouter.get("/:id/comments", post_controller.SinglePostComment);
 
-PostRouter.get("/update/:id", post_controller.UpdateComment);
+PostRouter.patch("/comment/update/:id", post_controller.UpdateComment);
 
-PostRouter.get("/delete/:id", post_controller.DeleteComment);
+PostRouter.delete("/comment/delete/:id", post_controller.DeleteComment);
 
 PostRouter.post("/comment/new", post_controller.CreateComment);
 

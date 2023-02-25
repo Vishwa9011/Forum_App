@@ -1,6 +1,5 @@
 import React, { useState, useRef } from "react";
 import "./createpost.modules.css";
-import { BsUpload } from "react-icons/bs";
 import {
   Box,
   Button,
@@ -18,7 +17,6 @@ import {
   Stack,
   Text,
   Textarea,
-  useDisclosure,
 } from "@chakra-ui/react";
 import { MdUpload } from "react-icons/md";
 import { IoCloudDone } from "react-icons/io5";
@@ -29,15 +27,17 @@ import { createPost } from "../../Redux/Post/post.actions";
 import axios from "axios";
 import UseToastMsg, { ToastType } from "../../Custom-Hooks/Toast";
 import { RootState } from "../../Redux/store";
+import useToggle from "../../Custom-Hooks/useToggle";
+import { Navigate, useNavigate } from "react-router-dom";
 
 function Createpost() {
   const { Toast } = UseToastMsg();
+  const navigate = useNavigate();
   const titleRef = useRef<HTMLInputElement>(null);
   const descRef = useRef<HTMLTextAreaElement>(null);
-  const imageRef = useRef<HTMLInputElement>(null);
   const [ImageFile, setImageFile] = useState<any>([]);
-  const { isOpen, onOpen, onClose } = useDisclosure();
-  const [error, setError] = useState<boolean>(false);
+  const [isOpen, onOpen, onClose]: any = useToggle(false);
+  const [Error, setError] = useState<boolean>(false);
   const dispatch: Dispatch<any> = useDispatch();
   const { userCredential } = useSelector((store: RootState) => store.auth);
 
@@ -45,15 +45,22 @@ function Createpost() {
     if (
       !titleRef.current?.value ||
       !descRef.current?.value ||
-      !imageRef.current?.files
+      !ImageFile.length
     ) {
+      const data = {
+        title: titleRef.current!.value,
+        description: descRef.current!.value,
+        content: ImageFile[0],
+        author: userCredential._id,
+        authorID: userCredential._id,
+      };
       return setError(true);
     } else {
       setError(false);
     }
 
     const form = new FormData();
-    form.append("file", imageRef.current!.files[0]);
+    form.append("file", ImageFile[0]);
     form.append("upload_preset", "sfunzr0m");
     form.append("cloud_name", "dpzbtnmfl");
 
@@ -79,6 +86,13 @@ function Createpost() {
       });
   };
 
+  function openCreatPost() {
+    if (!userCredential._id) {
+      return navigate("/login");
+    }
+    onOpen();
+  }
+
   return (
     <>
       <Flex
@@ -97,7 +111,7 @@ function Createpost() {
           variant={"outline"}
           w="100%"
           borderRadius={"10px"}
-          onClick={onOpen}
+          onClick={openCreatPost}
           color={""}
         >
           Create Post
@@ -143,9 +157,8 @@ function Createpost() {
                     Choose the Image
                   </FormLabel>
                   <Input
-                    ref={imageRef}
-                    onChange={(e) => setImageFile(e.target.files)}
                     type="file"
+                    onChange={(e) => setImageFile(e.target.files)}
                     visibility={"hidden"}
                   />
                 </FormControl>
@@ -159,7 +172,7 @@ function Createpost() {
                 <Textarea placeholder="Description" ref={descRef} />
               </FormControl>
             </Stack>
-            {error && (
+            {Error && (
               <Box className="post-error" color={"red.300"} letterSpacing="1px">
                 <Text>Please fill all fields</Text>
               </Box>

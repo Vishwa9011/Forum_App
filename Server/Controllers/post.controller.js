@@ -69,8 +69,6 @@ async function SingleUserAllPost(req, res) {
      }
 }
 
-
-
 async function CreatePost(req, res) {
      const payload = req.body;
      console.log('payload: ', payload);
@@ -87,10 +85,10 @@ async function CreatePost(req, res) {
 async function UpdatePost(req, res) {
      const id = req.params.id;
      const payload = req.body
-     console.log('payload: ', payload);
      try {
-          let post = PostModel.findById(id);
-          post = { ...post, ...payload, updatedAt: Date.now(), edited: true };
+          let post = await PostModel.findOne({ _id: id });
+          const data = { ...payload, updatedAt: Date.now(), edited: true }
+          Object.assign(post, data)
           await post.save()
           res.status(201).json({ status: 200, message: "Post has been updated.", post });
      } catch (error) {
@@ -102,14 +100,14 @@ async function UpdatePost(req, res) {
 async function DeletePost(req, res) {
      const id = req.params.id;
      try {
-          await PostModel.findByIdAndUpdate(id);
+          const post = await PostModel.findById(id);
+          await post.removeRecords();
           res.status(201).json({ status: 200, message: "Post has been deleted." });
      } catch (error) {
           console.log('error: ', error);
           res.send(error)
      }
 }
-
 
 async function SinglePostComment(req, res) {
      const id = req.params.id;
@@ -167,8 +165,9 @@ async function UpdateComment(req, res) {
      const id = req.params.id;
      const { message } = req.body;
      try {
-          let comment = CommentModel.findById(id);
-          comment = { ...comment, message, edited: true };
+          var comment = await CommentModel.findById(id);
+          comment.message = message;
+          comment.edited = true
           await comment.save()
           res.status(201).json({ status: 200, message: "Comment has been updated.", });
      } catch (error) {
@@ -180,7 +179,8 @@ async function UpdateComment(req, res) {
 async function DeleteComment(req, res) {
      const id = req.params.id;
      try {
-          await CommentModel.findByIdAndDelete(id);
+          const comment = await CommentModel.findById(id);
+          await comment.removeRecords();
           res.status(201).json({ status: 200, message: "Comment has been deleted." });
      } catch (error) {
           console.log('error: ', error);

@@ -11,11 +11,11 @@ axios.defaults.baseURL = "http://localhost:8080"
 
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
-  <Router>
-    <ChakraProvider>
+  <ChakraProvider>
+    <Router>
       <Provider store={store}>
         <App />
       </Provider>
-    </ChakraProvider>
-  </Router>
+    </Router>
+  </ChakraProvider>
 )

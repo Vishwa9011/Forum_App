@@ -28,27 +28,11 @@ function Post() {
     <Box>
       <Grid maxW={"500px"} w="500px" m="auto">
         <Box>
-          {/* <Button as={Link} to='/create'>Create Post</Button> */}
           <Createpost />
-          {post && (
-            <UpdatePost
-              post={post}
-              isOpen={isOpen}
-              onOpen={onOpen}
-              onClose={onClose}
-            />
-          )}
         </Box>
-        <Grid gap="10px" minH="600px">
+        <Grid gap="10px" minH="fit-content">
           {posts.map((post: IPost) => {
-            return (
-              <PostCard
-                post={post}
-                update={UpdatePostData}
-                onOpen={onOpen}
-                key={post._id}
-              />
-            );
+            return <PostCard post={post} key={post._id} />;
           })}
         </Grid>
       </Grid>

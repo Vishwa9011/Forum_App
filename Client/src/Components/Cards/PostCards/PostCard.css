@@ -79,7 +79,7 @@
      margin-left: 0 !important;
 }
 
-.post-options-list li {
+.post-options-list li:not(.edit-btn) {
      padding: .5em;
      cursor: pointer;
      padding-left: .75em;
@@ -109,7 +109,6 @@
      overflow: hidden;
      position: relative;
      --line-height: 1.4;
-     padding: 0px 0 10px;
      line-height: var(--line-height);
      max-height: calc(var(--line-height) * 1em * var(--max-lines));
 }
@@ -124,6 +123,7 @@
 }
 
 .post-content-image {
+     padding-top: 5px;
      width: 100%;
      height: 100%;
 }
@@ -135,42 +135,61 @@
      object-fit: contain;
 }
 
+
+.post-description {
+     --max-line: 4;
+     --line-height: 1.4;
+     margin-top: 5px;
+     overflow: hidden;
+     position: relative;
+     line-height: var(--line-height);
+     color: var(--primary-text-color);
+     font-size: var(--primary-font);
+     max-height: calc(var(--line-height) * 1em * var(--max-line));
+}
+
+.post-content-description>p {
+     text-align: justify;
+}
+
 .expand-btn {
      right: 0;
-     width: 100px;
-     appearance: none;
+     bottom: 0;
      position: absolute;
-     padding-bottom: 10px;
+}
+
+.expand-btn::before {
+     left: -15px;
+     content: "";
+     width: 1rem;
+     height: 100%;
+     position: absolute;
+     background: linear-gradient(to right, transparent, var(--light-background-color));
+}
+
+[data-expand-btn] {
      cursor: pointer;
-     top: calc(var(--line-height) * 1em * var(--max-lines) - 1.5em);
-}
-
-.expand-btn::after {
-     top: 0;
-     right: 0;
-     position: absolute;
-     padding: 0 5px;
-     white-space: nowrap;
+     appearance: none;
      font-weight: 600;
-     border-radius: 5px;
+     background: white;
+}
+
+[data-expand-btn='true']:hover {
+     color: black;
+     text-decoration: underline;
+}
+
+[data-expand-btn='true']:not(:checked):before {
      content: "...Show more";
-     background: #fff;
 }
 
-.expand-btn:checked:after {
-     top: 0;
-     right: 0;
-     content: "...Show less";
-     position: absolute;
-     background: #fff;
+[data-expand-btn='true']:checked::after {
+     content: "Show less";
 }
 
-.expand-btn:checked {
-     top: 75%;
-}
-
-.post-content-description:has(.expand-btn:checked) {
+.post-content-description:has(.expand-btn [data-expand-btn='true']:checked) {
      max-height: none;
+     padding-bottom: 1em;
 }
 
 .post-footer div {
