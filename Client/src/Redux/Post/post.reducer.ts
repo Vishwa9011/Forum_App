@@ -9,7 +9,7 @@ export interface IAuthInitialState {
      RootComments: []
      Replies: [],
      likes: [],
-     singlePost: IPost
+     singlePost: any
 }
 
 
