@@ -28,6 +28,8 @@ UserRouter.post("/unfollow", user_controller.UnFollowUser)
 
 UserRouter.get("/:id/follower", user_controller.UserFollower)
 
+UserRouter.get("/:id/follow/all", user_controller.UserAllFollow)
+
 UserRouter.get("/:id/following", user_controller.UserFollowing)
 
 UserRouter.patch("/newpassword/:id", user_controller.UpdatePassword)

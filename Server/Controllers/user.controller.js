@@ -305,6 +305,19 @@ async function UserFollowing(req, res) {
      }
 }
 
+async function UserAllFollow(req, res) {
+     const id = req.params.id;
+     try {
+          const following = await FollowModel.find({ userID: id }).populate('followingID');
+          const followers = await FollowModel.find({ followingID: id }).populate('userID');
+          return res.status(201).json({ status: 200, message: 'user following.', following, followers })
+     } catch (error) {
+          console.log('error: ', error);
+          return res.status(201).json({ status: 401, error: error.message })
+     }
+}
+
+
 module.exports = {
      UserDetail,
      UserQuery,
@@ -320,5 +333,6 @@ module.exports = {
      FollowUser,
      UnFollowUser,
      UserFollower,
-     UserFollowing
+     UserFollowing,
+     UserAllFollow
 }
