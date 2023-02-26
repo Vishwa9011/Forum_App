@@ -7,7 +7,7 @@ import axios from 'axios';
 import { Provider } from 'react-redux';
 import { store } from './Redux/store';
 
-axios.defaults.baseURL = "http://localhost:8080"
+axios.defaults.baseURL = "https://doubtful-puce-macaw.cyclic.app/"
 
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
