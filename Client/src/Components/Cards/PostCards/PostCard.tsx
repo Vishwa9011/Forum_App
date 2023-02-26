@@ -28,6 +28,7 @@ type Props = {
 function PostCard({ post, IsLikedPost, IsFollowing }: Props) {
      const navigate = useNavigate();
      const { Toast } = UseToastMsg();
+     const [like, setLike] = useState(post.likes)
      const dispatch: Dispatch<any> = useDispatch();
      const [showComments, setComments] = useState<boolean>(false);
      const { userCredential } = useSelector((store: RootState) => store.auth);
@@ -63,13 +64,16 @@ function PostCard({ post, IsLikedPost, IsFollowing }: Props) {
      const LikePost = () => {
           if (!userCredential._id) return navigate("/login");
 
-          dispatch(postAction.likePost(post._id, userCredential._id))
+          dispatch(postAction.likePost(post._id, userCredential._id));
+          dispatch(postAction.getAllPost())
      }
 
      const UnLikePost = () => {
           if (!userCredential._id) return navigate("/login");
 
           dispatch(postAction.unLikePost(post._id, userCredential._id))
+          dispatch(postAction.getAllPost())
+
      }
 
 
@@ -154,9 +158,12 @@ function PostCard({ post, IsLikedPost, IsFollowing }: Props) {
                <hr style={{ margin: "5px 0" }} />
 
                <Flex as='footer' p='1' className='post-footer'>
-                    <Flex className='user-select-reject' tabIndex={0} color={IsLikedPost ? "blue.400" : ''} onClick={IsLikedPost ? UnLikePost : LikePost} align={'center'} gap='5px' flex={1} justify='center' p='2'>
+                    <Flex className='user-select-reject' tabIndex={0} color={IsLikedPost ? "blue.400" : ''} onClick={() => {
+                         IsLikedPost ? (UnLikePost(), setLike(like - 1)) : (LikePost(), setLike(like + 1))
+                    }}
+                         align={'center'} gap='5px' flex={1} justify='center' p='2'>
                          <Text>{IsLikedPost ? <AiFillLike /> : <BiLike />}</Text>
-                         <Text><span>{IsLikedPost ? post.likes + 1 : post.likes}</span> Like</Text>
+                         <Text><span>{like}</span> Like</Text>
                     </Flex>
                     <Flex className='user-select-reject' onClick={() => setComments(v => !v)} align={'center'} gap='5px' flex={1} justify='center' p='2'>
                          <Text><BiCommentDots /></Text>
@@ -170,16 +177,18 @@ function PostCard({ post, IsLikedPost, IsFollowing }: Props) {
 
                <hr style={{ margin: "5px 0" }} />
 
-               {showComments && (
-                    <Box as='section' className='comments-container'>
+               {
+                    showComments && (
+                         <Box as='section' className='comments-container'>
 
-                         <CommentForm autoFocus={true} onSubmit={onCreateComment} />
+                              <CommentForm autoFocus={true} onSubmit={onCreateComment} />
 
-                         {post?.RootComments != null && post?.RootComments.length > 0 &&
-                              <CommentsList comments={post.RootComments} replies={post.Replies} />
-                         }
-                    </Box>
-               )}
+                              {post?.RootComments != null && post?.RootComments.length > 0 &&
+                                   <CommentsList comments={post.RootComments} replies={post.Replies} />
+                              }
+                         </Box>
+                    )
+               }
           </Box >
      )
 
