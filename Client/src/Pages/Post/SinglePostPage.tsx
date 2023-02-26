@@ -158,7 +158,7 @@ function SinglePostPage({ }: Props) {
           <>
                <Navbar />
                {isOpen && <UpdatePost post={post} onClose={onClose} />}
-               <Box as='article' p='2' pb='0' border={'1px'} borderColor={'gray.400'} borderRadius='5px' maxW='500px' m='auto' mt='50px'>
+               <Box as='article' p='2' pb='0' border={'1px'} borderColor={'gray.400'} borderRadius='5px' maxW='500px' m='auto' my='50px' >
                     <Flex as='header' gap='10px' pb='2'>
                          <Flex gap='10px' as={Link} to={`/user/${post.authorID}`}>
                               <Box className={post.author?.online ? 'online' : "offline"}>
