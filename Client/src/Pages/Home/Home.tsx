@@ -13,11 +13,11 @@ function Home({ }: Props) {
 		<>
 			<Navbar />
 			<Box w="88%" h='120vh' m="auto" display="flex" gap="5">
-				<Box w='30%' display={{ base: "none", sm: "none", md: "none", lg: "block" }}>
+				<Box w='25%' display={{ base: "none", sm: "none", md: "none", lg: "block" }}>
 					<LeftCompo />
 				</Box>
-				<Box flex={1} overflowY={'scroll'} className='scroll-hidden' ><Post /></Box>
-				<Box w='30%' display={{ base: "none", sm: "none", md: "none", lg: "block" }}>
+				<Box flex={1} h='100%' overflowY={'scroll'} className='scroll-hidden'><Post /></Box>
+				<Box w='25%' display={{ base: "none", sm: "none", md: "none", lg: "block" }}>
 					<RightCompo />
 				</Box>
 			</Box>

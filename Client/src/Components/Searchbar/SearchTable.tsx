@@ -15,7 +15,7 @@ const SearchTable = ({ users }: Props) => {
                     <Tbody>
                          {users && users.map((user) => (
                               <Tr borderBottom={'1px'} p='' key={user._id}>
-                                   <Td>
+                                   <Td _hover={{ bg: "gray.300" }}>
                                         <Flex as={Link} to={`/user/${user._id}`} align={'center'} p='' gap={'3'}>
                                              <Box className={user ? 'online' : "offline"}>
                                                   <Box className='post-header-image'>

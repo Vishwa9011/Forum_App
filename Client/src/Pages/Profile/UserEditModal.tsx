@@ -32,6 +32,7 @@ type Props = {
 };
 
 const UserEditModal = ({ isOpen, onClose }: Props) => {
+
   const { userCredential, loading } = useSelector(
     (store: RootState) => store.auth
   );
@@ -41,7 +42,7 @@ const UserEditModal = ({ isOpen, onClose }: Props) => {
 
   const { username, gender, phoneNumber, photoURL, bio, occupation } = userData;
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
     let val = e.target.value;
     setUserData({ ...userData, [e.target.name]: val });
   };
