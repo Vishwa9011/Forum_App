@@ -9,20 +9,20 @@ import Post from "../Post/Post";
 type Props = {};
 
 function Home({ }: Props) {
-  return (
-    <>
-      <Navbar />
-      <Box w="88%" m="auto" display="grid" gridTemplateColumns={{base:"repeat(0,1fr)",sm:"repeat(0,1fr)",md:"repeat(0,1fr)",lg:"repeat(3,1fr)"}} gap="10">
-        <Box >
-        <LeftCompo/>
-        </Box>
-        <Box ><Post /></Box>
-        <Box >
-        <RightCompo/>
-        </Box>
-      </Box>
-    </>
-  );
+	return (
+		<>
+			<Navbar />
+			<Box w="88%" h='120vh' m="auto" display="flex" gap="5">
+				<Box w='30%' display={{ base: "none", sm: "none", md: "none", lg: "block" }}>
+					<LeftCompo />
+				</Box>
+				<Box flex={1} overflowY={'scroll'} className='scroll-hidden'><Post /></Box>
+				<Box w='30%' display={{ base: "none", sm: "none", md: "none", lg: "block" }}>
+					<RightCompo />
+				</Box>
+			</Box>
+		</>
+	);
 }
 
 export default Home;

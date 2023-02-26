@@ -37,27 +37,20 @@ body {
 .spinner-sector-red {
      --duration: 1.5s;
      --timing: ease-in-out;
-     border-top-color: tomato;
+     border-top-color: red;
 }
 
 .spinner-sector-blue {
      --duration: 2s;
      --timing: ease-in-out;
-     border-left-color: lightblue;
+     border-left-color: green;
 }
 
 .spinner-sector-green {
      --duration: 2.5s;
      --timing: ease-in-out;
-     border-right-color: lightgreen;
+     border-right-color: blue;
 }
-
-/* .spinner-sector-yellow {
-     --duration: 3s;
-     --timing: ease-in-out;
-     border-right-color: yellow;
-} */
-
 
 @keyframes rotate {
      0% {
@@ -68,4 +61,27 @@ body {
           transform: rotate(360deg);
      }
 
+}
+
+.loader-wrapper {
+     width: 100%;
+     height: 100vh;
+     height: 100dvh;
+     position: fixed;
+     z-index: 999;
+     display: flex;
+     align-items: center;
+     justify-content: center;
+}
+
+.loader-overlay {
+     width: 100%;
+     height: 100%;
+     position: absolute;
+     z-index: 999;
+     background: #ffffff;
+     display: flex;
+     align-items: center;
+     justify-content: center;
+     opacity: .2;
 }
