@@ -1,6 +1,6 @@
 import { Box, Button, Flex, Image, ListItem, Text, UnorderedList } from '@chakra-ui/react'
 import axios from 'axios'
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Link, useNavigate, useParams } from 'react-router-dom'
 import { CalcTime } from '../../helper/helper'
 import { useMemo } from 'react';
@@ -14,8 +14,13 @@ import { FaShare } from 'react-icons/fa'
 import { BiCommentDots, BiLike } from 'react-icons/bi'
 import "../../Components/Cards/PostCards/PostCard.css"
 import { Dispatch } from 'redux'
-import { deletePost } from '../../Redux/Post/post.actions'
+import { deletePost, likePost, postLikes, unLikePost } from '../../Redux/Post/post.actions'
 import useToggle from '../../Custom-Hooks/useToggle'
+import UpdatePost from './UpdatePost'
+import Navbar from '../../Components/Navbar/Navbar'
+import { followUser } from '../../Redux/Auth/auth.actions'
+import UseToastMsg from '../../Custom-Hooks/Toast'
+import { createComment } from '../../Redux/Post/comment.actions'
 
 type Props = {}
 
@@ -23,8 +28,10 @@ function SinglePostPage({ }: Props) {
 
 
      const { id } = useParams();
+     const { Toast } = UseToastMsg()
      const navigate = useNavigate();
      const [post, setPost] = useState<any>();
+     console.log('post: ', post);
      const dispatch: Dispatch<any> = useDispatch();
      const [isOpen, onOpen, onClose]: any = useToggle(false);
      const [showComments, setShowComments] = useState<boolean>(false);
@@ -32,13 +39,90 @@ function SinglePostPage({ }: Props) {
      const { likes } = useSelector((store: RootState) => store.post);
 
      const fetchPost = async () => {
-          const response = await axios.get(`/post/${id}`);
-          setPost(response.data.post)
+          try {
+               const response = await axios.get(`/post/${id}`);
+               setPost(response.data.post)
+          } catch (error) {
+               console.log('error: ', error);
+          }
      }
 
-     const FinalPostComments = useMemo(() => {
-          if (post?.comments == null) return []
+
+     const DeletePost = () => {
+          if (!userCredential._id) return navigate("/login");
+          dispatch(deletePost(post._id));
+          navigate("/")
+     };
+
+     const GroupLikedPost = useMemo(() => {
+          if (!likes) return;
           const group: any = {};
+          likes.forEach((check: ILikes) => {
+               group[check.postID] = check;
+          });
+          return group;
+     }, [likes])
+
+     const IsLikedPost = (id: string) => {
+          return GroupLikedPost[id] !== undefined
+     }
+
+     const FollowingGroup = useMemo(() => {
+          if (!following) return;
+          const group: any = {};
+          following.forEach((check: IFollow) => {
+               group[check.followingID] = check;
+          });
+          return group
+     }, [following])
+
+     const IsFollowing = (id: string) => {
+          return FollowingGroup[id] == undefined
+     }
+
+     const FollowUser = () => {
+          if (!userCredential._id) return navigate("/login");
+
+          const data = {
+               userID: userCredential._id,
+               followingID: post.authorID,
+          };
+          console.log("data: ", data);
+          dispatch(followUser(data, Toast));
+     };
+
+     const onCreateComment = (message: string) => {
+          if (!userCredential._id) return navigate("/login");
+          const data = {
+               message,
+               postID: post._id,
+               author: userCredential._id,
+               authorID: userCredential._id,
+          };
+          dispatch(createComment(data))
+          setTimeout(fetchPost, 1000)
+     };
+
+     const LikePost = () => {
+          if (!userCredential._id) return navigate("/login");
+
+          dispatch(likePost(post._id, userCredential._id))
+          setTimeout(fetchPost, 1000)
+     }
+
+     const UnLikePost = () => {
+          if (!userCredential._id) return navigate("/login");
+
+          dispatch(unLikePost(post._id, userCredential._id))
+          setTimeout(fetchPost, 1000)
+     }
+
+
+     const FinalPostComments: any = useMemo(() => {
+          if (post?.comments == null) return {}
+
+          const group: any = {};
+
           post.comments?.forEach((comment: any) => {
                if (!group[comment?.parentID]) {
                     group[comment?.parentID] = []
@@ -53,50 +137,28 @@ function SinglePostPage({ }: Props) {
           }
 
           return { RootComments, Replies };
-     }, [post?.comment])
-     console.log('FinalPostComments: ', FinalPostComments);
-     const DeletePost = () => {
-          if (!userCredential._id) return navigate("/login");
-          dispatch(deletePost(post._id));
-     };
-
-     const GroupLikedPost = useMemo(() => {
-          if (!likes) return;
-          const group: any = {};
-          likes.forEach((check: ILikes) => {
-               group[check.postID] = check;
-          });
-          return group;
-     }, [likes])
-
-     const isLikedPost = (id: string) => {
-          return GroupLikedPost[id] !== undefined
-     }
-
-     // const FollowingGroup = useMemo(() => {
-     //      if (!following) return;
-     //      const group: any = {};
-     //      following.forEach((check: IFollow) => {
-     //           group[check.followingID] = check;
-     //      });
-     //      return group
-     // }, [following])
-
-     // const IsFollowing = (id: string) => {
-     //      return FollowingGroup[id] == undefined
-     // }
+     }, [post?.comments])
 
 
      React.useEffect(() => {
-          fetchPost()
+          fetchPost();
+          dispatch(postLikes(userCredential._id));
      }, [id])
+
+
+     useEffect(() => {
+
+
+
+     }, [])
 
 
      return (
           post &&
           <>
+               <Navbar />
                {isOpen && <UpdatePost post={post} onClose={onClose} />}
-               <Box as='article' p='2' pb='0' border={'1px'} borderColor={'gray.400'} borderRadius='5px' maxW='500px' m='auto'>
+               <Box as='article' p='2' pb='0' border={'1px'} borderColor={'gray.400'} borderRadius='5px' maxW='500px' m='auto' mt='50px'>
                     <Flex as='header' gap='10px' pb='2'>
                          <Flex gap='10px' as={Link} to={`/user/${post.authorID}`}>
                               <Box className={post.author?.online ? 'online' : "offline"}>
@@ -126,9 +188,9 @@ function SinglePostPage({ }: Props) {
                               </Box>
                          </Flex>
                          <Flex ml={'auto'} align='center' gap='10px'>
-                              {/* {IsFollowing && userCredential._id !== post.authorID &&
+                              {IsFollowing(post?.authorID) && userCredential._id !== post.authorID &&
                                    <Button variant={'outline'} onClick={FollowUser}>+ Follow</Button>
-                              } */}
+                              }
                               <Box className='post-options-menu'>
                                    <Box className='hamberger-menu'>
                                         <Text></Text>
@@ -168,10 +230,10 @@ function SinglePostPage({ }: Props) {
                     <hr style={{ margin: "5px 0" }} />
 
                     <Flex as='footer' p='1' className='post-footer'>
-                         {/* <Flex className='user-select-reject' tabIndex={0} color={IsLikedPost ? "blue.400" : ''} onClick={IsLikedPost ? UnLikePost : LikePost} align={'center'} gap='5px' flex={1} justify='center' p='2'>
-                         <Text>{IsLikedPost ? <AiFillLike /> : <BiLike />}</Text>
-                         <Text><span>{IsLikedPost ? post.likes + 1 : post.likes}</span> Like</Text>
-                    </Flex> */}
+                         <Flex className='user-select-reject' tabIndex={0} color={IsLikedPost(post._id) ? "blue.400" : ''} onClick={IsLikedPost(post._id) ? UnLikePost : LikePost} align={'center'} gap='5px' flex={1} justify='center' p='2'>
+                              <Text>{IsLikedPost(post._id) ? <AiFillLike /> : <BiLike />}</Text>
+                              <Text><span>{post.likes}</span> Like</Text>
+                         </Flex>
                          <Flex className='user-select-reject' onClick={() => setShowComments(v => !v)} align={'center'} gap='5px' flex={1} justify='center' p='2'>
                               <Text><BiCommentDots /></Text>
                               <Text>Comment</Text>
@@ -183,17 +245,17 @@ function SinglePostPage({ }: Props) {
                     </Flex>
 
                     <hr style={{ margin: "5px 0" }} />
-                    {/* 
-               {showComments && (
-                    <Box as='section' className='comments-container'>
 
-                         <CommentForm autoFocus={true} onSubmit={onCreateComment} />
+                    {showComments && (
+                         <Box as='section' className='comments-container'>
 
-                         {FinalPostComments?.RootComments != null && FinalPostComments?.RootComments.length > 0 &&
-                              <CommentsList comments={FinalPostComments.RootComments} replies={FinalPostComments.Replies} />
-                         }
+                              <CommentForm autoFocus={true} onSubmit={onCreateComment} />
+
+                              {FinalPostComments?.RootComments != null && FinalPostComments?.RootComments.length > 0 &&
+                                   <CommentsList comments={FinalPostComments.RootComments} replies={FinalPostComments.Replies} />
+                              }
                          </Box>
-               )} */}
+                    )}
                </Box>
           </>
      )
