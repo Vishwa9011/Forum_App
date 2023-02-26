@@ -10,7 +10,6 @@ async function PostRouterHome(req, res) {
      }
 }
 
-
 async function AllPost(req, res) {
      try {
           const posts = await PostModel.find()
@@ -40,7 +39,7 @@ async function SinglePost(req, res) {
                     }
                }
           ])
-          res.status(200).json({ status: 200, post, message: "post has been sent." })
+          res.status(200).json({ status: 200, post, message: "post has been sent." });
      } catch (error) {
           console.log('error: ', error);
           res.send(error);

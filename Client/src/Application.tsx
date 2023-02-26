@@ -1,9 +1,10 @@
 import React, { lazy } from "react";
 import { Route, Routes } from "react-router-dom";
-import Follow from "./Pages/Follow/Follow";
-import Follower from "./Pages/Follow/Follow";
+import SinglePostPage from "./Pages/Post/SinglePostPage";
 import RequiredRoute from "./RequiredRoute";
+
 const Home = lazy(() => import("./Pages/Home/Home"));
+const Follow = lazy(() => import("./Pages/Follow/Follow"));
 const Login = lazy(() => import("./Pages/Auth/Login/Login"));
 const Profile = lazy(() => import("./Pages/Profile/Profile"));
 const Signup = lazy(() => import("./Pages/Auth/Login/Signup"));
@@ -19,7 +20,7 @@ function Application() {
       <Route path="/home" element={<Home />} />
       <Route path="/login" element={<Login />} />
       <Route path="/signup" element={<Signup />} />
-      {/* <Route path="/post/:id" element={<RequiredRoute><SinglePostPage /></RequiredRoute>} /> */}
+      <Route path="/post/:id" element={<RequiredRoute><SinglePostPage /></RequiredRoute>} />
       <Route path="/user/:id" element={<RequiredRoute><OthersProfilePage /></RequiredRoute>} />
       <Route path="/messages" element={<RequiredRoute><Home /></RequiredRoute>} />
       <Route path="/notifications" element={<RequiredRoute><Home /></RequiredRoute>} />

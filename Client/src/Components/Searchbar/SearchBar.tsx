@@ -59,9 +59,9 @@ const SearchBar = ({ toggle }: IProps) => {
                                    </Box>
                               </Box>
                          </Box>
-                         <Box className='search-overlay' bg='transparent' onClick={toggle}></Box>
+                         <Box className='search-overlay' bg='transparent' onClick={() => (toggle(), setSearchParams({}))}></Box>
                     </Box>
-                    <Box className='search-overlay' onClick={toggle}></Box>
+                    <Box className='search-overlay' onClick={() => (toggle(), setSearchParams({}))}></Box>
                </Box>
           </Box >
      )

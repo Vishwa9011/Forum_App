@@ -159,8 +159,10 @@
 
 .expand-btn {
      right: 0;
-     bottom: 0;
+     bottom: 2px;
      position: absolute;
+     background: white;
+
 }
 
 .expand-btn::before {

@@ -38,15 +38,15 @@ const Follow = () => {
                             <Text color={"gray.500"}>You are following {following.length} people out of your network</Text>
                             <Divider />
                             {following && following.map((Following: any) => (
-                                <Box display={"flex"} w='100%' justifyContent="space-between" alignItems={"center"}>
+                                <Box key={Following._id} display={"flex"} w='100%' justifyContent="space-between" alignItems={"center"}>
                                     <Flex w='100%' alignItems={"center"} gap="10px" p="10px" >
-                                        <Avatar name='Dan Abrahmov' src={Following?.followingID?.photoURL || 'https://bit.ly/dan-abramov'} />
-                                        <Box>
-                                            <Text fontWeight={"500"}>{Following?.followingID?.username}</Text>
-                                            <Text fontWeight={"400"}>{Following?.followingID?.bio || Following?.followingID?.email}</Text>
+                                        <Avatar as={Link} to={`/user/${Following?.followingID._id}`} name='Dan Abrahmov' src={Following?.followingID?.photoURL || 'https://bit.ly/dan-abramov'} />
+                                        <Box as={Link} to={`/user/${Following?.followingID._id}`}>
+                                            <Text textTransform={"capitalize"} fontWeight={"500"}>{Following?.followingID?.username}</Text>
+                                            <Text textTransform={"capitalize"} fontWeight={"400"}>{Following?.followingID?.bio || Following?.followingID?.email}</Text>
                                         </Box>
                                         <Box ml='auto'>
-                                            <Button bg='blue.300' color={'white'} as={Link} to={`/user/${Following?.followingID._id}`}>See Profile</Button>
+                                            <Button bg='blue.300' colorScheme={'blue.300'} _hover={{ bg: "blue.500" }} color={'white'} as={Link} to={`/user/${Following?.followingID._id}`}>See Profile</Button>
                                         </Box>
                                     </Flex>
                                 </Box>
@@ -59,15 +59,15 @@ const Follow = () => {
                             <Text color={"gray.500"}>{followers.length} people are following you</Text>
                             <Divider />
                             {followers && followers.map((follower: any) => (
-                                <Box display={"flex"} w='100%' justifyContent="space-between" alignItems={"center"}>
+                                <Box key={follower._id} display={"flex"} w='100%' justifyContent="space-between" alignItems={"center"}>
                                     <Flex w='100%' alignItems={"center"} gap="10px" p="10px" >
-                                        <Avatar name='Dan Abrahmov' src={follower?.userID?.photoURL || 'https://bit.ly/dan-abramov'} />
-                                        <Box>
-                                            <Text fontWeight={"500"}>{follower?.userID?.username}</Text>
-                                            <Text fontWeight={"400"}>{follower?.userID?.bio || follower?.userID?.email}</Text>
+                                        <Avatar as={Link} to={`/user/${follower?.userID?._id}`} name='Dan Abrahmov' src={follower?.userID?.photoURL || 'https://bit.ly/dan-abramov'} />
+                                        <Box as={Link} to={`/user/${follower?.userID?._id}`}>
+                                            <Text textTransform={"capitalize"} fontWeight={"500"}>{follower?.userID?.username}</Text>
+                                            <Text textTransform={"capitalize"} fontWeight={"400"}>{follower?.userID?.bio || follower?.userID?.email}</Text>
                                         </Box>
                                         <Box ml='auto'>
-                                            <Button bg='blue.300' color={'white'} as={Link} to={`/user/${follower?.userID?._id}`}>See Profile</Button>
+                                            <Button bg='blue.300' colorScheme={'blue.300'} _hover={{ bg: "blue.500" }} color={'white'} as={Link} to={`/user/${follower?.userID?._id}`}>See Profile</Button>
                                         </Box>
                                     </Flex>
                                 </Box>

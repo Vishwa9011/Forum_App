@@ -144,8 +144,10 @@ function PostCard({ post, IsLikedPost, IsFollowing }: Props) {
                               <input type="checkbox" data-expand-btn='true' />
                          </Box>}
                     </Box>
-                    <Box className='post-content-image'>
-                         <Image src={post?.content} />
+                    <Box as={Link} to={`/post/${post._id}`} >
+                         <Box className='post-content-image'>
+                              <Image src={post?.content} />
+                         </Box>
                     </Box>
                </Box>
 

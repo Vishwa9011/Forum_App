@@ -78,7 +78,7 @@ const Users = (props: Props) => {
                                              <Td fontWeight={'semibold'} color={user.online ? "green.500" : 'red.500'}>{user.online ? "ACTIVE" : 'PASSIVE'}</Td>
                                              <Td>
                                                   <Tooltip hasArrow label={"View User Details"}>
-                                                       <Button as={Link} to={`/user/${user._id}`} target="_blank" border={'2px'} borderRadius='0' fontWeight={'semibold'} color={'blue.500'} onClick={() => { showProfile(); setUserProfile(user) }}>VIEW USER</Button>
+                                                       <Button as={Link} to={`/user/${user._id}`} border={'2px'} borderRadius='0' fontWeight={'semibold'} color={'blue.500'} onClick={() => { showProfile(); setUserProfile(user) }}>VIEW USER</Button>
                                                   </Tooltip>
                                              </Td>
                                              <Td>

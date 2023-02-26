@@ -83,10 +83,10 @@ export default function Profile({ }: Props) {
                   </Text>
                 </Stack>
                 <Stack pl={4} mt="2" direction={"row"} fontSize='.9em'>
-                  <Text as={Link} to='/' _hover={{ textDecoration: "underline" }} fontWeight='semibold' color={'blue.500'}>
+                  <Text as={Link} to={`/follow/${userCredential._id}`} _hover={{ textDecoration: "underline" }} fontWeight='semibold' color={'blue.500'}>
                     {NumberFormat(userCredential.followerCount)} Followers
                   </Text>
-                  <Text as={Link} to='/' _hover={{ textDecoration: "underline" }} fontWeight='semibold' color={'blue.500'}>
+                  <Text as={Link} to={`/follow/${userCredential._id}`} _hover={{ textDecoration: "underline" }} fontWeight='semibold' color={'blue.500'}>
                     {NumberFormat(userCredential.followingCount)} Following
                   </Text>
                 </Stack>
