@@ -14,7 +14,6 @@ function App() {
      const { Toast } = UseToastMsg();
      const navigate = useNavigate();
      const dispatch: Dispatch<any> = useDispatch();
-
      const { loading } = useSelector((store: RootState) => store.auth);
      const { loading: postLoader } = useSelector((store: RootState) => store.post);
 
@@ -28,9 +27,6 @@ function App() {
           dispatch(postLikes(data.id));
           Toast("Welcome in forum", ToastType.success);
      }, [])
-
-
-
 
 
      return (
