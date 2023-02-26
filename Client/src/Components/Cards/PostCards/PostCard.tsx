@@ -1,22 +1,23 @@
 import { Box, Button, Flex, Image, ListItem, Text, UnorderedList } from '@chakra-ui/react'
-import React, { useEffect, useMemo, useState } from 'react'
+import { followUser, unFollowUser } from '../../../Redux/Auth/auth.actions'
+import * as commentAction from '../../../Redux/Post/comment.actions'
+import * as postAction from '../../../Redux/Post/post.actions'
 import { BiCommentDots, BiLike } from 'react-icons/bi'
+import { useDispatch, useSelector } from 'react-redux'
+import { CalcTime } from '../../../helper/helper'
+import UpdatePost from '../../../Pages/Post/UpdatePost'
+import useToggle from '../../../Custom-Hooks/useToggle'
+import UseToastMsg from '../../../Custom-Hooks/Toast'
+import { Link, useNavigate } from 'react-router-dom'
+import CommentsList from '../Comments/CommentsList';
+import { IPost } from '../../../Constants/constant'
+import CommentForm from '../Comments/CommentForm'
+import { RootState } from '../../../Redux/store'
 import { AiFillLike } from 'react-icons/ai'
 import { FaShare } from 'react-icons/fa'
-import { IFollow, ILikes, IPost } from '../../../Constants/constant'
-import CommentsList from '../Comments/CommentsList';
+import React, { useState } from 'react'
 import { Dispatch } from 'redux'
-import { useDispatch, useSelector } from 'react-redux'
-import { createComment, deletePost, getComments, likePost, unLikePost } from '../../../Redux/Post/post.actions'
-import { RootState } from '../../../Redux/store'
-import CommentForm from '../Comments/CommentForm'
-import { dateFormatter } from '../../../helper/helper'
-import UpdatePost from '../../../Pages/Post/UpdatePost'
 import './PostCard.css'
-import { Link, useNavigate } from 'react-router-dom'
-import { followUser, unFollowUser } from '../../../Redux/Auth/auth.actions'
-import UseToastMsg from '../../../Custom-Hooks/Toast'
-import useToggle from '../../../Custom-Hooks/useToggle'
 
 type Props = {
      post: IPost,
@@ -40,12 +41,12 @@ function PostCard({ post, IsLikedPost, IsFollowing }: Props) {
                author: userCredential._id,
                authorID: userCredential._id,
           };
-          dispatch(createComment(data));
+          dispatch(commentAction.createComment(data));
      };
 
      const DeletePost = () => {
           if (!userCredential._id) return navigate("/login");
-          dispatch(deletePost(post._id));
+          dispatch(postAction.deletePost(post._id));
      };
 
      const FollowUser = () => {
@@ -59,27 +60,16 @@ function PostCard({ post, IsLikedPost, IsFollowing }: Props) {
           dispatch(followUser(data, Toast));
      };
 
-     const UnFollowUser = () => {
-          if (!userCredential._id) return navigate("/login");
-
-          const data = {
-               userID: userCredential._id,
-               followingID: post.authorID,
-          };
-          console.log("data: ", data);
-          dispatch(unFollowUser(data, Toast));
-     };
-
      const LikePost = () => {
           if (!userCredential._id) return navigate("/login");
 
-          dispatch(likePost(post._id, userCredential._id))
+          dispatch(postAction.likePost(post._id, userCredential._id))
      }
 
      const UnLikePost = () => {
           if (!userCredential._id) return navigate("/login");
 
-          dispatch(unLikePost(post._id, userCredential._id))
+          dispatch(postAction.unLikePost(post._id, userCredential._id))
      }
 
 
@@ -95,8 +85,11 @@ function PostCard({ post, IsLikedPost, IsFollowing }: Props) {
                          </Box>
                          <Box className='post-header-details'>
                               <Text textTransform={"capitalize"} _hover={{ textDecor: "underline" }}>{post.author.username}</Text>
-                              <Text textTransform={"capitalize"} fontWeight={'semibold'} color='gray.600'>{post.author.bio}</Text>
-                              <Text fontWeight={'semibold'} color='gray.500'>{dateFormatter.format(post.createdAt)}</Text>
+                              <Text textTransform={"capitalize"} fontWeight={'semibold'} color='gray.600'>{post.author.bio || post.author.email}</Text>
+                              <Text fontWeight={'semibold'} color='gray.500'>
+                                   <Text as='span'>{CalcTime(post.createdAt)}</Text>
+                                   <Text as='span' ml='3'>{post.edited ? "• Edited" : ""}</Text>
+                              </Text>
                          </Box>
                     </Flex>
                     <Flex ml={'auto'} align='center' gap='10px'>
@@ -137,7 +130,7 @@ function PostCard({ post, IsLikedPost, IsFollowing }: Props) {
                               <input type="checkbox" data-expand-btn='true' />
                          </Box>}
                     </Box>
-                    <Box as={Link} to={`/post/${post._id}`} className='post-content-image'>
+                    <Box className='post-content-image'>
                          <Image src={post?.content} />
                     </Box>
                </Box>
@@ -147,7 +140,7 @@ function PostCard({ post, IsLikedPost, IsFollowing }: Props) {
                <Flex as='footer' p='1' className='post-footer'>
                     <Flex className='user-select-reject' tabIndex={0} color={IsLikedPost ? "blue.400" : ''} onClick={IsLikedPost ? UnLikePost : LikePost} align={'center'} gap='5px' flex={1} justify='center' p='2'>
                          <Text>{IsLikedPost ? <AiFillLike /> : <BiLike />}</Text>
-                         <Text> <span>{IsLikedPost ? post.likes + 1 : post.likes}</span> Like</Text>
+                         <Text><span>{IsLikedPost ? post.likes + 1 : post.likes}</span> Like</Text>
                     </Flex>
                     <Flex className='user-select-reject' onClick={() => setComments(v => !v)} align={'center'} gap='5px' flex={1} justify='center' p='2'>
                          <Text><BiCommentDots /></Text>

@@ -5,6 +5,7 @@ import * as Types from "./auth.actionType"
 import axios from "axios";
 import { IUser, UserI } from "../../Constants/constant";
 import { ToastType } from "../../Custom-Hooks/Toast"
+import { postLikes } from "../Post/post.actions";
 
 
 export const getUser = (id: string, Toast: Function) => async (dispatch: Dispatch) => {
@@ -23,7 +24,7 @@ export const getUser = (id: string, Toast: Function) => async (dispatch: Dispatc
      }
 }
 
-export const GoogleAuth = (navigate: Function, Toast: Function) => async (dispatch: Dispatch) => {
+export const GoogleAuth = (navigate: Function, Toast: Function) => async (dispatch: Dispatch<any>) => {
      dispatch({ type: Types.AUTH_LOADING });
      try {
           const userCredential = await signInWithPopup(auth, Provider);
@@ -42,7 +43,8 @@ export const GoogleAuth = (navigate: Function, Toast: Function) => async (dispat
 
 
           sessionStorage.setItem("user", JSON.stringify({ id: response.data.credentials._id, token: response.data.token }));
-
+          dispatch(getFollowing(response.data.credentials._id, Toast));
+          dispatch(postLikes(response.data.credentials._id));
 
           Toast("Login Success", ToastType.success);
 

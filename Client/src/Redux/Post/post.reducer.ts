@@ -8,7 +8,8 @@ export interface IAuthInitialState {
      posts: IPost[]
      RootComments: []
      Replies: [],
-     likes: []
+     likes: [],
+     singlePost: IPost
 }
 
 
@@ -18,7 +19,8 @@ const initialState: IAuthInitialState = {
      posts: [],
      RootComments: [],
      Replies: [],
-     likes: []
+     likes: [],
+     singlePost: {}
 }
 
 export const Reducer = (state = initialState, { type, payload }: any) => {
@@ -36,7 +38,7 @@ export const Reducer = (state = initialState, { type, payload }: any) => {
           case Types.GET_SINGLE_USER_ALLPOST_SUCCESS:
                return ({ ...state, loading: false, error: "", posts: payload });
           case Types.GET_SINGLE_POST_SUCCESS:
-               return ({ ...state, loading: false, error: "" });
+               return ({ ...state, loading: false, error: "", singlePost: payload });
           case Types.GET_POST_COMMENT_SUCCESS:
                return ({ ...state, loading: false, error: "", RootComments: payload.RootComments, Replies: payload.comments });
           default:

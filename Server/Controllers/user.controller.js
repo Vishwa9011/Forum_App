@@ -17,6 +17,24 @@ async function UserDetail(req, res) {
      }
 }
 
+
+async function UserQuery(req, res) {
+     const { user } = req.query;
+     console.log('user: ', user);
+     try {
+          const FindUser = await UserModel.find({
+               $or: [
+                    { username: { $regex: user || "", $options: 'i' } },
+                    { email: { $regex: user || "", $options: 'i' } }
+               ]
+          })
+          res.status(200).json({ msg: "user details fetched", users: FindUser })
+     } catch (error) {
+          console.log('error: ', error);
+          res.send(error)
+     }
+}
+
 // ** User Registeration
 async function UserRegisteration(req, res) {
      const { password, ...payload } = req.body;
@@ -289,6 +307,7 @@ async function UserFollowing(req, res) {
 
 module.exports = {
      UserDetail,
+     UserQuery,
      UserLogin,
      UserLogout,
      GoogleAuth,

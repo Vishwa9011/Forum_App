@@ -22,13 +22,13 @@ function Post() {
           if (!likes) return;
           const group: any = {};
           likes.forEach((check: ILikes) => {
-               group[check.authorID] = check;
+               group[check.postID] = check;
           });
           return group;
      }, [likes])
 
      const isLikedPost = (id: string) => {
-          return GroupLikedPost[id] != undefined
+          return GroupLikedPost[id] !== undefined
      }
 
      const FollowingGroup = useMemo(() => {
@@ -71,7 +71,7 @@ function Post() {
                     </Box>
                     <Grid gap='10px' minH='fit-content'>
                          {posts.map((post: IPost) => {
-                              return <PostCard post={post} key={post._id} IsLikedPost={isLikedPost(post.authorID)} IsFollowing={IsFollowing(post.authorID)} />
+                              return <PostCard post={post} key={post._id} IsLikedPost={isLikedPost(post._id)} IsFollowing={IsFollowing(post.authorID)} />
                          })}
                     </Grid>
                </Grid>

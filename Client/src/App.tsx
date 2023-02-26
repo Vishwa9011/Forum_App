@@ -7,24 +7,26 @@ import { getFollowing, getUser } from './Redux/Auth/auth.actions';
 import UseToastMsg, { ToastType } from './Custom-Hooks/Toast';
 import { Outlet, useNavigate } from 'react-router-dom';
 import { getAllPost, postLikes } from './Redux/Post/post.actions';
+import Loader from './Components/Loader/Loader';
 
 function App() {
   const { Toast } = UseToastMsg();
   const navigate = useNavigate();
-  const disaptch: Dispatch<any> = useDispatch();
+  const dispatch: Dispatch<any> = useDispatch();
   var user = sessionStorage.getItem("user");
   let data = user ? JSON.parse(user) : null;
 
   useEffect(() => {
     if (!data?.id) return;
-    disaptch(getUser(data.id, Toast));
-    disaptch(getFollowing(data.id, Toast));
-    disaptch(postLikes(data.id, Toast));
+    dispatch(getUser(data.id, Toast));
+    dispatch(getFollowing(data.id, Toast));
+    dispatch(postLikes(data.id));
     Toast("Welcome in forum", ToastType.success);
   }, [])
 
   return (
     <>
+      <Loader />
       <Suspense fallback={<h1>Loading</h1>}>
         <Application />
         <Outlet />

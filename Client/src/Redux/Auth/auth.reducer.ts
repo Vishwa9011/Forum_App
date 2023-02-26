@@ -1,7 +1,7 @@
 import { IFollow, IUser, Occupation } from '../../Constants/constant';
 import * as Types from './auth.actionType';
 
-const initialUserCredState = {
+export const initialUserCredState = {
      _id: '',
      username: "",
      email: "",

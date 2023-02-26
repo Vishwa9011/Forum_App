@@ -1,8 +1,8 @@
 import { Box, Button, Image, ListItem, Text, UnorderedList } from '@chakra-ui/react'
-import * as Action from '../../../Redux/Post/post.actions';
+import * as Action from '../../../Redux/Post/comment.actions';
 import { IComment } from '../../../Constants/constant'
 import { useDispatch, useSelector } from 'react-redux'
-import { dateFormatter } from '../../../helper/helper'
+import { CalcTime } from '../../../helper/helper'
 import { RootState } from '../../../Redux/store'
 import { HiDotsVertical } from 'react-icons/hi'
 import IconBtn from '../../IconBtn/IconBtn'
@@ -62,7 +62,10 @@ function Comment({ comment, replies }: Props) {
                               <Box className='comment-header'>
                                    <Box as={Link} to={`/user/${comment.authorID}`}>
                                         <Text className='comment-username'>{comment.author?.username}</Text>
-                                        <Text className='comment-date-time' fontWeight={'semibold'} color='gray.500'>{dateFormatter.format(comment.createdAt)}</Text>
+                                        <Text className='comment-date-time' fontWeight={'semibold'} color='gray.500'>
+                                             <Text as='span'>{CalcTime(comment.createdAt)}</Text>
+                                             <Text as='span' ml='3'>{comment.edited ? "• Edited" : ""}</Text>
+                                        </Text>
                                    </Box>
                                    {(comment.authorID === userCredential?._id) &&
                                         (<Box className='comment-options-menu'>

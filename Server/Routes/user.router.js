@@ -4,6 +4,8 @@ const user_controller = require("../Controllers/user.controller")
 
 UserRouter.get("/:id", user_controller.UserDetail);
 
+UserRouter.get("/", user_controller.UserQuery);
+
 UserRouter.post("/register", user_controller.UserRegisteration);
 
 UserRouter.post("/login", user_controller.UserLogin);
