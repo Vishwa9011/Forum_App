@@ -25,7 +25,7 @@ import UseToastMsg from "../../../Custom-Hooks/Toast";
 import { useSelector } from "react-redux";
 import { RootState } from "../../../Redux/store";
 import { useNavigate, Link } from "react-router-dom";
-import { GoogleAuth } from "./../../../Redux/Auth/auth.actions";
+import { GoogleAuth } from "../../../Redux/Auth/auth.actions";
 
 interface ILoginCred {
 	email: string;

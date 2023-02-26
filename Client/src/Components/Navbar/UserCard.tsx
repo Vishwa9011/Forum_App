@@ -1,25 +1,12 @@
-import {
-  Avatar,
-  Box,
-  Button,
-  Card,
-  CardBody,
-  CardFooter,
-  CardHeader,
-  Flex,
-  Heading,
-  Stack,
-  StackDivider,
-  Text,
-} from "@chakra-ui/react";
+import { Avatar, Box, Button, Card, CardBody, CardFooter, CardHeader, Flex, Heading, Stack, StackDivider, Text, } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 import { Link, useNavigate } from "react-router-dom";
-import { Dispatch } from "redux";
 import UseToastMsg from "../../Custom-Hooks/Toast";
 import { logout } from "../../Redux/Auth/auth.actions";
 import { RootState } from "../../Redux/store";
+import { Dispatch } from "redux";
 
 function UserCard() {
   const dispatch: Dispatch<any> = useDispatch();
@@ -99,6 +86,9 @@ function UserCard() {
               <Text as={Link} to="/" pt="2" fontSize="sm">
                 Masai School
               </Text>
+              {userCredential?.email == "vishu842301@gmail.com" && <Text as={Link} to="/admin" pt="2" fontSize="sm">
+                Admin Pannel
+              </Text>}
             </Flex>
           </Box>
           <Button

@@ -6,7 +6,7 @@ const Home = lazy(() => import("./Pages/Home/Home"));
 const Login = lazy(() => import("./Pages/Auth/Login/Login"));
 const Profile = lazy(() => import("./Pages/Profile/Profile"));
 const Signup = lazy(() => import("./Pages/Auth/Login/Signup"));
-// const SinglePostPage = lazy(() => import("./Pages/Post/SinglePostPage"));
+const Admin = lazy(() => import("./Admin/Pages/Home/Admin"));
 const VerifyEmail = lazy(() => import("./Pages/Auth/verification/VerifyEmail"));
 const OthersProfilePage = lazy(() => import("./Pages/Profile/OthersProfilePage"));
 const SendVerificationEmail = lazy(() => import("./Pages/Auth/verification/SendVerificationEmail"));
@@ -25,8 +25,7 @@ function Application() {
       <Route path="/profile" element={<RequiredRoute><Profile /></RequiredRoute>} />
       <Route path="/sendverifyemail" element={<RequiredRoute><SendVerificationEmail /></RequiredRoute>} />
       <Route path="/verifyemail" element={<RequiredRoute><VerifyEmail /></RequiredRoute>} />
-      <Route path="/profile/edit" element={<RequiredRoute><></></RequiredRoute>} />
-      <Route path="/follower" element={<Follower/>} />
+      <Route path="/admin/*" element={<RequiredRoute><Admin children={undefined} /></RequiredRoute>} />
     </Routes>
   );
 }
