@@ -85,8 +85,8 @@ export default function OthersProfilePage({ }: Props) {
 
      useEffect(() => {
           fetchUser();
-          fetchPost()
-     }, [])
+          fetchPost();
+     }, [id])
 
      return (
           <>
@@ -125,18 +125,18 @@ export default function OthersProfilePage({ }: Props) {
                                              </Text>
                                         </Stack>
                                         <Stack pl={4} mt="2" direction={"row"} fontSize='.9em'>
-                                             <Text as={Link} to='/' _hover={{ textDecoration: "underline" }} fontWeight='semibold' color={'blue.500'}>
+                                             <Text as={Link} to={`/follow/${profile._id}`} _hover={{ textDecoration: "underline" }} fontWeight='semibold' color={'blue.500'}>
                                                   {NumberFormat(profile.followerCount)} Followers
                                              </Text>
-                                             <Text as={Link} to='/' _hover={{ textDecoration: "underline" }} fontWeight='semibold' color={'blue.500'}>
+                                             <Text as={Link} to={`/follow/${profile._id}`} _hover={{ textDecoration: "underline" }} fontWeight='semibold' color={'blue.500'}>
                                                   {NumberFormat(profile.followingCount)} Following
                                              </Text>
                                         </Stack>
                                         <Stack pl={4} mt="4" direction={"row"}>
-                                             <Button as={Link} to={`mailto:${profile.email}`} color={"black"} border="1px solid grey" rounded={"md"} borderRadius="20px" _hover={{ transform: "translateY(-2px)", boxShadow: "lg" }}>
+                                             <Button bg='blue.500' as={Link} to={`mailto:${profile.email}`} color={"white"} border="1px solid grey" rounded={"md"} borderRadius="20px" _hover={{ transform: "translateY(-2px)", boxShadow: "lg" }}>
                                                   Message
                                              </Button>
-                                             {userCredential._id != profile._id && <Button onClick={IsFollowing(profile._id) ? FollowUser : UnFollowUser} color={"white"} rounded={"md"} borderRadius="20px" _hover={{ transform: "translateY(-2px)", boxShadow: "lg" }}>
+                                             {userCredential._id != profile._id && <Button bg='orange.500' onClick={IsFollowing(profile._id) ? FollowUser : UnFollowUser} color={"white"} rounded={"md"} borderRadius="20px" _hover={{ transform: "translateY(-2px)", boxShadow: "lg" }}>
                                                   {IsFollowing(profile._id) ? "Follow" : "Unfollow"}
                                              </Button>}
                                         </Stack>

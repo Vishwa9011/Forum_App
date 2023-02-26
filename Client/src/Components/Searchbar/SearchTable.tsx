@@ -5,10 +5,11 @@ import { IUser } from '../../Constants/constant'
 import { Link } from 'react-router-dom';
 
 type Props = {
-     users: IUser[]
+     users: IUser[],
+     toggle(): void
 }
 
-const SearchTable = ({ users }: Props) => {
+const SearchTable = ({ users, toggle }: Props) => {
      return (
           <TableContainer bg='whiteAlpha.800'>
                <Table variant='simple'>
@@ -16,10 +17,10 @@ const SearchTable = ({ users }: Props) => {
                          {users && users.map((user) => (
                               <Tr borderBottom={'1px'} p='' key={user._id}>
                                    <Td _hover={{ bg: "gray.300" }}>
-                                        <Flex as={Link} to={`/user/${user._id}`} align={'center'} p='' gap={'3'}>
+                                        <Flex as={Link} to={`/user/${user._id}`} onClick={toggle} align={'center'} p='' gap={'3'}>
                                              <Box className={user ? 'online' : "offline"}>
                                                   <Box className='post-header-image'>
-                                                       <Image src={user.photoURL || "https://bit.ly/3kkJrly"} />
+                                                       <Image src={user.photoURL || "https://bit.ly/3kkJrly"} objectFit='contain' objectPosition={'center'} />
                                                   </Box>
                                              </Box>
                                              <Box w='180px' overflow={'hidden'} lineHeight='1'>

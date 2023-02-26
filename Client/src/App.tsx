@@ -10,28 +10,28 @@ import { getAllPost, postLikes } from './Redux/Post/post.actions';
 import Loader from './Components/Loader/Loader';
 
 function App() {
-  const { Toast } = UseToastMsg();
-  const navigate = useNavigate();
-  const dispatch: Dispatch<any> = useDispatch();
-  var user = sessionStorage.getItem("user");
-  let data = user ? JSON.parse(user) : null;
+     const { Toast } = UseToastMsg();
+     const navigate = useNavigate();
+     const dispatch: Dispatch<any> = useDispatch();
+     var user = sessionStorage.getItem("user");
+     let data = user ? JSON.parse(user) : null;
 
-  useEffect(() => {
-    if (!data?.id) return;
-    dispatch(getUser(data.id, Toast));
-    dispatch(getFollowing(data.id, Toast));
-    dispatch(postLikes(data.id));
-    Toast("Welcome in forum", ToastType.success);
-  }, [])
+     useEffect(() => {
+          if (!data?.id) return;
+          dispatch(getUser(data.id, Toast));
+          dispatch(getFollowing(data.id, Toast));
+          dispatch(postLikes(data.id));
+          Toast("Welcome in forum", ToastType.success);
+     }, [])
 
-  return (
-    <>
-      <Suspense fallback={<Loader />}>
-        <Application />
-        <Outlet />
-      </Suspense>
-    </>
-  );
+     return (
+          <>
+               <Suspense fallback={<Loader />}>
+                    <Application />
+                    <Outlet />
+               </Suspense>
+          </>
+     );
 }
 
 export default App;

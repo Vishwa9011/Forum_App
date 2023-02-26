@@ -1,6 +1,7 @@
 import React, { lazy } from "react";
 import { Route, Routes } from "react-router-dom";
-import Follower from "./Pages/Follower/Follower";
+import Follow from "./Pages/Follow/Follow";
+import Follower from "./Pages/Follow/Follow";
 import RequiredRoute from "./RequiredRoute";
 const Home = lazy(() => import("./Pages/Home/Home"));
 const Login = lazy(() => import("./Pages/Auth/Login/Login"));
@@ -26,6 +27,7 @@ function Application() {
       <Route path="/sendverifyemail" element={<RequiredRoute><SendVerificationEmail /></RequiredRoute>} />
       <Route path="/verifyemail" element={<RequiredRoute><VerifyEmail /></RequiredRoute>} />
       <Route path="/admin/*" element={<RequiredRoute><Admin children={undefined} /></RequiredRoute>} />
+      <Route path="/follow/:id" element={<RequiredRoute><Follow /></RequiredRoute>} />
     </Routes>
   );
 }

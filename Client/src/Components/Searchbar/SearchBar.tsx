@@ -55,7 +55,7 @@ const SearchBar = ({ toggle }: IProps) => {
                               </Box>
                               <Box>
                                    <Box maxH='50vh' overflowY={'scroll'}>
-                                        <SearchTable users={users} />
+                                        <SearchTable users={users} toggle={toggle} />
                                    </Box>
                               </Box>
                          </Box>

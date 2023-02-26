@@ -19,7 +19,6 @@ const Dashboard = (props: Props) => {
      const dispatch: Dispatch<any> = useDispatch();
      const [users, setUsers] = useState([]);
 
-
      async function getQuerry() {
           try {
                const users = await axios.get(`/user?user=${''}`);
