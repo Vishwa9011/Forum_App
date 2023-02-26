@@ -18,6 +18,7 @@ a {
 }
 
 .text-elipsis {
+     overflow: hidden;
      white-space: nowrap;
      text-overflow: ellipsis;
 }
@@ -29,4 +30,36 @@ a {
 .scroll-hidden::-webkit-scrollbar {
      width: 0;
      display: none;
+}
+
+.online, .offline {
+     padding: 1px;
+     width: fit-content;
+     height: fit-content;
+     border-radius: 50%;
+     display: flex;
+     align-items: center;
+     justify-content: center;
+     position: relative;
+     border: 2px solid red;
+}
+
+.online::before, .offline::before {
+     content: "";
+     right: 0;
+     bottom: 0;
+     width: 10px;
+     z-index: 1;
+     aspect-ratio: 1 / 1;
+     background-color: green;
+     border-radius: 50%;
+     position: absolute;
+}
+
+.offline {
+     /* border-color: gray */
+}
+
+.offline::before {
+     background-color: gray;
 }

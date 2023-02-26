@@ -107,15 +107,14 @@ export default function OthersProfilePage({ }: Props) {
                                                        {profile?.username}
                                                   </Heading>
                                                   {profile.online ?
-                                                       <Box w="100%" display={"flex"} justifyContent="center" alignItems={"center"} gap="2" borderRadius="10px" mt="10px">
+                                                       <Box w="100%" color={'green'} display={"flex"} justifyContent="center" alignItems={"center"} gap="2" borderRadius="10px" mt="10px">
                                                             <Box bg="green" borderRadius={"50%"} h="7px" w="7px"></Box>
                                                             <Text fontWeight={"500"}>Online</Text>
                                                        </Box>
                                                        :
-                                                       <Box w="100%" display={"flex"} justifyContent="center" alignItems={"center"} gap="2" borderRadius="10px">
-                                                            <Box bg="red" borderRadius={"50%"} h="7px" w="7px">
-                                                            </Box>
-                                                            <Text fontWeight={"500"}>Not Available</Text>
+                                                       <Box w="100%" color={'gray'} display={"flex"} justifyContent="center" alignItems={"center"} gap="2" borderRadius="10px">
+                                                            <Box bg="gray" borderRadius={"50%"} h="7px" w="7px"></Box>
+                                                            <Text fontWeight={"500"}>Offline</Text>
                                                        </Box>}
                                              </Flex>
                                              <Text fontSize={"md"} color={"gray.800"}>

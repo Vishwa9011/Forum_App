@@ -17,7 +17,7 @@ const LeftCompo = () => {
                         <Box display={"flex"} justifyContent="center" alignItems={"center"}>
                             <Avatar size='1xl' name='Segun Adebayo' src={userCredential.photoURL || "https://bit.ly/3kkJrly"} />
                         </Box>
-                        <Box w="100%" display={"flex"} justifyContent="center" alignItems={"center"} gap="2" borderRadius="10px" mt="10px">
+                        <Box w="100%" color={'green'} display={"flex"} justifyContent="center" alignItems={"center"} gap="2" borderRadius="10px" mt="10px">
                             <Box bg="green" borderRadius={"50%"} h="7px" w="7px"></Box>
                             <Text fontWeight={"500"}>Online</Text>
                         </Box>
@@ -59,12 +59,12 @@ const LeftCompo = () => {
                                 <ListItem listStyleType={"circle"} fontWeight="500">JavaScript Developer</ListItem>
                             </UnorderedList>
                             <Divider />
-                            <Text color='blue.600' fontSize='1xl' display={"flex"} justifyContent="flex-start" alignItems={"center"} >
+                            <Box color='blue.600' fontSize='1xl' display={"flex"} justifyContent="flex-start" alignItems={"center"} >
                                 <ul>
                                     <li><Text _hover={{ textDecoration: "underline", cursor: "pointer" }}>Tags</Text></li>
                                     <li><Text _hover={{ textDecoration: "underline", cursor: "pointer" }}>Connections</Text></li>
                                 </ul>
-                            </Text>
+                            </Box>
                             <Divider />
                         </Stack>
                     </CardBody>

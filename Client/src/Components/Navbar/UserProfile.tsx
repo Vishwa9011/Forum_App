@@ -6,24 +6,12 @@ import UserCard from "./UserCard";
 
 type Props = {};
 
-function UserProfile({}: Props) {
+function UserProfile({ }: Props) {
   const { userCredential } = useSelector((store: RootState) => store.auth);
   return (
     <Menu>
-      <MenuButton
-        as={Button}
-        rounded={"full"}
-        variant={"link"}
-        cursor={"pointer"}
-        minW={0}
-        mr={4}
-      >
-        <Avatar
-          bg="teal.500"
-          size={"sm"}
-          name={userCredential.username}
-          src={userCredential.photoURL}
-        />
+      <MenuButton as={Button} rounded={"full"} variant={"link"} cursor={"pointer"} minW={0} mr={4}>
+        <Avatar bg="teal.500" size={"sm"} name={userCredential.username} src={userCredential.photoURL} />
       </MenuButton>
       <MenuList>
         <UserCard />

@@ -80,11 +80,25 @@ function PostCard({ post, IsLikedPost, IsFollowing }: Props) {
 
                <Flex as='header' gap='10px' pb='2'>
                     <Flex gap='10px' as={Link} to={`/user/${post.authorID}`}>
-                         <Box className='post-header-image'>
-                              <Image src={post.author.photoURL || "https://bit.ly/3kkJrly"} />
+                         <Box className={post.author?.online ? 'online' : "offline"}>
+                              <Box className='post-header-image'>
+                                   <Image src={post.author.photoURL || "https://bit.ly/3kkJrly"} />
+                              </Box>
                          </Box>
                          <Box className='post-header-details'>
-                              <Text textTransform={"capitalize"} _hover={{ textDecor: "underline" }}>{post.author.username}</Text>
+                              <Flex align={'center'} gap='10px'>
+                                   <Text whiteSpace={'nowrap'} textTransform={"capitalize"} _hover={{ textDecor: "underline" }}>{post.author.username}</Text>
+                                   {post.author?.online ?
+                                        <Box fontSize={'.7em'} color={'green'} display={"flex"} justifyContent="center" alignItems={"center"} gap="2" borderRadius="10px" >
+                                             <Box bg="green" borderRadius={"50%"} h="7px" w="7px"></Box>
+                                             <Text fontWeight={"500"}>Online</Text>
+                                        </Box>
+                                        :
+                                        <Box fontSize={'.7em'} color={'gray'} display={"flex"} justifyContent="center" alignItems={"center"} gap="2" borderRadius="10px">
+                                             <Box bg="gray" borderRadius={"50%"} h="7px" w="7px"></Box>
+                                             <Text fontWeight={"500"}>Offline</Text>
+                                        </Box>}
+                              </Flex>
                               <Text textTransform={"capitalize"} fontWeight={'semibold'} color='gray.600'>{post.author.bio || post.author.email}</Text>
                               <Text fontWeight={'semibold'} color='gray.500'>
                                    <Text as='span'>{CalcTime(post.createdAt)}</Text>

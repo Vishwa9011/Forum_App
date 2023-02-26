@@ -1,23 +1,28 @@
 .post {}
 
+
 .post-header-image {
      width: 40px;
      height: 40px;
+     max-width: 40px;
+     max-height: 40px;
      border-radius: 50%;
-     overflow: hidden;
+     /* overflow: hidden; */
+     background-color: #fff;
      cursor: pointer;
 }
 
 .post-header-image>img {
+     border-radius: 50%;
      object-fit: cover;
      object-position: center;
 }
 
-.post-header-details p {
-     white-space: nowrap;
+.post-header-details>p {
      width: 180px;
      overflow: hidden;
      line-height: 1.2;
+     white-space: nowrap;
      text-overflow: ellipsis;
 }
 

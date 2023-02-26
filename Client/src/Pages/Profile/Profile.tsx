@@ -70,7 +70,7 @@ export default function Profile({ }: Props) {
                     <Heading fontSize={"2xl"} fontWeight={500} whiteSpace='nowrap'>
                       {userCredential.username}
                     </Heading>
-                    <Box w="100%" display={"flex"} justifyContent="center" alignItems={"center"} gap="2" borderRadius="10px" mt="10px">
+                    <Box w="100%" color={'green'} display={"flex"} justifyContent="center" alignItems={"center"} gap="2" borderRadius="10px" mt="10px">
                       <Box bg="green" borderRadius={"50%"} h="7px" w="7px"></Box>
                       <Text fontWeight={"500"}>Online</Text>
                     </Box>

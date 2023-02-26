@@ -1,24 +1,14 @@
 import { useState, useEffect } from "react";
-import {
-     Box,
-     Flex,
-     HStack,
-     useDisclosure,
-     useColorModeValue,
-     Stack,
-     Container,
-     IconButton,
-     Text,
-} from "@chakra-ui/react";
-import { HamburgerIcon, CloseIcon, BellIcon, ChatIcon } from "@chakra-ui/icons";
+import { Box, Flex, HStack, useDisclosure, useColorModeValue, Stack, Container, IconButton, Text, } from "@chakra-ui/react";
+import { HamburgerIcon, CloseIcon, BellIcon, ChatIcon, SearchIcon } from "@chakra-ui/icons";
 import { FaHome } from "react-icons/fa";
+import { FiSearch } from "react-icons/fi";
 import UserProfile from "./UserProfile";
-import { Link } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { RootState } from "../../Redux/store";
 import useToggle from "../../Custom-Hooks/useToggle";
 import SearchBar from "../Searchbar/SearchBar";
-import SearchPopup from "../Searchbar/SearchPopup";
 
 const Links = [
      {
@@ -39,16 +29,22 @@ const Links = [
 ];
 
 export default function Navbar() {
-     const { isOpen, onOpen, onClose } = useDisclosure();
+     const [searchParam, setSearchParams] = useSearchParams();
      const { userCredential } = useSelector((store: RootState) => store.auth);
-     // const [isOpen, ToggleMenu]: any = useToggle(false);
-     const [isOpenSearchbar, toggleSearchBar]: any = useToggle(false);
+     const [isOpen, onOpen, onClose]: any = useToggle(true);
+     const [isOpenSearchbar, openSearch, closeSearch]: any = useToggle(false);
+
+     useEffect(() => {
+          if (!isOpenSearchbar) {
+               setSearchParams({ user: "" })
+          }
+     }, [isOpenSearchbar])
 
      return (
           <>
-               {/* {isOpenSearchbar && <SearchPopup />} */}
-               <Box px={4} shadow={"md"}>
-                    <Container maxW={"5xl"}>
+               {isOpenSearchbar && <SearchBar toggle={closeSearch} />}
+               <Box px={4} shadow={"md"} pos='sticky' top='0' left='0' zIndex={99} bg='white'>
+                    <Box w='75%' m='auto'>
                          <Flex h={16} alignItems={"center"} justifyContent={"space-between"}>
                               <IconButton size={"md"} icon={isOpen ? <CloseIcon /> : <HamburgerIcon />} aria-label={"Open Menu"} display={{ md: "none" }} onClick={isOpen ? onClose : onOpen} />
                               <HStack spacing={8} alignItems={"center"}>
@@ -63,9 +59,11 @@ export default function Navbar() {
                                         ))}
                                    </HStack>
                               </HStack>
-                              <Flex alignItems={"center"}>
-                                   <SearchBar toggleSearchBar={toggleSearchBar} />
-
+                              <Flex alignItems={"center"} gap='20px'>
+                                   <Flex onClick={openSearch} className="user-select-reject" cursor={'pointer'} border={'1px'} borderRadius='5px' borderColor='gray.300' align={'center'} p='1'>
+                                        <Box flex={1} w='200px' pl='2' color={'gray.600'} fontWeight='semibold'>{searchParam.get('user') || "Search"}</Box>
+                                        <Flex borderLeft={'1px'} p='1' pl='2' align={'center'} fontSize={'1.5rem'}><SearchIcon /></Flex>
+                                   </Flex>
                                    {userCredential.token ? (
                                         <UserProfile />
                                    ) : (
@@ -81,20 +79,7 @@ export default function Navbar() {
                                    )}
                               </Flex>
                          </Flex>
-
-                         {isOpen ? (
-                              <Box pb={4} display={{ md: "none" }}>
-                                   <Stack as={"nav"} spacing={4}>
-                                        {Links.map((link, i) => (
-                                             <Link key={i} to={`${link.href}`}>
-                                                  {link.name}
-                                             </Link>
-                                        ))}
-                                   </Stack>
-                                   <SearchBar toggleSearchBar={toggleSearchBar} />
-                              </Box>
-                         ) : null}
-                    </Container>
+                    </Box>
                </Box>
           </>
      );

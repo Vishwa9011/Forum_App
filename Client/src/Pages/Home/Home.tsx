@@ -16,7 +16,7 @@ function Home({ }: Props) {
 				<Box w='30%' display={{ base: "none", sm: "none", md: "none", lg: "block" }}>
 					<LeftCompo />
 				</Box>
-				<Box flex={1} overflowY={'scroll'} className='scroll-hidden'><Post /></Box>
+				<Box flex={1} overflowY={'scroll'} className='scroll-hidden' ><Post /></Box>
 				<Box w='30%' display={{ base: "none", sm: "none", md: "none", lg: "block" }}>
 					<RightCompo />
 				</Box>
