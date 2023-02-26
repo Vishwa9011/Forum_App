@@ -17,16 +17,11 @@ interface IProps {
 }
 
 const SearchBar = ({ toggle }: IProps) => {
-     // const { Toast } = UseToastMsg();
      const [searchParams, setSearchParams] = useSearchParams();
      const [users, setUsers] = useState([]);
-     const dispatch: Dispatch<any> = useDispatch();
      const [searchText, setSearchText] = useState<string>(() => searchParams.get('user') || '');
-     const [isOpen, onOpen, onClose]: any = useToggle(false);
-
 
      let id: any;
-
      useEffect(() => {
           id = setTimeout(getQuerry, 500);
           setSearchParams({ user: searchText });
@@ -36,15 +31,13 @@ const SearchBar = ({ toggle }: IProps) => {
 
      async function getQuerry() {
           try {
-               const users = await axios.get(`/user?q=${searchText}`);
+               const users = await axios.get(`/user?user=${searchText}`);
+               console.log('users: ', users);
                setUsers(users.data.users);
           } catch (error) {
                console.log('error: ', error);
           }
      }
-
-
-
 
      return (
           <Box pos='fixed' w='100%' height={'100vh'} zIndex={'999'} className='search-main-container'>
