@@ -14,6 +14,7 @@ import axios from "axios";
 import { initialUserCredState } from "../../Redux/Auth/auth.reducer";
 import { IFollow, IPost, IUser } from "../../Constants/constant";
 import UserPostCard from "./UserPostCard";
+import { NumberFormat } from "../../helper/helper";
 
 type Props = {};
 
@@ -28,7 +29,7 @@ export default function OthersProfilePage({ }: Props) {
      const { userCredential, following } = useSelector((store: RootState) => store.auth);
 
 
-     const FollowUser = () => {
+     const FollowUser = async () => {
           if (!userCredential._id) return navigate("/login");
 
           const data = {
@@ -36,9 +37,10 @@ export default function OthersProfilePage({ }: Props) {
                followingID: profile._id,
           };
           console.log("data: ", data);
-          dispatch(followUser(data, Toast));
+          dispatch(followUser(data, Toast, fetchUser));
      };
-     const UnFollowUser = () => {
+
+     const UnFollowUser = async () => {
           if (!userCredential._id) return navigate("/login");
 
           const data = {
@@ -46,7 +48,7 @@ export default function OthersProfilePage({ }: Props) {
                followingID: profile._id,
           };
           console.log("data: ", data);
-          dispatch(unFollowUser(data, Toast));
+          dispatch(unFollowUser(data, Toast, fetchUser));
      };
 
      const FollowingGroup = useMemo(() => {
@@ -62,19 +64,28 @@ export default function OthersProfilePage({ }: Props) {
           return FollowingGroup[id] == undefined
      }
 
+     const fetchUser = async () => {
+          try {
+               const profile = await axios.get(`/user/${id}`);
+               console.log('profile: ', profile);
+               setProfile(profile.data.credentials);
+          } catch (error) {
+               console.log('error: ', error);
+          }
+     }
+
+     const fetchPost = async () => {
+          try {
+               const posts = await axios.get(`/post/all/${id}`);
+               setPosts(posts.data.posts);
+          } catch (error) {
+               console.log('error: ', error);
+          }
+     }
 
      useEffect(() => {
-          const fetchUser = async () => {
-               try {
-                    const profile = await axios.get(`/user/${id}`);
-                    const posts = await axios.get(`/post/all/${id}`)
-                    setPosts(posts.data.posts)
-                    setProfile(profile.data.credentials);
-               } catch (error) {
-                    console.log('error: ', error);
-               }
-          }
           fetchUser();
+          fetchPost()
      }, [])
 
      return (
@@ -91,14 +102,35 @@ export default function OthersProfilePage({ }: Props) {
 
                                    <Box p={4}>
                                         <Stack spacing={0} pl={4} align={"flex-start"} mb={5} letterSpacing="1.2px">
-                                             <Heading fontSize={"2xl"} fontWeight={500} fontFamily={"body"}>
-                                                  {profile?.username}
-                                             </Heading>
+                                             <Flex align={'center'} gap='5'>
+                                                  <Heading whiteSpace={'nowrap'} fontSize={"2xl"} fontWeight={500} fontFamily={"body"}>
+                                                       {profile?.username}
+                                                  </Heading>
+                                                  {profile.online ?
+                                                       <Box w="100%" display={"flex"} justifyContent="center" alignItems={"center"} gap="2" borderRadius="10px" mt="10px">
+                                                            <Box bg="green" borderRadius={"50%"} h="7px" w="7px"></Box>
+                                                            <Text fontWeight={"500"}>Online</Text>
+                                                       </Box>
+                                                       :
+                                                       <Box w="100%" display={"flex"} justifyContent="center" alignItems={"center"} gap="2" borderRadius="10px">
+                                                            <Box bg="red" borderRadius={"50%"} h="7px" w="7px">
+                                                            </Box>
+                                                            <Text fontWeight={"500"}>Not Available</Text>
+                                                       </Box>}
+                                             </Flex>
                                              <Text fontSize={"md"} color={"gray.800"}>
                                                   {profile?.bio}
                                              </Text>
                                              <Text fontSize={"sm"} color={"gray.500"}>
                                                   {profile?.email}
+                                             </Text>
+                                        </Stack>
+                                        <Stack pl={4} mt="2" direction={"row"} fontSize='.9em'>
+                                             <Text as={Link} to='/' _hover={{ textDecoration: "underline" }} fontWeight='semibold' color={'blue.500'}>
+                                                  {NumberFormat(profile.followerCount)} Followers
+                                             </Text>
+                                             <Text as={Link} to='/' _hover={{ textDecoration: "underline" }} fontWeight='semibold' color={'blue.500'}>
+                                                  {NumberFormat(profile.followingCount)} Following
                                              </Text>
                                         </Stack>
                                         <Stack pl={4} mt="4" direction={"row"}>

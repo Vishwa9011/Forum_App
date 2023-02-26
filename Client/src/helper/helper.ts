@@ -34,3 +34,8 @@ export const CalcTime = (time: number) => {
           return TimeFormatter.format(-d, 'seconds')
      }
 }
+
+
+export function NumberFormat(num: number) {
+     return num.toLocaleString()
+}

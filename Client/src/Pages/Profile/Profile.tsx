@@ -11,8 +11,8 @@ import {
   Container,
   IconButton,
   useColorModeValue,
-  useDisclosure,
   StackDivider,
+  Grid,
 } from "@chakra-ui/react";
 import { EditIcon } from "@chakra-ui/icons";
 import UserEditModal from "./UserEditModal";
@@ -23,8 +23,11 @@ import Navbar from "../../Components/Navbar/Navbar";
 import UseToastMsg from "../../Custom-Hooks/Toast";
 import { Dispatch } from "redux";
 import { logout } from "../../Redux/Auth/auth.actions";
-import UserPost from "./UserPosts";
 import useToggle from "../../Custom-Hooks/useToggle";
+import { getSingleUserAllPost } from "../../Redux/Post/post.actions";
+import { IPost } from "../../Constants/constant";
+import UserPostCard from "./UserPostCard";
+import { NumberFormat } from "../../helper/helper";
 
 type Props = {};
 
@@ -34,6 +37,7 @@ export default function Profile({ }: Props) {
   const dispatch: Dispatch<any> = useDispatch();
   const [isOpen, onOpen, onClose]: any = useToggle(false);
   const { userCredential } = useSelector((store: RootState) => store.auth);
+  const { posts } = useSelector((store: RootState) => store.post);
 
   const signout = () => {
     if (!userCredential.email) {
@@ -41,6 +45,10 @@ export default function Profile({ }: Props) {
     }
     dispatch(logout(userCredential.email, Toast, navigate));
   };
+
+  useEffect(() => {
+    dispatch(getSingleUserAllPost(userCredential._id));
+  }, [])
 
   return (
     <>
@@ -57,10 +65,16 @@ export default function Profile({ }: Props) {
               </Flex>
 
               <Box p={4}>
-                <Stack spacing={0} pl={4} align={"flex-start"} mb={5} letterSpacing="1.2px">
-                  <Heading fontSize={"2xl"} fontWeight={500} fontFamily={"body"}>
-                    {userCredential.username}
-                  </Heading>
+                <Stack spacing={0} pl={4} align={"flex-start"} mb={2} letterSpacing="1.2px">
+                  <Flex align={'center'} gap='5'>
+                    <Heading fontSize={"2xl"} fontWeight={500} whiteSpace='nowrap'>
+                      {userCredential.username}
+                    </Heading>
+                    <Box w="100%" display={"flex"} justifyContent="center" alignItems={"center"} gap="2" borderRadius="10px" mt="10px">
+                      <Box bg="green" borderRadius={"50%"} h="7px" w="7px"></Box>
+                      <Text fontWeight={"500"}>Online</Text>
+                    </Box>
+                  </Flex>
                   <Text fontSize={"md"} color={"gray.800"}>
                     {userCredential.bio}
                   </Text>
@@ -68,17 +82,26 @@ export default function Profile({ }: Props) {
                     {userCredential.email}
                   </Text>
                 </Stack>
-                <Stack pl={4} mt="4" direction={"row"}>
-                  <Button bg={useColorModeValue("#fff", "gray.900")} color={"black"} border="1px solid grey" rounded={"md"} borderRadius="20px" _hover={{ transform: "translateY(-2px)", boxShadow: "lg" }}>
-                    Message
-                  </Button>
-                  <Button bg={useColorModeValue("blue.500", "gray.900")} color={"white"} rounded={"md"} borderRadius="20px" _hover={{ transform: "translateY(-2px)", boxShadow: "lg" }}>
-                    Follow
-                  </Button>
+                <Stack pl={4} mt="2" direction={"row"} fontSize='.9em'>
+                  <Text as={Link} to='/' _hover={{ textDecoration: "underline" }} fontWeight='semibold' color={'blue.500'}>
+                    {NumberFormat(userCredential.followerCount)} Followers
+                  </Text>
+                  <Text as={Link} to='/' _hover={{ textDecoration: "underline" }} fontWeight='semibold' color={'blue.500'}>
+                    {NumberFormat(userCredential.followingCount)} Following
+                  </Text>
                 </Stack>
               </Box>
             </Box>
-            <UserPost />
+            <Grid my={"40px"} gap={"20px"} gridTemplateColumns={{ base: `repeat(2, 1fr)`, md: "repeat(3, 1fr)", lg: "repeat(3, 1fr)", }}
+              cursor="pointer">
+              {posts.map((post: IPost) => {
+                return (
+                  <Box key={post._id} minH='100%' h='full' overflow={'hidden'}>
+                    <UserPostCard post={post} />
+                  </Box>
+                );
+              })}
+            </Grid>
           </Box>
 
           <Box w="25%" maxH="67vh" display={{ base: "none", md: "flex" }} boxShadow={"2xl"}

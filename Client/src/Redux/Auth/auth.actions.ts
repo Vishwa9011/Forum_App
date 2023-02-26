@@ -163,20 +163,28 @@ export const updateUser = (userData: IUser, onClose: Function, Toast: Function) 
      }
 }
 
-export const followUser = (data: { userID: string, followingID: string }, Toast: Function) => async (dispatch: Dispatch<any>) => {
+export const followUser = (data: { userID: string, followingID: string }, Toast: Function, fetchUser?: Function) => async (dispatch: Dispatch<any>) => {
      try {
           await axios.post("/user/follow", data);
-          dispatch(getFollowing(data.userID, Toast))
+          dispatch(getFollowing(data.userID, Toast));
+
+          if (fetchUser) {
+               fetchUser()
+          }
      } catch (error) {
           console.log('error: ', error);
-          Toast("Unable to Follow, Please try again.", ToastType.error)
+          Toast("Unable to Follow, Please try again.", ToastType.error);
      }
 }
 
-export const unFollowUser = (data: { userID: string, followingID: string }, Toast: Function) => async (dispatch: Dispatch<any>) => {
+export const unFollowUser = (data: { userID: string, followingID: string }, Toast: Function, fetchUser?: Function) => async (dispatch: Dispatch<any>) => {
      try {
-          const res = await axios.post("/user/unfollow", data);
-          dispatch(getFollowing(data.userID, Toast))
+          await axios.post("/user/unfollow", data);
+          dispatch(getFollowing(data.userID, Toast));
+
+          if (fetchUser) {
+               fetchUser()
+          }
      } catch (error) {
           console.log('error: ', error);
      }
