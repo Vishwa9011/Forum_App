@@ -1,43 +1,19 @@
-import React, { useState, useRef } from "react";
-import "./createpost.modules.css";
-import {
-   Box,
-   Button,
-   Flex,
-   FormControl,
-   FormLabel,
-   Image,
-   Modal,
-   ModalBody,
-   ModalCloseButton,
-   ModalContent,
-   ModalFooter,
-   ModalHeader,
-   ModalOverlay,
-   Stack,
-   Text,
-   Textarea,
-} from "@chakra-ui/react";
-import { MdUpload } from "react-icons/md";
-import { IoCloudDone } from "react-icons/io5";
-import { Input } from "@chakra-ui/input";
-import { useDispatch, useSelector } from "react-redux";
-import { Dispatch } from "redux";
+import { Box, Button, Flex, FormControl, FormLabel, Image, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Stack, Text, Textarea } from "@chakra-ui/react";
 import { createPost } from "../../Redux/Post/post.actions";
-import axios from "axios";
-import UseToastMsg, { ToastType } from "../../Custom-Hooks/Toast";
+import { useDispatch, useSelector } from "react-redux";
+import React, { useState, useRef } from "react";
 import { RootState } from "../../Redux/store";
-import useToggle from "../../Custom-Hooks/useToggle";
-import { Navigate, useNavigate } from "react-router-dom";
-import Loader from "../../Components/Loader/Loader";
+import { IoCloudDone } from "react-icons/io5";
+import { MdUpload } from "react-icons/md";
+import { Input } from "@chakra-ui/input";
+import { Dispatch } from "redux";
+import "./createpost.modules.css";
 
 type props = {
    onClose(): void
 }
 
 function Createpost({ onClose }: props) {
-   const { Toast } = UseToastMsg();
-   const navigate = useNavigate()
    const titleRef = useRef<HTMLInputElement>(null)
    const descRef = useRef<HTMLTextAreaElement>(null)
    const [ImageFile, setImageFile] = useState<any>([])

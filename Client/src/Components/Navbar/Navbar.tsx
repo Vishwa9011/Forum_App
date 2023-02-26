@@ -61,7 +61,7 @@ export default function Navbar() {
         zIndex={99}
         bg="white"
       >
-        <Container maxW={"5xl"}>
+        <Box w="80%" m="auto">
           <Flex h={16} alignItems={"center"} justifyContent={"space-between"}>
             <IconButton
               size={"md"}
@@ -111,7 +111,6 @@ export default function Navbar() {
             </HStack>
             <Flex alignItems={"center"} gap="20px">
               <Flex
-                display={{ base: "none", md: "flex" }}
                 onClick={openSearch}
                 className="user-select-reject"
                 cursor={"pointer"}
@@ -155,47 +154,7 @@ export default function Navbar() {
               )}
             </Flex>
           </Flex>
-          {isOpen ? (
-            <Box pb={4} display={{ md: "none" }}>
-              <Stack as={"nav"} spacing={4}>
-                {Links.map((link, i) => (
-                  <Link key={i} to={`${link.href}`}>
-                    {link.name}
-                  </Link>
-                ))}
-              </Stack>
-              <Flex
-                onClick={openSearch}
-                className="user-select-reject"
-                cursor={"pointer"}
-                border={"1px"}
-                borderRadius="5px"
-                borderColor="gray.300"
-                align={"center"}
-                p="1"
-              >
-                <Box
-                  flex={1}
-                  w="200px"
-                  pl="2"
-                  color={"gray.600"}
-                  fontWeight="semibold"
-                >
-                  {searchParam.get("user") || "Search"}
-                </Box>
-                <Flex
-                  borderLeft={"1px"}
-                  p="1"
-                  pl="2"
-                  align={"center"}
-                  fontSize={"1.5rem"}
-                >
-                  <SearchIcon />
-                </Flex>
-              </Flex>
-            </Box>
-          ) : null}
-        </Container>
+        </Box>
       </Box>
     </>
   );

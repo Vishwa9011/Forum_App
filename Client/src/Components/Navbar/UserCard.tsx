@@ -86,7 +86,7 @@ function UserCard() {
               <Text as={Link} to="/" pt="2" fontSize="sm">
                 Masai School
               </Text>
-              {userCredential?.email == "vishu842301@gmail.com" && <Text as={Link} to="/admin/" pt="2" fontSize="sm">
+              {userCredential.role === "ADMIN" && <Text as={Link} to="/admin/" pt="2" fontSize="sm">
                 Admin Pannel
               </Text>}
             </Flex>
