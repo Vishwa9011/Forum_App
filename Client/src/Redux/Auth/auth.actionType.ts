@@ -10,8 +10,11 @@ export const SEND_VERIFY_EMAIL_SUCCESS: string = 'auth/sendverifyemail/success'
 export const VERIFY_EMAIL_SUCCESS: string = 'auth/verifyemail/success';
 export const VERIFY_EMAIL_FAIL: string = 'auth/verifyemail/fail'
 
-export const USER_UPDATE_SUCCESS:string = "auth/userupdate/success"
-export const USER_UPDATE_FAIL:string = "auth/userupdate/fail"
+export const GET_USER_FOLLOWER: string = 'auth/GET/USER/FOLLOWER'
+export const GET_USER_FOLLOWING: string = 'auth/GET/USER/FOLLOWING'
+
+export const USER_UPDATE_SUCCESS: string = "auth/userupdate/success"
+export const USER_UPDATE_FAIL: string = "auth/userupdate/fail"
 
 export const AUTH_USER_PROFILE_PHOTO_UPDATE: string = 'AUTH/PHOTO/UPDATE';
 export const AUTH_USER_PROFILE_UPDATE: string = 'AUTH/PROFILE/UPDATE';

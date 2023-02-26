@@ -68,12 +68,16 @@ const userSchema = mongoose.Schema({
      token: {
           type: String
      },
-     follower: [
-          { type: mongoose.Schema.Types.ObjectId, ref: "user", required: true, default: [] }
-     ],
-     following: [
-          { type: mongoose.Schema.Types.ObjectId, ref: "user", required: true, default: [] }
-     ],
+     followerCount: {
+          type: Number,
+          required: true,
+          default: 0,
+     },
+     followingCount: {
+          type: Number,
+          required: true,
+          default: 0
+     },
 })
 
 const FollowSchema = mongoose.Schema({

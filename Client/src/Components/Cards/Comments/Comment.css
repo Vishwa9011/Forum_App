@@ -49,7 +49,7 @@
 .comment-date-time {
      color: #343434;
      font-weight: 600;
-     font-size: clamp(.7em, 2vw, .8em);
+     font-size: clamp(.7em, 2vw, .7em);
 }
 
 .comment-user-bio {

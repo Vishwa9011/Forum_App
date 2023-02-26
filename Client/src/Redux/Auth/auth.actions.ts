@@ -5,6 +5,7 @@ import * as Types from "./auth.actionType"
 import axios from "axios";
 import { IUser, UserI } from "../../Constants/constant";
 import { ToastType } from "../../Custom-Hooks/Toast"
+import { postLikes } from "../Post/post.actions";
 
 
 export const getUser = (id: string, Toast: Function) => async (dispatch: Dispatch) => {
@@ -23,7 +24,7 @@ export const getUser = (id: string, Toast: Function) => async (dispatch: Dispatc
      }
 }
 
-export const GoogleAuth = (navigate: Function, Toast: Function) => async (dispatch: Dispatch) => {
+export const GoogleAuth = (navigate: Function, Toast: Function) => async (dispatch: Dispatch<any>) => {
      dispatch({ type: Types.AUTH_LOADING });
      try {
           const userCredential = await signInWithPopup(auth, Provider);
@@ -42,7 +43,8 @@ export const GoogleAuth = (navigate: Function, Toast: Function) => async (dispat
 
 
           sessionStorage.setItem("user", JSON.stringify({ id: response.data.credentials._id, token: response.data.token }));
-
+          dispatch(getFollowing(response.data.credentials._id, Toast));
+          dispatch(postLikes(response.data.credentials._id));
 
           Toast("Login Success", ToastType.success);
 
@@ -164,7 +166,7 @@ export const updateUser = (userData: IUser, onClose: Function, Toast: Function) 
 export const followUser = (data: { userID: string, followingID: string }, Toast: Function) => async (dispatch: Dispatch<any>) => {
      try {
           await axios.post("/user/follow", data);
-          dispatch(getUser(data.userID, Toast))
+          dispatch(getFollowing(data.userID, Toast))
      } catch (error) {
           console.log('error: ', error);
           Toast("Unable to Follow, Please try again.", ToastType.error)
@@ -174,7 +176,26 @@ export const followUser = (data: { userID: string, followingID: string }, Toast:
 export const unFollowUser = (data: { userID: string, followingID: string }, Toast: Function) => async (dispatch: Dispatch<any>) => {
      try {
           const res = await axios.post("/user/unfollow", data);
-          dispatch(getUser(data.userID, Toast))
+          dispatch(getFollowing(data.userID, Toast))
+     } catch (error) {
+          console.log('error: ', error);
+     }
+}
+
+
+export const getFollower = (userID: string, Toast: Function) => async (dispatch: Dispatch<any>) => {
+     try {
+          const response = await axios.get(`/user/${userID}/follower`);
+          dispatch({ type: Types.GET_USER_FOLLOWER, payload: response.data.followers })
+     } catch (error) {
+          console.log('error: ', error);
+     }
+}
+
+export const getFollowing = (userID: string, Toast: Function) => async (dispatch: Dispatch<any>) => {
+     try {
+          const response = await axios.get(`/user/${userID}/following`);
+          dispatch({ type: Types.GET_USER_FOLLOWING, payload: response.data.following })
      } catch (error) {
           console.log('error: ', error);
      }

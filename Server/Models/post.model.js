@@ -13,10 +13,13 @@ const PostSchema = Schema({
      },
      content: {
           type: String,
+          required: true,
      },
-     likes: [
-          { type: Schema.Types.ObjectId, ref: 'Like', default: [] }
-     ],
+     likes: {
+          type: Number,
+          required: true,
+          default: 0
+     },
      comments: [
           { type: Schema.Types.ObjectId, ref: 'Comment', default: [] }
      ],
@@ -100,6 +103,11 @@ const CommentSchema = Schema({
 })
 
 const CommentLikeSchema = Schema({
+     commentID: {
+          type: Schema.Types.ObjectId,
+          required: true,
+          immutable: true
+     },
      author: {
           type: Schema.Types.ObjectId,
           required: true,
@@ -114,6 +122,11 @@ const CommentLikeSchema = Schema({
 
 
 const LikesSchema = Schema({
+     postID: {
+          type: Schema.Types.ObjectId,
+          required: true,
+          immutable: true
+     },
      author: {
           type: Schema.Types.ObjectId,
           required: true,

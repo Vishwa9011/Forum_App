@@ -27,7 +27,7 @@
 }
 
 .post-header-details>p:nth-child(2) {
-     font-size: clamp(.7em, 2.5vw + 1rem, .8em);
+     font-size: clamp(.7em, 2.5vw + 1rem, .7em);
 }
 
 .post-header-details>p:nth-child(3) {

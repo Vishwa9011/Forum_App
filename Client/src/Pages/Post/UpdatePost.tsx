@@ -16,16 +16,16 @@ import useToggle from '../../Custom-Hooks/useToggle';
 
 interface props {
      post: IPost,
+     onClose(): void
 }
 
-function UpdatePost({ post }: props) {
+function UpdatePost({ post, onClose }: props) {
      const { Toast } = UseToastMsg();
      const [title, setTitle] = useState(post.title);
      const [description, setDescription] = useState(post.description);
      const [imageFile, setImageFile] = useState<any>([]);
      const [error, setError] = useState<boolean>(false);
      const dispatch: Dispatch<any> = useDispatch();
-     const [isOpen, onOpen, onClose]: any = useToggle(false)
 
      const onUpdatePost = () => {
 
@@ -69,8 +69,7 @@ function UpdatePost({ post }: props) {
 
      return (
           <>
-               <Button w='100%' h='100%' p='.5em' pl='.75em' variant={'unstyled'} textAlign='left' onClick={onOpen}>Edit</Button>
-               <Modal closeOnOverlayClick={false} isOpen={isOpen} onClose={onClose}>
+               <Modal closeOnOverlayClick={false} isOpen={true} onClose={onClose}>
                     <ModalOverlay />
                     <ModalContent>
                          <ModalHeader>Update your Post</ModalHeader>

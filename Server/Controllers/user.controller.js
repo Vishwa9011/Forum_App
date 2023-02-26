@@ -17,6 +17,24 @@ async function UserDetail(req, res) {
      }
 }
 
+
+async function UserQuery(req, res) {
+     const { user } = req.query;
+     console.log('user: ', user);
+     try {
+          const FindUser = await UserModel.find({
+               $or: [
+                    { username: { $regex: user || "", $options: 'i' } },
+                    { email: { $regex: user || "", $options: 'i' } }
+               ]
+          })
+          res.status(200).json({ msg: "user details fetched", users: FindUser })
+     } catch (error) {
+          console.log('error: ', error);
+          res.send(error)
+     }
+}
+
 // ** User Registeration
 async function UserRegisteration(req, res) {
      const { password, ...payload } = req.body;
@@ -218,21 +236,23 @@ async function UpdatePassword(req, res) {
 
 async function FollowUser(req, res) {
      const payload = req.body;
+     console.log('payload: ', payload);
      try {
 
           const userID = mongoose.Types.ObjectId(payload.userID)
           const followingID = mongoose.Types.ObjectId(payload.followingID)
 
           const follow = new FollowModel({ userID, followingID: followingID, followerID: followingID })
+          console.log('follow: ', follow);
           await follow.save()
 
           const user = await UserModel.findById(userID);
-          user.following = [...user.following, followingID]
+          user.followingCount++;
           await user.save();
 
           const targetUser = await UserModel.findById(followingID);
-          targetUser.follower = [...user.follower, userID]
-          await targetUser.save();
+          targetUser.followerCount++;
+          await targetUser.save()
 
           return res.status(201).json({ status: 200, message: 'Followed the user.', credentials: user })
      } catch (error) {
@@ -246,21 +266,14 @@ async function UnFollowUser(req, res) {
      try {
           const userID = mongoose.Types.ObjectId(payload.userID)
           const followingID = mongoose.Types.ObjectId(payload.followingID)
-
-          await FollowModel.findOneAndDelete({ userID: payload.userID, followingID: payload.followingID, followerID: payload.followingID })
+          await FollowModel.findOneAndDelete({ userID, followingID: followingID, followerID: followingID })
 
           const user = await UserModel.findById(userID);
-          user.following = user.following.filter((user) => {
-               console.log({ user, followingID });
-               return user != followingID
-          });
+          user.followingCount--;
           await user.save();
 
           const targetUser = await UserModel.findById(followingID);
-          targetUser.follower = user.follower.filter((user) => {
-               console.log({ user, userID });
-               return user != userID
-          });
+          targetUser.followerCount--;
           await targetUser.save()
 
           return res.status(201).json({ status: 200, message: 'Unfollowed the user.', credentials: user })
@@ -270,12 +283,31 @@ async function UnFollowUser(req, res) {
      }
 }
 
+async function UserFollower(req, res) {
+     const id = req.params.id;
+     try {
+          const followers = await FollowModel.find({ followerID: id });
+          return res.status(201).json({ status: 200, message: 'user follower.', followers })
+     } catch (error) {
+          console.log('error: ', error);
+          return res.status(201).json({ status: 401, error: error.message })
+     }
+}
 
-
-
+async function UserFollowing(req, res) {
+     const id = req.params.id;
+     try {
+          const following = await FollowModel.find({ userID: id });
+          return res.status(201).json({ status: 200, message: 'user following.', following })
+     } catch (error) {
+          console.log('error: ', error);
+          return res.status(201).json({ status: 401, error: error.message })
+     }
+}
 
 module.exports = {
      UserDetail,
+     UserQuery,
      UserLogin,
      UserLogout,
      GoogleAuth,
@@ -286,5 +318,7 @@ module.exports = {
      DeleteUser,
      UpdatePassword,
      FollowUser,
-     UnFollowUser
+     UnFollowUser,
+     UserFollower,
+     UserFollowing
 }

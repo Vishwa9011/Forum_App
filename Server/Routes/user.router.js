@@ -4,6 +4,8 @@ const user_controller = require("../Controllers/user.controller")
 
 UserRouter.get("/:id", user_controller.UserDetail);
 
+UserRouter.get("/", user_controller.UserQuery);
+
 UserRouter.post("/register", user_controller.UserRegisteration);
 
 UserRouter.post("/login", user_controller.UserLogin);
@@ -23,6 +25,10 @@ UserRouter.delete("/delete/:id", user_controller.DeleteUser)
 UserRouter.post("/follow", user_controller.FollowUser)
 
 UserRouter.post("/unfollow", user_controller.UnFollowUser)
+
+UserRouter.get("/:id/follower", user_controller.UserFollower)
+
+UserRouter.get("/:id/following", user_controller.UserFollowing)
 
 UserRouter.patch("/newpassword/:id", user_controller.UpdatePassword)
 
