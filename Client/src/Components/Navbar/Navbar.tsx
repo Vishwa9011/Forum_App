@@ -41,7 +41,7 @@ export default function Navbar() {
                          <Flex h={16} alignItems={"center"} justifyContent={"space-between"}>
                               <IconButton size={"md"} icon={isOpen ? <CloseIcon /> : <HamburgerIcon />} aria-label={"Open Menu"} display={{ md: "none" }} onClick={isOpen ? onClose : onOpen} />
                               <HStack spacing={8} alignItems={"center"}>
-                                   <Box className="logo" as={Link} to="/" fontSize={"1.3rem"} letterSpacing='1px' fontWeight="bold" cursor={"pointer"}>
+                                   <Box className="logo user-select-reject" as={Link} to="/" fontSize={"1.3rem"} letterSpacing='1px' fontWeight="bold" cursor={"pointer"}>
                                         <Text as='span'>F</Text>
                                         <Text as='span' color={'red.500'}>O</Text>
                                         <Text as='span'>R</Text>
