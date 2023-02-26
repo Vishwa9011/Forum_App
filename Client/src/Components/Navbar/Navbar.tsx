@@ -17,8 +17,8 @@ import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { RootState } from "../../Redux/store";
 import useToggle from "../../Custom-Hooks/useToggle";
-import SearchPopup from "../Searchbar/SearchPopup";
 import SearchBar from "../Searchbar/SearchBar";
+import SearchPopup from "../Searchbar/SearchPopup";
 
 const Links = [
   {
@@ -46,7 +46,7 @@ export default function Navbar() {
 
   return (
     <>
-      {isOpenSearchbar && <SearchPopup toggle={toggleSearchBar} />}
+      {isOpenSearchbar && <SearchPopup />}
       <Box bg={useColorModeValue("#fff", "gray.900")} px={4} shadow={"md"}>
         <Container maxW={"5xl"}>
           <Flex h={16} alignItems={"center"} justifyContent={"space-between"}>
