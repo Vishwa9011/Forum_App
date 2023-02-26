@@ -29,6 +29,7 @@ import UseToastMsg, { ToastType } from "../../Custom-Hooks/Toast";
 import { RootState } from "../../Redux/store";
 import useToggle from "../../Custom-Hooks/useToggle";
 import { Navigate, useNavigate } from "react-router-dom";
+import Loader from "../../Components/Loader/Loader";
 
 type props = {
    onClose(): void
@@ -43,6 +44,7 @@ function Createpost({ onClose }: props) {
    const [Error, setError] = useState<boolean>(false)
    const dispatch: Dispatch<any> = useDispatch()
    const { userCredential } = useSelector((store: RootState) => store.auth)
+   const { loading } = useSelector((store: RootState) => store.post)
 
    const onCreatePost = () => {
       if (!titleRef.current?.value || !descRef.current?.value || !ImageFile.length) {
@@ -77,6 +79,7 @@ function Createpost({ onClose }: props) {
             console.log(err);
          });
    };
+
 
    return (
       <>

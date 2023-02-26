@@ -1,15 +1,14 @@
-import { Box, Button, Flex, Grid, Image, useDisclosure } from '@chakra-ui/react'
+import { Box, Button, Flex, Grid, Image } from '@chakra-ui/react'
 import React, { useEffect, useState, useMemo } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
-import { Link, useNavigate } from 'react-router-dom';
-import { Dispatch } from 'redux';
+import { useNavigate } from 'react-router-dom';
 import PostCard from '../../Components/Cards/PostCards/PostCard'
 import { IFollow, ILikes, IPost } from '../../Constants/constant';
 import useToggle from '../../Custom-Hooks/useToggle';
 import { getAllPost } from '../../Redux/Post/post.actions';
 import { RootState } from '../../Redux/store';
 import Createpost from './Createpost';
-import UpdatePost from './UpdatePost';
+import { Dispatch } from 'redux';
 
 function Post() {
      const navigate = useNavigate()

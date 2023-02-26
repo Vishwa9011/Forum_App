@@ -39,10 +39,10 @@ const initialUserData: ILoginCred = {
 
 const Login = () => {
 	const { Toast } = UseToastMsg();
-	const { loading } = useSelector((store: RootState) => store.auth);
 	const navigate = useNavigate();
 	const dispatch: Dispatch<any> = useDispatch();
 	const [userData, setUserData] = useState(initialUserData);
+	const { loading } = useSelector((store: RootState) => store.auth);
 
 	const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 		let val = e.target.value;
