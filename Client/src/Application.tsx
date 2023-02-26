@@ -1,5 +1,6 @@
 import React, { lazy } from "react";
 import { Route, Routes } from "react-router-dom";
+import Follower from "./Pages/Follower/Follower";
 import RequiredRoute from "./RequiredRoute";
 const Home = lazy(() => import("./Pages/Home/Home"));
 const Login = lazy(() => import("./Pages/Auth/Login/Login"));
