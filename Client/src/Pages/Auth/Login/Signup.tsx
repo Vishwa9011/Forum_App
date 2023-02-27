@@ -21,6 +21,7 @@ import { UserI } from "../../../Constants/constant";
 import UseToastMsg from "../../../Custom-Hooks/Toast";
 import { RootState } from "../../../Redux/store";
 import { Link, useNavigate } from "react-router-dom";
+import Navbar from "../../../Components/Navbar/Navbar";
 
 const initialUserData: UserI = {
   username: "",
@@ -62,6 +63,7 @@ const Signup = () => {
 
   return (
     <>
+      <Navbar />
       <Flex minH={"100vh"} alignItems="center" py={4}>
         <Container maxW="5xl">
           <Flex shadow={"2xl"}>

@@ -47,7 +47,7 @@ const Links = [
 export default function Navbar() {
   const [searchParam, setSearchParams] = useSearchParams();
   const { userCredential } = useSelector((store: RootState) => store.auth);
-  const [isOpen, onOpen, onClose]: any = useToggle(true);
+  const [isOpen, onOpen, onClose]: any = useToggle(false);
   const [isOpenSearchbar, openSearch, closeSearch]: any = useToggle(false);
   return (
     <>
@@ -61,7 +61,7 @@ export default function Navbar() {
         zIndex={99}
         bg="white"
       >
-        <Container maxW={"5xl"}>
+        <Container maxW={"6xl"}>
           <Flex h={16} alignItems={"center"} justifyContent={"space-between"}>
             <IconButton
               size={"md"}

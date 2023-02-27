@@ -144,7 +144,7 @@ async function sentVerificationEmail(req, res) {
                from: process.env.EMAIL,
                to: email,
                subject: "sent verification mail",
-               html: Email_template("http://localhost:5173/verifyemail", EncryptedCredential)
+               html: Email_template("https://forumapp-120fb.web.app/verifyemail", EncryptedCredential)
           }
 
           transporter.sendMail(mailOptions, (err, info) => {
@@ -165,10 +165,8 @@ async function sentVerificationEmail(req, res) {
 // * verify email after clicking on email button;
 async function verifyEmail(req, res) {
      const { credential } = req.body;
-     // console.log('credential: ', credential);
      try {
           const decode = jwt.verify(credential, process.env.VERIFICATION_SECRET_KEY)
-          // console.log('decode: ', decode.password);
           if (decode) {
                const user = await UserModel.findOne({ email: decode.email });
                if (user) {

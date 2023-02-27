@@ -26,6 +26,7 @@ import { useSelector } from "react-redux";
 import { RootState } from "../../../Redux/store";
 import { useNavigate, Link } from "react-router-dom";
 import { GoogleAuth } from "../../../Redux/Auth/auth.actions";
+import Navbar from "../../../Components/Navbar/Navbar";
 
 interface ILoginCred {
 	email: string;
@@ -67,6 +68,7 @@ const Login = () => {
 
 	return (
 		<>
+			<Navbar />
 			<Box minH={"100vh"} display="grid" justifyContent={"center"} alignItems="center" >
 				<Container maxW="5xl">
 					<Box id="main" shadow={"2xl"} >
