@@ -1,14 +1,13 @@
-import React from 'react';
-import ReactDOM from 'react-dom/client';
-import { BrowserRouter as Router } from 'react-router-dom';
-import { ChakraProvider } from '@chakra-ui/react'
 import App from './App'
 import axios from 'axios';
-import { Provider } from 'react-redux';
+import React from 'react';
 import { store } from './Redux/store';
+import { Provider } from 'react-redux';
+import ReactDOM from 'react-dom/client';
+import { ChakraProvider } from '@chakra-ui/react'
+import { BrowserRouter as Router } from 'react-router-dom';
 
 axios.defaults.baseURL = "https://doubtful-puce-macaw.cyclic.app/"
-
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <ChakraProvider>

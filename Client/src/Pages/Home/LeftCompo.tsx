@@ -1,13 +1,12 @@
 import React from 'react'
-import { Avatar, Box, Button, ButtonGroup, Card, CardBody, CardFooter, Divider, Heading, Image, List, ListIcon, ListItem, Stack, Text, UnorderedList } from '@chakra-ui/react'
+import { Avatar, Box, Button, Card, CardBody, Divider, Heading, ListItem, Stack, Text, UnorderedList } from '@chakra-ui/react'
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../Redux/store";
 import { FcBriefcase, FcBookmark, FcComments } from "react-icons/fc";
-import { MdCheckCircle } from "react-icons/md";
 
 const LeftCompo = () => {
-    const { posts } = useSelector((store: RootState) => store.post);
     const { userCredential } = useSelector((store: RootState) => store.auth);
+
     return (
         <>
             <Box >
@@ -17,10 +16,16 @@ const LeftCompo = () => {
                         <Box display={"flex"} justifyContent="center" alignItems={"center"}>
                             <Avatar size='1xl' name='Segun Adebayo' src={userCredential.photoURL || "https://bit.ly/3kkJrly"} />
                         </Box>
-                        <Box w="100%" color={'green'} display={"flex"} justifyContent="center" alignItems={"center"} gap="2" borderRadius="10px" mt="10px">
-                            <Box bg="green" borderRadius={"50%"} h="7px" w="7px"></Box>
-                            <Text fontWeight={"500"}>Online</Text>
-                        </Box>
+                        {userCredential.online ?
+                            <Box w="100%" color={'green'} display={"flex"} justifyContent="center" alignItems={"center"} gap="2" borderRadius="10px" mt="10px">
+                                <Box bg="green" borderRadius={"50%"} h="7px" w="7px"></Box>
+                                <Text fontWeight={"500"}>Online</Text>
+                            </Box>
+                            :
+                            <Box color={'gray'} display={"flex"} justifyContent="center" alignItems={"center"} gap="2" borderRadius="10px" mt="10px">
+                                <Box bg="gray" borderRadius={"50%"} h="7px" w="7px"></Box>
+                                <Text fontWeight={"500"}>Offline</Text>
+                            </Box>}
                         <Stack mt='6' spacing='3'>
                             <Divider />
                             <Text size='md' textAlign={"center"} fontWeight="bold">{userCredential.username.toUpperCase() || "Fast space for connection"}</Text>
@@ -43,11 +48,6 @@ const LeftCompo = () => {
                     <CardBody>
                         <Box display={"flex"} justifyContent="center" alignItems={"center"}>
                             <Heading>Groups</Heading>
-                            {/* <List spacing={3}>
-                    <ListItem>
-                    <ListIcon as={MdCheckCircle} color='#2196f3' fontSize={"2xl"} display={"flex"} justifyContent="space-between" alignItems={"center"}/>
-                    </ListItem>
-                    </List> */}
                         </Box>
                         <Divider />
                         <Divider />

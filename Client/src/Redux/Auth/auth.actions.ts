@@ -50,7 +50,7 @@ export const GoogleAuth = (navigate: Function, Toast: Function) => async (dispat
 
           dispatch({ type: Types.SIGNIN_SUCCESS, payload: response.data.credentials })
 
-          navigate("/")
+          navigate("..")
      } catch (error) {
           console.log('error: ', error);
           dispatch({ type: Types.AUTH_ERROR, payload: error });
@@ -71,7 +71,7 @@ export const login = (email: string, password: string, navigate: Function, Toast
                sessionStorage.setItem("user", JSON.stringify({ id: res.data.credentials._id, token: res.data.token }));
                console.log(res.data.credentials)
                Toast(res.data?.message || "Login Success", ToastType.success);
-               navigate("/");
+               navigate("..");
           }
      } catch (err) {
           dispatch({ type: Types.AUTH_ERROR })

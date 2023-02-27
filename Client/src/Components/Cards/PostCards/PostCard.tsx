@@ -18,6 +18,8 @@ import { FaShare } from 'react-icons/fa'
 import React, { useState } from 'react'
 import { Dispatch } from 'redux'
 import './PostCard.css'
+import useCopyToClipboard from '../../../Custom-Hooks/useCopyToClipboard'
+import { IoCheckmarkDoneSharp } from 'react-icons/io5'
 
 type Props = {
      post: IPost,
@@ -28,9 +30,11 @@ type Props = {
 function PostCard({ post, IsLikedPost, IsFollowing }: Props) {
      const navigate = useNavigate();
      const { Toast } = UseToastMsg();
-     const [like, setLike] = useState(post.likes)
+     const [like, setLike] = useState(post.likes);
      const dispatch: Dispatch<any> = useDispatch();
      const [showComments, setComments] = useState<boolean>(false);
+     const [copyToClipboard, { value, success }]: any = useCopyToClipboard();
+     console.log('value: ', value);
      const { userCredential } = useSelector((store: RootState) => store.auth);
      const [isOpen, onOpen, onClose]: any = useToggle(false);
 
@@ -57,7 +61,6 @@ function PostCard({ post, IsLikedPost, IsFollowing }: Props) {
                userID: userCredential._id,
                followingID: post.authorID,
           };
-          console.log("data: ", data);
           dispatch(followUser(data, Toast));
      };
 
@@ -73,7 +76,6 @@ function PostCard({ post, IsLikedPost, IsFollowing }: Props) {
 
           dispatch(postAction.unLikePost(post._id, userCredential._id))
           dispatch(postAction.getAllPost())
-
      }
 
 
@@ -169,9 +171,9 @@ function PostCard({ post, IsLikedPost, IsFollowing }: Props) {
                          <Text><BiCommentDots /></Text>
                          <Text>Comment</Text>
                     </Flex>
-                    <Flex className='user-select-reject' align={'center'} gap='5px' flex={1} justify='center' p='2'>
-                         <Text><FaShare /></Text>
-                         <Text>Share</Text>
+                    <Flex color={(value == `https://forumapp-120fb.web.app/post/${post?._id}`) ? "green.500" : ""} onClick={() => copyToClipboard(`https://forumapp-120fb.web.app/post/${post?._id}`)} className='user-select-reject' align={'center'} gap='5px' flex={1} justify='center' p='2'>
+                         <Text>{(value == `https://forumapp-120fb.web.app/post/${post?._id}`) ? <IoCheckmarkDoneSharp /> : <FaShare />}</Text>
+                         <Text>{(value == `https://forumapp-120fb.web.app/post/${post?._id}`) ? "Copied" : "Share"}</Text>
                     </Flex>
                </Flex>
 

@@ -26,12 +26,10 @@ type Props = {}
 
 function SinglePostPage({ }: Props) {
 
-
      const { id } = useParams();
      const { Toast } = UseToastMsg()
      const navigate = useNavigate();
      const [post, setPost] = useState<any>();
-     console.log('post: ', post);
      const dispatch: Dispatch<any> = useDispatch();
      const [isOpen, onOpen, onClose]: any = useToggle(false);
      const [showComments, setShowComments] = useState<boolean>(false);
@@ -46,7 +44,6 @@ function SinglePostPage({ }: Props) {
                console.log('error: ', error);
           }
      }
-
 
      const DeletePost = () => {
           if (!userCredential._id) return navigate("/login");
@@ -117,7 +114,6 @@ function SinglePostPage({ }: Props) {
           setTimeout(fetchPost, 1000)
      }
 
-
      const FinalPostComments: any = useMemo(() => {
           if (post?.comments == null) return {}
 
@@ -139,19 +135,10 @@ function SinglePostPage({ }: Props) {
           return { RootComments, Replies };
      }, [post?.comments])
 
-
      React.useEffect(() => {
           fetchPost();
           dispatch(postLikes(userCredential._id));
      }, [id])
-
-
-     useEffect(() => {
-
-
-
-     }, [])
-
 
      return (
           post &&
