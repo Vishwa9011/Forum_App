@@ -212,7 +212,9 @@
      border-radius: 5px;
 }
 
-@media screen and (max-width: 480px) {
+@media screen and (width<=480px) {
+
+
      .post-header-image {
           width: 25px;
           height: 25px;
@@ -223,6 +225,7 @@
      }
 
      .post-header-details>p:nth-child(1) {
+          font-size: .7rem;
           font-weight: 400;
      }
 

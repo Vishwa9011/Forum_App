@@ -53,7 +53,7 @@ function Comment({ comment, replies }: Props) {
 
      return (
           <>
-               <Box as='article' className='user-comment comment-body' mt='10px'>
+               <Box as='article' className={`user-comment comment-body `} mt='10px' pl={`${comment?.parentID ? "45px" : ""}`}>
                     <Box as="header" className='comment-user-img'>
                          <Image src={comment.author?.photoURL || "https://bit.ly/3kkJrly"} alt="" />
                     </Box>
@@ -106,19 +106,19 @@ function Comment({ comment, replies }: Props) {
                     </Box>
                </Box>
                {IsReplying && (
-                    <Box className='nested-reply' marginLeft={'40px'}>
+                    <Box className='nested-reply'>
                          <CommentForm onSubmit={onCommentReply} autoFocus={true} />
                     </Box>
                )}
 
                {IsEditing && (
-                    <Box className='nested-reply' marginLeft={'40px'}>
+                    <Box className='nested-reply'>
                          <CommentForm onSubmit={onCommentUpdate} initialValue={comment.message} autoFocus={true} />
                     </Box>
                )}
 
                {childComments && childComments?.length > 0 && (
-                    <Box className='nested-comments' ml='45px'>
+                    <Box className='nested-comments'>
                          <CommentsList comments={childComments} replies={replies} />
                     </Box>
                )}

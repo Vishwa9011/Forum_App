@@ -1,7 +1,6 @@
 .comment-body {
      gap: .25em;
      width: 100%;
-
      display: flex;
 }
 
@@ -64,7 +63,6 @@
 :is(.comment-username, .comment-user-bio):hover {
      cursor: pointer;
 }
-
 
 .comment-description {
      --max-line: 4;
@@ -150,8 +148,6 @@
 
 
 /* * menu-options */
-
-
 .comment-options-menu {
      display: flex;
      align-items: center;

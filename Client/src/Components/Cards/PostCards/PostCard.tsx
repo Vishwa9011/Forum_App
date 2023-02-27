@@ -34,7 +34,6 @@ function PostCard({ post, IsLikedPost, IsFollowing }: Props) {
      const dispatch: Dispatch<any> = useDispatch();
      const [showComments, setComments] = useState<boolean>(false);
      const [copyToClipboard, { value, success }]: any = useCopyToClipboard();
-     console.log('value: ', value);
      const { userCredential } = useSelector((store: RootState) => store.auth);
      const [isOpen, onOpen, onClose]: any = useToggle(false);
 
@@ -88,12 +87,12 @@ function PostCard({ post, IsLikedPost, IsFollowing }: Props) {
                     <Flex gap='10px' as={Link} to={`/user/${post.authorID}`}>
                          <Box className={post.author?.online ? 'online' : "offline"}>
                               <Box className='post-header-image'>
-                                   <Image src={post.author.photoURL || "https://bit.ly/3kkJrly"} />
+                                   <Image src={post.author?.photoURL || "https://bit.ly/3kkJrly"} />
                               </Box>
                          </Box>
                          <Box className='post-header-details'>
                               <Flex align={'center'} gap='10px'>
-                                   <Text whiteSpace={'nowrap'} textTransform={"capitalize"} _hover={{ textDecor: "underline" }}>{post.author.username}</Text>
+                                   <Text className='' whiteSpace={'nowrap'} textTransform={"capitalize"} _hover={{ textDecor: "underline" }}>{post.author?.username}</Text>
                                    {post.author?.online ?
                                         <Box fontSize={'.7em'} color={'green'} display={"flex"} justifyContent="center" alignItems={"center"} gap="2" borderRadius="10px" >
                                              <Box bg="green" borderRadius={"50%"} h="7px" w="7px"></Box>
@@ -105,15 +104,15 @@ function PostCard({ post, IsLikedPost, IsFollowing }: Props) {
                                              <Text fontWeight={"500"}>Offline</Text>
                                         </Box>}
                               </Flex>
-                              <Text textTransform={"capitalize"} fontWeight={'semibold'} color='gray.600'>{post.author.bio || post.author.email}</Text>
+                              <Text textTransform={"capitalize"} fontWeight={'semibold'} color='gray.600'>{post?.author?.bio || post?.author?.email}</Text>
                               <Text fontWeight={'semibold'} color='gray.500'>
-                                   <Text as='span'>{CalcTime(post.createdAt)}</Text>
-                                   <Text as='span' ml='3'>{post.edited ? "• Edited" : ""}</Text>
+                                   <Text as='span'>{CalcTime(post?.createdAt)}</Text>
+                                   <Text as='span' ml='3'>{post?.edited ? "• Edited" : ""}</Text>
                               </Text>
                          </Box>
                     </Flex>
                     <Flex ml={'auto'} align='center' gap='10px'>
-                         {IsFollowing && userCredential._id !== post.authorID &&
+                         {IsFollowing && userCredential._id !== post?.authorID &&
                               <Button variant={'outline'} onClick={FollowUser}>+ Follow</Button>
                          }
                          <Box className='post-options-menu'>
@@ -125,7 +124,7 @@ function PostCard({ post, IsLikedPost, IsFollowing }: Props) {
                               <Box className='post-options-list'>
                                    <UnorderedList fontWeight={'semibold'}>
                                         <ListItem>Report</ListItem>
-                                        {post.authorID == userCredential._id && (
+                                        {post?.authorID == userCredential._id && (
                                              <>
                                                   <ListItem className='edit-btn'>
                                                        <Button w='100%' h='100%' p='.5em' pl='.75em' variant={'unstyled'} textAlign='left' onClick={onOpen}>Edit</Button>
@@ -144,9 +143,9 @@ function PostCard({ post, IsLikedPost, IsFollowing }: Props) {
 
                <Box as='section' className='post-main'>
                     <Box className='post-content-description'>
-                         <Text className='post-content-title'>{post.title}</Text>
-                         <Text className='post-content-message'>{post.description}</Text>
-                         {post.description.length > 150 && <Box className='expand-btn'>
+                         <Text className='post-content-title'>{post?.title}</Text>
+                         <Text className='post-content-message'>{post?.description}</Text>
+                         {post?.description.length > 150 && <Box className='expand-btn'>
                               <input type="checkbox" data-expand-btn='true' />
                          </Box>}
                     </Box>
@@ -171,9 +170,9 @@ function PostCard({ post, IsLikedPost, IsFollowing }: Props) {
                          <Text><BiCommentDots /></Text>
                          <Text>Comment</Text>
                     </Flex>
-                    <Flex color={(value == `https://forumapp-120fb.web.app/post/${post?._id}`) ? "green.500" : ""} onClick={() => copyToClipboard(`https://forumapp-120fb.web.app/post/${post?._id}`)} className='user-select-reject' align={'center'} gap='5px' flex={1} justify='center' p='2'>
-                         <Text>{(value == `https://forumapp-120fb.web.app/post/${post?._id}`) ? <IoCheckmarkDoneSharp /> : <FaShare />}</Text>
-                         <Text>{(value == `https://forumapp-120fb.web.app/post/${post?._id}`) ? "Copied" : "Share"}</Text>
+                    <Flex color={success ? "green.500" : ""} onClick={() => copyToClipboard(`https://forumapp-120fb.web.app/post/${post?._id}`)} className='user-select-reject' align={'center'} gap='5px' flex={1} justify='center' p='2'>
+                         <Text>{success ? <IoCheckmarkDoneSharp /> : <FaShare />}</Text>
+                         <Text>{success ? "Copied" : "Share"}</Text>
                     </Flex>
                </Flex>
 

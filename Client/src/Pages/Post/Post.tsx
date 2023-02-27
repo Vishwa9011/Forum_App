@@ -59,7 +59,7 @@ function Post() {
                <Box>
                     <Flex p='2' my='5' gap='20px' justify={'space-between'} border='1px' borderColor={'gray.400'} borderRadius={'5px'}>
                          <Box className='create-post-image'>
-                              <Image src={userCredential.photoURL || "https://bit.ly/3kkJrly"} />
+                              <Image src={userCredential?.photoURL || "https://bit.ly/3kkJrly"} />
                          </Box>
                          <Button variant={'outline'} w='100%' borderRadius={'10px'} onClick={openCreatePost} color={''}>Create Post</Button>
                     </Flex>
@@ -68,7 +68,7 @@ function Post() {
 
                </Box>
                <Grid gap='10px' minH='fit-content'>
-                    {posts.map((post: IPost) => {
+                    {posts && posts.map((post: IPost) => {
                          return <PostCard post={post} key={post._id} IsLikedPost={isLikedPost(post._id)} IsFollowing={IsFollowing(post.authorID)} />
                     })}
                </Grid>

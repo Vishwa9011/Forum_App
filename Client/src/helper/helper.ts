@@ -35,7 +35,6 @@ export const CalcTime = (time: number) => {
      }
 }
 
-
 export function NumberFormat(num: number) {
      return num.toLocaleString()
 }

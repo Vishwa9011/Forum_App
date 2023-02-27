@@ -110,6 +110,7 @@ export const sendVerifyEmail = (email: string, password: string, Toast: Function
      dispatch({ type: Types.AUTH_LOADING });
      try {
           let res = await axios.post("/user/sentverificationemail", { email, password })
+          console.log('res: ', res.data.EncryptedCredential);
           dispatch({ type: Types.SEND_VERIFY_EMAIL_SUCCESS, payload: res.data.EncryptedCredential });
           Toast("Verification email sent, Please Check your mail", ToastType.success)
      } catch (err) {

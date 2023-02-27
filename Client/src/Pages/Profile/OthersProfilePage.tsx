@@ -14,7 +14,7 @@ import axios from "axios";
 import { initialUserCredState } from "../../Redux/Auth/auth.reducer";
 import { IFollow, IPost, IUser } from "../../Constants/constant";
 import UserPostCard from "./UserPostCard";
-import { NumberFormat } from "../../helper/helper";
+import { CalcTime, NumberFormat } from "../../helper/helper";
 
 type Props = {};
 
@@ -114,7 +114,7 @@ export default function OthersProfilePage({ }: Props) {
                                                        :
                                                        <Box w="100%" color={'gray'} display={"flex"} justifyContent="center" alignItems={"center"} gap="2" borderRadius="10px">
                                                             <Box bg="gray" borderRadius={"50%"} h="7px" w="7px"></Box>
-                                                            <Text fontWeight={"500"}>Offline</Text>
+                                                            <Text fontWeight={"500"}>{CalcTime(profile.lastLogin)} offline</Text>
                                                        </Box>}
                                              </Flex>
                                              <Text fontSize={"md"} color={"gray.800"}>
