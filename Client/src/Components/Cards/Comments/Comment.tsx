@@ -42,7 +42,7 @@ function Comment({ comment, replies }: Props) {
                author: userCredential._id,
                authorID: userCredential._id
           }
-          dispatch(Action.createComment(data))
+          dispatch(Action.createCommentReply(data))
           setIsReplying(false);
      }
 

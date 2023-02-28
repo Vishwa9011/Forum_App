@@ -37,6 +37,18 @@ export const createComment = (data: CreateCommentType) => async (dispatch: Dispa
      }
 }
 
+export const createCommentReply = (data: CreateCommentType) => async (dispatch: Dispatch<any>) => {
+     dispatch({ type: Types.POST_LOADING });
+     try {
+          await axios.post(`/post/comment/newreply`, data);
+          dispatch(getAllPost());
+          dispatch({ type: Types.POST_OPERATION_SUCCESS })
+     } catch (error: any) {
+          console.log('error: ', error.message);
+          dispatch({ type: Types.POST_ERROR, payload: error });
+     }
+}
+
 export const updateComment = (message: string, id: string) => async (dispatch: Dispatch<any>) => {
      dispatch({ type: Types.POST_LOADING });
      try {

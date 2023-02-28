@@ -31,7 +31,7 @@ function SinglePostPage({ }: Props) {
 
      const { id } = useParams();
      const navigate = useNavigate();
-     const { Toast } = UseToastMsg()
+     const { Toast } = UseToastMsg();
      const [post, setPost] = useState<any>({});
      const dispatch: Dispatch<any> = useDispatch();
      const [loading, setLoading] = useState<boolean>(false);
