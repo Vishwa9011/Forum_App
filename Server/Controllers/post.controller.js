@@ -143,12 +143,12 @@ async function CreateCommentReply(req, res) {
           await comment.save();
 
           var parentComment = await CommentModel.findById(payload.parentID);
-          parentComment = { ...parentComment, child: [...parentComment.child, comment._id] }
+          parentComment.child.push(comment._id)
           await parentComment.save()
 
           var post = await PostModel.findById(payload.postID);
-          post = { ...post, comments: [...post.comments, comment._id] }
-          await post.save()
+          post.comments.push(comment._id);
+          await post.save();
 
           res.status(201).json({ status: 200, message: "comment has been created.", comment })
      } catch (error) {
