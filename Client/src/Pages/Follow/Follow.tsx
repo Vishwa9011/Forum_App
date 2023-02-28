@@ -40,7 +40,7 @@ const Follow = () => {
                             {following && following.map((Following: any) => (
                                 <Box key={Following._id} display={"flex"} w='100%' justifyContent="space-between" alignItems={"center"}>
                                     <Flex w='100%' alignItems={"center"} gap="10px" p="10px" >
-                                        <Avatar as={Link} to={`/user/${Following?.followingID._id}`} name='Dan Abrahmov' src={Following?.followingID?.photoURL || 'https://bit.ly/dan-abramov'} />
+                                        <Avatar as={Link} to={`/user/${Following?.followingID._id}`} bg="purple.400" color='blackAlpha.800' boxSize='45px' name={Following?.followingID?.username} src={Following?.followingID?.photoURL || 'https://bit.ly/dan-abramov'} />
                                         <Box as={Link} to={`/user/${Following?.followingID._id}`}>
                                             <Text textTransform={"capitalize"} fontWeight={"500"}>{Following?.followingID?.username}</Text>
                                             <Text textTransform={"capitalize"} fontWeight={"400"}>{Following?.followingID?.bio || Following?.followingID?.email}</Text>
@@ -61,7 +61,7 @@ const Follow = () => {
                             {followers && followers.map((follower: any) => (
                                 <Box key={follower._id} display={"flex"} w='100%' justifyContent="space-between" alignItems={"center"}>
                                     <Flex w='100%' alignItems={"center"} gap="10px" p="10px" >
-                                        <Avatar as={Link} to={`/user/${follower?.userID?._id}`} name='Dan Abrahmov' src={follower?.userID?.photoURL || 'https://bit.ly/dan-abramov'} />
+                                        <Avatar as={Link} to={`/user/${follower?.userID?._id}`} bg="purple.400" color='blackAlpha.800' boxSize='45px' name={follower?.userID?.username} src={follower?.userID?.photoURL || 'https://bit.ly/dan-abramov'} />
                                         <Box as={Link} to={`/user/${follower?.userID?._id}`}>
                                             <Text textTransform={"capitalize"} fontWeight={"500"}>{follower?.userID?.username}</Text>
                                             <Text textTransform={"capitalize"} fontWeight={"400"}>{follower?.userID?.bio || follower?.userID?.email}</Text>

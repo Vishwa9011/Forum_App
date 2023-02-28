@@ -7,7 +7,7 @@ import Post from "../Post/Post";
 
 type Props = {};
 
-function Home({}: Props) {
+function Home({ }: Props) {
   return (
     <>
       <Navbar />

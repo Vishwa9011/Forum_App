@@ -44,7 +44,8 @@ const userSchema = mongoose.Schema({
      },
      role: {
           type: String,
-          default: ""
+          default: "",
+          enum: { value: ["USER", "ADMIN"] }
      },
      isVerified: {
           type: Boolean,
@@ -116,7 +117,7 @@ userSchema.methods.removeRecords = async function () {
 
      await CommentModel.deleteMany({ author: userId });
 
-     await CommentLikeModel.deleteMany({ author: userId })
+     await CommentLikeModel.deleteMany({ author: userId });
 
      await LikesModel.deleteMany({ author: userId })
 

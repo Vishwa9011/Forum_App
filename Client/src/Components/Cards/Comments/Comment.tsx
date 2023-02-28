@@ -1,4 +1,4 @@
-import { Box, Button, Image, ListItem, Text, UnorderedList } from '@chakra-ui/react'
+import { Avatar, Box, Button, Image, ListItem, Text, UnorderedList } from '@chakra-ui/react'
 import * as Action from '../../../Redux/Post/comment.actions';
 import { IComment } from '../../../Constants/constant'
 import { useDispatch, useSelector } from 'react-redux'
@@ -53,70 +53,74 @@ function Comment({ comment, replies }: Props) {
 
      return (
           <>
-               <Box as='article' className={`user-comment comment-body `} mt='10px' pl={`${comment?.parentID ? "45px" : ""}`}>
-                    <Box as="header" className='comment-user-img'>
-                         <Image src={comment.author?.photoURL || "https://bit.ly/3kkJrly"} alt="" />
-                    </Box>
-                    <Box as='section' className='comment'>
-                         <Box borderColor={'gray.400'} as='section' className='comment-main'>
-                              <Box className='comment-header'>
-                                   <Box as={Link} to={`/user/${comment.authorID}`}>
-                                        <Text className='comment-username'>{comment.author?.username}</Text>
-                                        <Text className='comment-date-time' fontWeight={'semibold'} color='gray.500'>
-                                             <Text as='span'>{CalcTime(comment.createdAt)}</Text>
-                                             <Text as='span' ml='3'>{comment.edited ? "• Edited" : ""}</Text>
-                                        </Text>
-                                   </Box>
-                                   {(comment.authorID === userCredential?._id) &&
-                                        (<Box className='comment-options-menu'>
-                                             <Button className='hamberger-menu' fontSize={'1.5rem'}>
-                                                  <HiDotsVertical />
-                                             </Button>
-                                             <Box className='comment-options-list'>
-                                                  <UnorderedList fontWeight={'semibold'} >
-                                                       <ListItem onClick={() => setIsEditing(true)}>Edit</ListItem>
-                                                       <ListItem onClick={() => dispatch(Action.deleteComment(comment._id))}>Delete</ListItem>
-                                                  </UnorderedList>
-                                             </Box>
-                                        </Box>)
-                                   }
-                              </Box>
-                              <Box className="comment-description">
-                                   <Text>{comment.message}</Text>
-                                   <Box className='comment-expand-btn'>
-                                        <input type="checkbox" data-expand-btn='true' />
-                                   </Box>
-                              </Box>
+               <Box mt='10px' pl={`${comment?.parentID ? "45px" : ""}`}>
+                    <Box as='article' className={`user-comment comment-body `} >
+                         <Box as="header" className='comment-user-img'>
+                              <Avatar bg="purple.400" color='blackAlpha.800' boxSize='45px' name={comment.author?.username} src={comment.author?.photoURL || "https://bit.ly/3kkJrly"} />
                          </Box>
-                         <Box as='footer' className='comment-like-reply' color={'gray.700'} >
-                              {/* <Box className='comment-like'>
+                         <Box as='section' className='comment'>
+                              <Box borderColor={'gray.400'} as='section' className='comment-main'>
+                                   <Box className='comment-header'>
+                                        <Box as={Link} to={`/user/${comment.authorID}`}>
+                                             <Text className='comment-username'>{comment.author?.username}</Text>
+                                             <Text className='comment-date-time' fontWeight={'semibold'} color='gray.500'>
+                                                  <Text as='span'>{CalcTime(comment.createdAt)}</Text>
+                                                  <Text as='span' ml='3'>{comment.edited ? "• Edited" : ""}</Text>
+                                             </Text>
+                                        </Box>
+                                        {(comment.authorID === userCredential?._id) &&
+                                             (<Box className='comment-options-menu'>
+                                                  <Button className='hamberger-menu' fontSize={'1.5rem'}>
+                                                       <HiDotsVertical />
+                                                  </Button>
+                                                  <Box className='comment-options-list'>
+                                                       <UnorderedList fontWeight={'semibold'} >
+                                                            <ListItem onClick={() => setIsEditing(true)}>Edit</ListItem>
+                                                            <ListItem onClick={() => dispatch(Action.deleteComment(comment._id))}>Delete</ListItem>
+                                                       </UnorderedList>
+                                                  </Box>
+                                             </Box>)
+                                        }
+                                   </Box>
+                                   <Box className="comment-description">
+                                        <Text>{comment.message}</Text>
+                                        <Box className='comment-expand-btn'>
+                                             <input type="checkbox" data-expand-btn='true' />
+                                        </Box>
+                                   </Box>
+                              </Box>
+
+
+
+                              <Box as='footer' className='comment-like-reply' color={'gray.700'} >
+                                   {/* <Box className='comment-like'>
                                    <IconBtn Icon={BiLike} arial-label="like">
                                         Like
                                    </IconBtn>
                               </Box> */}
-                              <Box className='comment-reply'>
-                                   <IconBtn
-                                        Icon={FaReply}
-                                        onClick={() => setIsReplying(prev => !prev)}
-                                        arial-label={IsReplying ? "Cancel-Reply" : "Reply"}>
-                                        {IsReplying ? "Cancel-Reply" : "Reply"}
-                                   </IconBtn>
+                                   <Box className='comment-reply'>
+                                        <IconBtn
+                                             Icon={FaReply}
+                                             onClick={() => setIsReplying(prev => !prev)}
+                                             arial-label={IsReplying ? "Cancel-Reply" : "Reply"}>
+                                             {IsReplying ? "Cancel-Reply" : "Reply"}
+                                        </IconBtn>
+                                   </Box>
                               </Box>
                          </Box>
                     </Box>
+                    {IsReplying && (
+                         <Box className='nested-reply' ml='45px'>
+                              <CommentForm onSubmit={onCommentReply} autoFocus={true} />
+                         </Box>
+                    )}
+
+                    {IsEditing && (
+                         <Box className='nested-reply' ml='45px'>
+                              <CommentForm onSubmit={onCommentUpdate} initialValue={comment.message} autoFocus={true} />
+                         </Box>
+                    )}
                </Box>
-               {IsReplying && (
-                    <Box className='nested-reply'>
-                         <CommentForm onSubmit={onCommentReply} autoFocus={true} />
-                    </Box>
-               )}
-
-               {IsEditing && (
-                    <Box className='nested-reply'>
-                         <CommentForm onSubmit={onCommentUpdate} initialValue={comment.message} autoFocus={true} />
-                    </Box>
-               )}
-
                {childComments && childComments?.length > 0 && (
                     <Box className='nested-comments'>
                          <CommentsList comments={childComments} replies={replies} />

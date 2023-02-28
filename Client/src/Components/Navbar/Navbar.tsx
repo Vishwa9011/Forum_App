@@ -33,12 +33,12 @@ const Links = [
     href: "/",
   },
   {
-    name: "Message",
+    name: "Contact Us",
     icon: <ChatIcon />,
     href: "mailto:vishu842301@gmail.com",
   },
   {
-    name: "Notification",
+    name: "Notifications",
     icon: <BellIcon />,
     href: "/notifications",
   },

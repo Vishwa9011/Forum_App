@@ -1,4 +1,4 @@
-import { Box, Button, Flex, Image, ListItem, Text, UnorderedList } from '@chakra-ui/react'
+import { Avatar, Box, Button, Flex, Image, ListItem, Text, UnorderedList } from '@chakra-ui/react'
 import { followUser, unFollowUser } from '../../../Redux/Auth/auth.actions'
 import * as commentAction from '../../../Redux/Post/comment.actions'
 import * as postAction from '../../../Redux/Post/post.actions'
@@ -87,7 +87,7 @@ function PostCard({ post, IsLikedPost, IsFollowing }: Props) {
                     <Flex gap='10px' as={Link} to={`/user/${post.authorID}`}>
                          <Box className={post.author?.online ? 'online' : "offline"}>
                               <Box className='post-header-image'>
-                                   <Image src={post.author?.photoURL || "https://bit.ly/3kkJrly"} />
+                                   <Avatar bg="purple.400" color='blackAlpha.800' boxSize='40px' name={post.author?.username} src={post.author?.photoURL || "https://bit.ly/3kkJrly"} />
                               </Box>
                          </Box>
                          <Box className='post-header-details'>

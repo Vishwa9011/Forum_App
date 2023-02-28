@@ -1,5 +1,5 @@
 import React from 'react'
-import { Avatar, Box, Button, Card, CardBody, Divider, Heading, ListItem, Stack, Text, UnorderedList } from '@chakra-ui/react'
+import { Avatar, Box, Button, Card, CardBody, Divider, Heading, Image, ListItem, Stack, Text, UnorderedList } from '@chakra-ui/react'
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../Redux/store";
 import { FcBriefcase, FcBookmark, FcComments } from "react-icons/fc";
@@ -14,7 +14,7 @@ const LeftCompo = () => {
                     borderColor={"gray.400"}>
                     <CardBody>
                         <Box display={"flex"} justifyContent="center" alignItems={"center"}>
-                            <Avatar size='1xl' name='Segun Adebayo' src={userCredential.photoURL || "https://bit.ly/3kkJrly"} />
+                            <Avatar bg="purple.400" color='blackAlpha.800' boxSize='45px' name={userCredential.username} src={userCredential.photoURL || "https://bit.ly/3kkJrly"} />
                         </Box>
                         {userCredential.online ?
                             <Box w="100%" color={'green'} display={"flex"} justifyContent="center" alignItems={"center"} gap="2" borderRadius="10px" mt="10px">

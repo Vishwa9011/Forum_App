@@ -1,4 +1,4 @@
-import { Box, Button, Flex, Grid, Image } from '@chakra-ui/react'
+import { Avatar, Box, Button, Flex, Grid, Image } from '@chakra-ui/react'
 import React, { useEffect, useState, useMemo } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
@@ -59,7 +59,7 @@ function Post() {
                <Box>
                     <Flex p='2' my='5' gap='20px' justify={'space-between'} border='1px' borderColor={'gray.400'} borderRadius={'5px'}>
                          <Box className='create-post-image'>
-                              <Image src={userCredential?.photoURL || "https://bit.ly/3kkJrly"} />
+                              <Avatar bg="purple.400" color='blackAlpha.800' boxSize='40px' name={userCredential.username} src={userCredential.photoURL || "https://bit.ly/3kkJrly"} />
                          </Box>
                          <Button variant={'outline'} w='100%' borderRadius={'10px'} onClick={openCreatePost} color={''}>Create Post</Button>
                     </Flex>
