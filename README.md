@@ -15,7 +15,7 @@
   <img src="https://img.shields.io/badge/CSS3-1572B6?style=for-the-badge&logo=css3&logoColor=white" alt="chakra-ui"/>
   <img src="https://img.shields.io/badge/Firebase-039BE5?style=for-the-badge&logo=Firebase&logoColor=white" alt="chakra-ui"/>
 </p>
-<h3 align="center"><a href="https://next-hill-6732.vercel.app/"><strong>Want to see live preview »</strong></a></h3>
+<h3 align="center"><a href="https://forumapp-120fb.web.app/"><strong>Want to see live preview »</strong></a></h3>
 
 ## 🚀 Features
 - Sign Up/Login authentication made with Firebase and Sign in with Google Funtionality.
