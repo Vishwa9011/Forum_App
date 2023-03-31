@@ -1,5 +1,5 @@
 # Forum_App
-<h1 align="center">Lens Studio</h1> 
+
 
 <h2 align="center">Forum is a social networking site designed specifically for the social connectivity and business community.</h2>
 
