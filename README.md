@@ -29,7 +29,7 @@
 
 # 1. Landing Page
 
-![landing page](https://github.com/Saurav903/sample1/blob/main/landing1.png)
+![WhatsApp Image 2023-04-14 at 15 44 15](https://user-images.githubusercontent.com/112635764/232017763-ba8a239e-8455-4917-9231-7d5f5ce5d3ac.jpg)
 
 # 2. Login Page
 
