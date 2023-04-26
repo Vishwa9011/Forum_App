@@ -41,7 +41,6 @@ export const GoogleAuth = (navigate: Function, Toast: Function) => async (dispat
           const response = await axios.post("/user/googleauth", userDetail)
           console.log('response: ', response);
 
-
           sessionStorage.setItem("user", JSON.stringify({ id: response.data.credentials._id, token: response.data.token }));
           dispatch(getFollowing(response.data.credentials._id, Toast));
           dispatch(postLikes(response.data.credentials._id));

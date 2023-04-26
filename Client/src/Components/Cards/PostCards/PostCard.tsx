@@ -104,7 +104,7 @@ function PostCard({ post, IsLikedPost, IsFollowing }: Props) {
                                              <Text fontWeight={"500"}>Offline</Text>
                                         </Box>}
                               </Flex>
-                              <Text textTransform={"capitalize"} fontWeight={'semibold'} color='gray.600'>{post?.author?.bio || post?.author?.email}</Text>
+                              <Text fontWeight={'semibold'} color='gray.600'>{post?.author?.bio || post?.author?.email}</Text>
                               <Text fontWeight={'semibold'} color='gray.500'>
                                    <Text as='span'>{CalcTime(post?.createdAt)}</Text>
                                    <Text as='span' ml='3'>{post?.edited ? "• Edited" : ""}</Text>
