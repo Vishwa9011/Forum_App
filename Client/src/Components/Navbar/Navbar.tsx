@@ -35,7 +35,7 @@ const Links = [
   {
     name: "Contact Us",
     icon: <ChatIcon />,
-    href: "mailto:vishu842301@gmail.com",
+    href: "mailto:palairanjan2002@gmail.com",
   },
   {
     name: "Notifications",

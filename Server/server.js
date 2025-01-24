@@ -33,7 +33,7 @@ const port = process.env.PORT || 8080
 app.listen(port, async () => {
      try {
           await connection;
-          console.log("server is running.");
+          console.log(`server is running on port ${port}`);
      } catch (error) {
           console.log('error: ', error);
      }
